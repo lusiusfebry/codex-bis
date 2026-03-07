@@ -19,12 +19,30 @@ type MasterDataConfig = {
   include?: Record<string, unknown>;
 };
 
+function normalizeStatusQuery(value: string): "Aktif" | "Tidak Aktif" | null {
+  const normalized = value.trim().toLowerCase().replace(/[\s_-]+/g, " ");
+
+  if (normalized === "aktif") {
+    return "Aktif";
+  }
+
+  if (normalized === "tidak aktif") {
+    return "Tidak Aktif";
+  }
+
+  return null;
+}
+
 function buildWhereClause(req: Request, searchFields: string[]): Record<string, unknown> {
   const { search, status } = req.query;
   const where: Record<string, unknown> = {};
 
   if (typeof status === "string" && status.length > 0) {
-    where.status = status;
+    const normalizedStatus = normalizeStatusQuery(status);
+
+    if (normalizedStatus) {
+      where.status = normalizedStatus;
+    }
   }
 
   if (typeof search === "string" && search.trim().length > 0) {
@@ -52,6 +70,10 @@ function parsePagination(req: Request): { page: number; limit: number; skip: num
   };
 }
 
+function isDropdownMode(req: Request): boolean {
+  return typeof req.query.status === "string" && req.query.page === undefined && req.query.limit === undefined;
+}
+
 export function buildMasterDataController(model: MasterDataDelegate, config: MasterDataConfig) {
   return {
     list: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -62,17 +84,24 @@ export function buildMasterDataController(model: MasterDataDelegate, config: Mas
 
         const where = buildWhereClause(req, config.searchFields);
         const { page, limit, skip } = parsePagination(req);
+        const dropdownMode = isDropdownMode(req);
+        const findManyArgs: Record<string, unknown> = {
+          where,
+          include: config.include,
+          orderBy: { [config.orderField]: "asc" },
+        };
+
+        if (!dropdownMode) {
+          findManyArgs.skip = skip;
+          findManyArgs.take = limit;
+        }
 
         const [data, total] = await Promise.all([
-          model.findMany({
-            where,
-            include: config.include,
-            orderBy: { [config.orderField]: "asc" },
-            skip,
-            take: limit,
-          }),
+          model.findMany(findManyArgs),
           model.count({ where }),
         ]);
+
+        const effectiveLimit = dropdownMode ? total || data.length || 1 : limit;
 
         res.json({
           success: true,
@@ -80,8 +109,8 @@ export function buildMasterDataController(model: MasterDataDelegate, config: Mas
           meta: {
             total,
             page,
-            limit,
-            totalPages: Math.ceil(total / limit) || 1,
+            limit: effectiveLimit,
+            totalPages: dropdownMode ? 1 : Math.ceil(total / limit) || 1,
           },
         });
       } catch (error) {

@@ -5,6 +5,10 @@ type ValidatorOptions = {
   optionalFields?: ValidationChain[];
 };
 
+function normalizeStatusInput(value: string): string {
+  return value.trim().toLowerCase().replace(/[\s_-]+/g, " ");
+}
+
 export function buildMasterDataValidators(
   namaField: string,
   options?: ValidatorOptions,
@@ -39,7 +43,7 @@ export const masterDataListValidator = [
   query("search").optional().trim(),
   query("status")
     .optional()
-    .isIn(["Aktif", "Tidak Aktif"])
+    .custom((value) => ["aktif", "tidak aktif"].includes(normalizeStatusInput(value)))
     .withMessage('Status harus "Aktif" atau "Tidak Aktif".'),
   query("page")
     .optional()

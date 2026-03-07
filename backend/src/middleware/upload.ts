@@ -41,3 +41,29 @@ export const uploadFotoKaryawan = multer({
     fileSize: 2 * 1024 * 1024,
   },
 });
+
+function excelFileFilter(
+  _req: Express.Request,
+  file: Express.Multer.File,
+  cb: multer.FileFilterCallback,
+): void {
+  if (
+    ![
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-excel",
+    ].includes(file.mimetype)
+  ) {
+    cb(new Error("Format file tidak didukung. Hanya file Excel yang diizinkan."));
+    return;
+  }
+
+  cb(null, true);
+}
+
+export const uploadImportExcel = multer({
+  storage: multer.memoryStorage(),
+  fileFilter: excelFileFilter,
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  },
+});

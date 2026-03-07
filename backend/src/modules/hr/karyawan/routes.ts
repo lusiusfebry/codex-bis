@@ -1,50 +1,35 @@
 import { Router } from "express";
 
-import { prisma } from "../../../config/database";
 import { authenticate } from "../../../middleware/auth";
-import { uploadFotoKaryawan } from "../../../middleware/upload";
+import { uploadFotoKaryawan, uploadImportExcel } from "../../../middleware/upload";
+import {
+  create,
+  destroy,
+  detail,
+  generateQrCode,
+  importExcel,
+  list,
+  update,
+  uploadFoto,
+} from "./controller";
+import {
+  createKaryawanValidator,
+  karyawanIdValidator,
+  karyawanListValidator,
+  updateKaryawanValidator,
+} from "./validator";
 
 const router = Router();
 
-router.get("/", authenticate, async (_req, res, next) => {
-  try {
-    const data = await prisma.karyawan.findMany({
-      include: {
-        divisi: true,
-        department: true,
-        posisiJabatan: true,
-        statusKaryawan: true,
-        lokasiKerja: true,
-        tag: true,
-        anak: true,
-        saudaraKandung: true,
-        kontakDarurat: true,
-        orangTuaKandung: true,
-        orangTuaMertua: true,
-        keluarga: true,
-      },
-      orderBy: { namaLengkap: "asc" },
-    });
+router.use(authenticate);
 
-    res.json({ success: true, data });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.post("/upload-foto", authenticate, uploadFotoKaryawan.single("foto"), (req, res) => {
-  res.json({
-    success: true,
-    message: "Foto berhasil diunggah.",
-    data: req.file
-      ? {
-          filename: req.file.filename,
-          path: `foto-karyawan/${req.file.filename}`,
-          mimetype: req.file.mimetype,
-          size: req.file.size,
-        }
-      : null,
-  });
-});
+router.post("/import", uploadImportExcel.single("file"), importExcel);
+router.get("/", karyawanListValidator, list);
+router.post("/", createKaryawanValidator, create);
+router.get("/:id", karyawanIdValidator, detail);
+router.put("/:id", [...karyawanIdValidator, ...updateKaryawanValidator], update);
+router.delete("/:id", karyawanIdValidator, destroy);
+router.post("/:id/foto", karyawanIdValidator, uploadFotoKaryawan.single("foto"), uploadFoto);
+router.get("/:id/qrcode", karyawanIdValidator, generateQrCode);
 
 export default router;
