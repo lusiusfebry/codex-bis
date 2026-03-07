@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Building2, ChevronDown, HardHat, House, KeyRound, LogOut, Mountain, Package2, Users } from "lucide-react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { BriefcaseBusiness, Building2, ChevronDown, FolderKanban, GitBranch, HardHat, House, KeyRound, Landmark, LogOut, MapPin, Mountain, Package2, ShieldCheck, Tags, Users, Waypoints } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -25,9 +25,21 @@ function getInitials(name: string) {
 }
 
 export function Sidebar() {
-  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [hrExpanded, setHrExpanded] = useState(true);
+  const [masterDataExpanded, setMasterDataExpanded] = useState(true);
+  const masterDataMenus = [
+    { icon: Building2, label: "Divisi", to: "/hr/master-data/divisi" },
+    { icon: FolderKanban, label: "Department", to: "/hr/master-data/department" },
+    { icon: BriefcaseBusiness, label: "Posisi Jabatan", to: "/hr/master-data/posisi-jabatan" },
+    { icon: Landmark, label: "Kategori Pangkat", to: "/hr/master-data/kategori-pangkat" },
+    { icon: GitBranch, label: "Golongan", to: "/hr/master-data/golongan" },
+    { icon: Waypoints, label: "Sub Golongan", to: "/hr/master-data/sub-golongan" },
+    { icon: Users, label: "Jenis Hubungan Kerja", to: "/hr/master-data/jenis-hubungan-kerja" },
+    { icon: Tags, label: "Tag", to: "/hr/master-data/tag" },
+    { icon: MapPin, label: "Lokasi Kerja", to: "/hr/master-data/lokasi-kerja" },
+    { icon: ShieldCheck, label: "Status Karyawan", to: "/hr/master-data/status-karyawan" },
+  ];
 
   return (
     <aside className="flex w-full flex-col bg-sidebar text-sidebar-foreground md:w-80">
@@ -74,20 +86,57 @@ export function Sidebar() {
             </button>
             {hrExpanded ? (
               <div className="space-y-1 px-3 pb-3">
-                <button
-                  className="flex w-full items-center rounded-xl px-3 py-2 text-left text-sm text-sidebar-foreground/80 transition-colors hover:bg-sidebar-accent hover:text-white"
-                  onClick={() => navigate("/hr")}
-                  type="button"
-                >
-                  Master Data
-                </button>
-                <button
-                  className="flex w-full items-center rounded-xl px-3 py-2 text-left text-sm text-sidebar-foreground/80 transition-colors hover:bg-sidebar-accent hover:text-white"
-                  onClick={() => navigate("/hr")}
-                  type="button"
+                <div className="rounded-xl bg-black/10">
+                  <button
+                    className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm text-sidebar-foreground/80 transition-colors hover:bg-sidebar-accent hover:text-white"
+                    onClick={() => setMasterDataExpanded((value) => !value)}
+                    type="button"
+                  >
+                    <span>Master Data</span>
+                    <ChevronDown className={cn("h-4 w-4 transition-transform", masterDataExpanded && "rotate-180")} />
+                  </button>
+                  {masterDataExpanded ? (
+                    <div className="space-y-1 px-2 pb-2">
+                      <NavLink
+                        className={({ isActive }) =>
+                          cn(
+                            "flex items-center rounded-lg px-3 py-2 text-sm text-sidebar-foreground/75 transition-colors hover:bg-sidebar-accent hover:text-white",
+                            (isActive || window.location.pathname.startsWith("/hr/master-data")) && "bg-sidebar-accent text-white",
+                          )
+                        }
+                        to="/hr/master-data"
+                      >
+                        Semua Master Data
+                      </NavLink>
+                      {masterDataMenus.map(({ icon: Icon, label, to }) => (
+                        <NavLink
+                          className={({ isActive }) =>
+                            cn(
+                              "flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-sidebar-foreground/75 transition-colors hover:bg-sidebar-accent hover:text-white",
+                              isActive && "bg-sidebar-accent text-white",
+                            )
+                          }
+                          key={to}
+                          to={to}
+                        >
+                          <Icon className="h-4 w-4" />
+                          {label}
+                        </NavLink>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+                <NavLink
+                  className={({ isActive }) =>
+                    cn(
+                      "flex w-full items-center rounded-xl px-3 py-2 text-left text-sm text-sidebar-foreground/80 transition-colors hover:bg-sidebar-accent hover:text-white",
+                      isActive && "bg-sidebar-accent text-white",
+                    )
+                  }
+                  to="/hr"
                 >
                   Karyawan
-                </button>
+                </NavLink>
               </div>
             ) : null}
           </div>

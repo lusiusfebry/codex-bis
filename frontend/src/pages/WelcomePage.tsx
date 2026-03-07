@@ -188,7 +188,7 @@ export default function WelcomePage() {
               </CardHeader>
               <CardContent>
                 {enabled ? (
-                  <Button className="gap-2" onClick={() => navigate("/hr")} variant="default">
+                  <Button className="gap-2" onClick={() => navigate("/hr/master-data")} variant="default">
                     {action}
                     <ArrowRight className="h-4 w-4" />
                   </Button>

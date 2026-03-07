@@ -1,0 +1,89 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+import { fetchMasterData } from "@/api/masterData";
+import type { MasterDataStatusFilter } from "@/types/masterData";
+
+type UseMasterDataOptions = {
+  resource: string;
+  initialLimit?: number;
+  initialStatus?: MasterDataStatusFilter;
+};
+
+export function useMasterData<T>({ resource, initialLimit = 10, initialStatus = "Semua" }: UseMasterDataOptions) {
+  const [data, setData] = useState<T[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<MasterDataStatusFilter>(initialStatus);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 400);
+
+    return () => window.clearTimeout(timeout);
+  }, [search]);
+
+  const queryParams = useMemo(
+    () => ({
+      page,
+      limit: initialLimit,
+      search: debouncedSearch || undefined,
+      status: statusFilter === "Semua" ? undefined : statusFilter,
+    }),
+    [page, initialLimit, debouncedSearch, statusFilter],
+  );
+
+  const refetch = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetchMasterData<T>(resource, queryParams);
+      setData(response.data);
+      setTotalPages(response.meta.totalPages || 1);
+      setTotalItems(response.meta.total || 0);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Gagal memuat data.");
+    } finally {
+      setLoading(false);
+    }
+  }, [queryParams, resource]);
+
+  useEffect(() => {
+    void refetch();
+  }, [refetch]);
+
+  const handlePageChange = (nextPage: number) => {
+    setPage(nextPage);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearch(query);
+  };
+
+  const handleStatusFilter = (status: MasterDataStatusFilter) => {
+    setStatusFilter(status);
+    setPage(1);
+  };
+
+  return {
+    data,
+    loading,
+    error,
+    page,
+    search,
+    statusFilter,
+    totalPages,
+    totalItems,
+    refetch,
+    handlePageChange,
+    handleSearch,
+    handleStatusFilter,
+  };
+}
