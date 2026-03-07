@@ -53,6 +53,16 @@ const karyawanDateFields = new Set([
 ]);
 
 const karyawanIntegerFields = new Set(["jumlahAnak", "anakKe", "jumlahSaudaraKandung"]);
+const optionalImportScalarRefFields = [
+  "tagId",
+  "kategoriPangkatId",
+  "golonganId",
+  "subGolonganId",
+  "jenisHubunganKerjaId",
+  "lokasiSebelumnyaId",
+  "managerNik",
+  "atasanLangsungNik",
+] as const;
 
 type GenericRecord = Record<string, unknown>;
 type ChildRecord = { urutan: number; [key: string]: unknown };
@@ -66,8 +76,8 @@ type ParsedImportRow = {
   orangTuaMertua?: Record<string, unknown>;
   keluarga?: Record<string, unknown>;
   refs: {
-    managerNik?: string;
-    atasanLangsungNik?: string;
+    managerNik?: string | null;
+    atasanLangsungNik?: string | null;
   };
   errors: string[];
   nik?: string;
@@ -182,32 +192,29 @@ function normalizeRecordData(
     integerFields?: Set<string>;
   },
 ): Record<string, unknown> {
-  const normalized: Record<string, unknown> = {};
-
-  for (const [key, rawValue] of Object.entries(input)) {
+  return Object.entries(input).reduce<Record<string, unknown>>((normalized, [key, rawValue]) => {
     if (rawValue === undefined) {
-      continue;
+      return normalized;
     }
 
     if (options?.dateFields?.has(key)) {
       normalized[key] = normalizeDateValue(rawValue);
-      continue;
+      return normalized;
     }
 
     if (options?.integerFields?.has(key)) {
       normalized[key] = normalizeIntegerValue(rawValue);
-      continue;
+      return normalized;
     }
 
     if (typeof rawValue === "string") {
       normalized[key] = normalizeStringValue(rawValue);
-      continue;
+      return normalized;
     }
 
     normalized[key] = rawValue;
-  }
-
-  return normalized;
+    return normalized;
+  }, {});
 }
 
 function normalizeChildRows(rows: unknown, dateFields?: Set<string>): ChildRecord[] {
@@ -392,7 +399,7 @@ function mapMasterValue(
       return null;
     }
 
-    return undefined;
+    return null;
   }
 
   const found = maps[type].get(normalizeLookupKey(normalizedValue));
@@ -430,9 +437,10 @@ function parseExcelRow(row: unknown[], rowNumber: number, masterMaps: MasterLook
     "PANGKAT KATEGORI",
     getCellValue(row, 8),
     errors,
-  );
-  scalarData.golonganId = mapMasterValue(masterMaps, "golongan", "GOLONGAN", getCellValue(row, 9), errors);
-  scalarData.subGolonganId = mapMasterValue(masterMaps, "subGolongan", "SUB GOLONGAN", getCellValue(row, 10), errors);
+  ) ?? null;
+  scalarData.golonganId = mapMasterValue(masterMaps, "golongan", "GOLONGAN", getCellValue(row, 9), errors) ?? null;
+  scalarData.subGolonganId =
+    mapMasterValue(masterMaps, "subGolongan", "SUB GOLONGAN", getCellValue(row, 10), errors) ?? null;
   scalarData.tempatLahir = normalizeStringValue(getCellValue(row, 11));
   scalarData.tanggalLahir = normalizeDateValue(getCellValue(row, 12));
   scalarData.tanggalMasukGroup = normalizeDateValue(getCellValue(row, 13));
@@ -443,7 +451,7 @@ function parseExcelRow(row: unknown[], rowNumber: number, masterMaps: MasterLook
     "JENIS HUBUNGAN KERJA",
     getCellValue(row, 15),
     errors,
-  );
+  ) ?? null;
   scalarData.tanggalKontrak = normalizeDateValue(getCellValue(row, 16));
   scalarData.tanggalAkhirKontrak = normalizeDateValue(getCellValue(row, 17));
   scalarData.tanggalPermanent = normalizeDateValue(getCellValue(row, 18));
@@ -492,7 +500,7 @@ function parseExcelRow(row: unknown[], rowNumber: number, masterMaps: MasterLook
     "LOKASI SEBELUMNYA",
     getCellValue(row, 135),
     errors,
-  );
+  ) ?? null;
   scalarData.tanggalMutasi = normalizeDateValue(getCellValue(row, 136));
   scalarData.pointOfOriginal = normalizeStringValue(getCellValue(row, 138));
   scalarData.pointOfHire = normalizeStringValue(getCellValue(row, 139));
@@ -507,7 +515,9 @@ function parseExcelRow(row: unknown[], rowNumber: number, masterMaps: MasterLook
     errors,
     true,
   );
-  scalarData.tagId = mapMasterValue(masterMaps, "tag", "TAG", getCellValue(row, 144), errors);
+  scalarData.tagId = mapMasterValue(masterMaps, "tag", "TAG", getCellValue(row, 144), errors) ?? null;
+  scalarData.managerNik = normalizeStringValue(getCellValue(row, 145)) ?? null;
+  scalarData.atasanLangsungNik = normalizeStringValue(getCellValue(row, 146)) ?? null;
   scalarData.emailPerusahaan = normalizeStringValue(getCellValue(row, 147));
   scalarData.emailPribadi = normalizeStringValue(getCellValue(row, 148));
   scalarData.kotaKtp = normalizeStringValue(getCellValue(row, 149));
@@ -642,8 +652,8 @@ function parseExcelRow(row: unknown[], rowNumber: number, masterMaps: MasterLook
     orangTuaMertua: hasMeaningfulData(orangTuaMertua) ? orangTuaMertua : undefined,
     keluarga: hasMeaningfulData(keluarga) ? keluarga : undefined,
     refs: {
-      managerNik: normalizeStringValue(getCellValue(row, 145)) ?? undefined,
-      atasanLangsungNik: normalizeStringValue(getCellValue(row, 146)) ?? undefined,
+      managerNik: scalarData.managerNik as string | null | undefined,
+      atasanLangsungNik: scalarData.atasanLangsungNik as string | null | undefined,
     },
     errors,
     nik: scalarData.nomorIndukKaryawan as string | undefined,
@@ -919,6 +929,14 @@ export async function update(req: Request, res: Response, next: NextFunction): P
       data,
     });
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+      res.status(409).json({
+        success: false,
+        message: "Nomor induk karyawan sudah terdaftar.",
+      });
+      return;
+    }
+
     next(error);
   }
 }
@@ -1021,12 +1039,15 @@ export async function generateQrCode(req: Request, res: Response, next: NextFunc
 
     await QRCode.toDataURL(karyawan.nomorIndukKaryawan);
     const buffer = await QRCode.toBuffer(karyawan.nomorIndukKaryawan);
+    const shouldDownload = String(req.query.download ?? "").toLowerCase() === "true";
 
     res.setHeader("Content-Type", "image/png");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="qr-${karyawan.nomorIndukKaryawan}.png"`,
-    );
+    if (shouldDownload) {
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="qr-${karyawan.nomorIndukKaryawan}.png"`,
+      );
+    }
     res.send(buffer);
   } catch (error) {
     next(error);
@@ -1082,22 +1103,39 @@ export async function importExcel(req: Request, res: Response, next: NextFunctio
       const nama = parsed.nama ?? "-";
 
       try {
+        for (const field of optionalImportScalarRefFields) {
+          if (!(field in parsed.scalarData) || parsed.scalarData[field] === undefined) {
+            parsed.scalarData[field] = null;
+          }
+        }
+
+        let finalManagerNik: string | null = null;
         if (parsed.refs.managerNik) {
           const manager = await prisma.karyawan.findFirst({
             where: {
               nomorIndukKaryawan: parsed.refs.managerNik,
               statusKaryawan: { status: "Aktif" },
+              posisiJabatan: {
+                namaPosisiJabatan: {
+                  contains: "head",
+                  mode: "insensitive",
+                },
+              },
             },
             select: { nomorIndukKaryawan: true },
           });
 
           if (!manager) {
-            parsed.errors.push(`Referensi karyawan tidak ditemukan: MANAGER = '${parsed.refs.managerNik}'`);
+            parsed.errors.push(
+              `Referensi karyawan tidak valid: MANAGER = '${parsed.refs.managerNik}'. Karyawan harus aktif dan memiliki posisi jabatan Head.`,
+            );
           } else {
-            parsed.scalarData.managerNik = manager.nomorIndukKaryawan;
+            finalManagerNik = manager.nomorIndukKaryawan;
           }
         }
+        parsed.scalarData.managerNik = finalManagerNik;
 
+        let finalAtasanLangsungNik: string | null = null;
         if (parsed.refs.atasanLangsungNik) {
           const atasan = await prisma.karyawan.findFirst({
             where: {
@@ -1112,9 +1150,10 @@ export async function importExcel(req: Request, res: Response, next: NextFunctio
               `Referensi karyawan tidak ditemukan: ATASAN LANGSUNG = '${parsed.refs.atasanLangsungNik}'`,
             );
           } else {
-            parsed.scalarData.atasanLangsungNik = atasan.nomorIndukKaryawan;
+            finalAtasanLangsungNik = atasan.nomorIndukKaryawan;
           }
         }
+        parsed.scalarData.atasanLangsungNik = finalAtasanLangsungNik;
 
         if (parsed.errors.length > 0) {
           detail.push({
