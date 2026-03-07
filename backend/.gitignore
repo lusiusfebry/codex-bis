@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+uploads/foto-karyawan/*.jpg
+uploads/foto-karyawan/*.jpeg
+uploads/foto-karyawan/*.png
+uploads/foto-karyawan/*.webp

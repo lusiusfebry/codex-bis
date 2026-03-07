@@ -1,0 +1,8 @@
+.codex/
+backend/node_modules/
+backend/dist/
+backend/.env
+backend/uploads/foto-karyawan/*.jpg
+backend/uploads/foto-karyawan/*.jpeg
+backend/uploads/foto-karyawan/*.png
+backend/uploads/foto-karyawan/*.webp

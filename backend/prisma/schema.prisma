@@ -1,0 +1,356 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Divisi {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaDivisi  String       @unique @map("nama_divisi")
+  keterangan  String?
+  status      String       @default("Aktif")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  departments Department[]
+  karyawans   Karyawan[]
+
+  @@map("divisi")
+}
+
+model Department {
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaDepartmen  String          @map("nama_departmen")
+  divisiId       String          @map("divisi_id") @db.Uuid
+  managerNik     String?         @map("manager_nik")
+  keterangan     String?
+  status         String          @default("Aktif")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  divisi         Divisi          @relation(fields: [divisiId], references: [id])
+  posisiJabatans PosisiJabatan[]
+  karyawans      Karyawan[]
+
+  @@unique([namaDepartmen, divisiId])
+  @@map("department")
+}
+
+model PosisiJabatan {
+  id                String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaPosisiJabatan String      @map("nama_posisi_jabatan")
+  departmentId      String      @map("department_id") @db.Uuid
+  keterangan        String?
+  status            String      @default("Aktif")
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+  department        Department  @relation(fields: [departmentId], references: [id])
+  karyawans         Karyawan[]
+
+  @@unique([namaPosisiJabatan, departmentId])
+  @@map("posisi_jabatan")
+}
+
+model KategoriPangkat {
+  id                  String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaKategoriPangkat String     @unique @map("nama_kategori_pangkat")
+  keterangan          String?
+  status              String     @default("Aktif")
+  createdAt           DateTime   @default(now()) @map("created_at")
+  updatedAt           DateTime   @updatedAt @map("updated_at")
+  karyawans           Karyawan[]
+
+  @@map("kategori_pangkat")
+}
+
+model Golongan {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaGolongan String     @unique @map("nama_golongan")
+  keterangan   String?
+  status       String     @default("Aktif")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  karyawans    Karyawan[]
+
+  @@map("golongan")
+}
+
+model SubGolongan {
+  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaSubGolongan String     @unique @map("nama_sub_golongan")
+  keterangan      String?
+  status          String     @default("Aktif")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  karyawans       Karyawan[]
+
+  @@map("sub_golongan")
+}
+
+model JenisHubunganKerja {
+  id                     String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaJenisHubunganKerja String     @unique @map("nama_jenis_hubungan_kerja")
+  keterangan             String?
+  status                 String     @default("Aktif")
+  createdAt              DateTime   @default(now()) @map("created_at")
+  updatedAt              DateTime   @updatedAt @map("updated_at")
+  karyawans              Karyawan[]
+
+  @@map("jenis_hubungan_kerja")
+}
+
+model Tag {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaTag    String     @unique @map("nama_tag")
+  warnaTag   String     @map("warna_tag")
+  keterangan String?
+  status     String     @default("Aktif")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  karyawans  Karyawan[]
+
+  @@map("tag")
+}
+
+model LokasiKerja {
+  id               String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaLokasiKerja  String     @unique @map("nama_lokasi_kerja")
+  alamat           String?
+  keterangan       String?
+  status           String     @default("Aktif")
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+  karyawansUtama   Karyawan[] @relation("LokasiKerjaUtama")
+  karyawansSebelum Karyawan[] @relation("LokasiKerjaSebelumnya")
+
+  @@map("lokasi_kerja")
+}
+
+model StatusKaryawan {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  namaStatus String     @unique @map("nama_status")
+  keterangan String?
+  status     String     @default("Aktif")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  karyawans  Karyawan[]
+
+  @@map("status_karyawan")
+}
+
+model User {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nik       String   @unique
+  password  String
+  nama      String
+  role      String   @default("user")
+  fotoUrl   String?  @map("foto_url")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Karyawan {
+  id                   String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nomorIndukKaryawan   String               @unique @map("nomor_induk_karyawan")
+  namaLengkap          String               @map("nama_lengkap")
+  fotoKaryawan         String?              @map("foto_karyawan")
+  divisiId             String               @map("divisi_id") @db.Uuid
+  departmentId         String               @map("department_id") @db.Uuid
+  managerNik           String?              @map("manager_nik")
+  atasanLangsungNik    String?              @map("atasan_langsung_nik")
+  posisiJabatanId      String               @map("posisi_jabatan_id") @db.Uuid
+  emailPerusahaan      String?              @map("email_perusahaan")
+  nomorHandphone       String?              @map("nomor_handphone")
+  statusKaryawanId     String               @map("status_karyawan_id") @db.Uuid
+  lokasiKerjaId        String               @map("lokasi_kerja_id") @db.Uuid
+  tagId                String?              @map("tag_id") @db.Uuid
+  jenisKelamin         String?              @map("jenis_kelamin")
+  tempatLahir          String?              @map("tempat_lahir")
+  tanggalLahir         DateTime?            @map("tanggal_lahir") @db.Date
+  emailPribadi         String?              @map("email_pribadi")
+  agama                String?
+  golonganDarah        String?              @map("golongan_darah")
+  nomorKartuKeluarga   String?              @map("nomor_kartu_keluarga")
+  nomorKtp             String?              @map("nomor_ktp")
+  nomorNpwp            String?              @map("nomor_npwp")
+  nomorBpjs            String?              @map("nomor_bpjs")
+  noNikKk              String?              @map("no_nik_kk")
+  statusPajak          String?              @map("status_pajak")
+  alamatDomisili       String?              @map("alamat_domisili")
+  kotaDomisili         String?              @map("kota_domisili")
+  provinsiDomisili     String?              @map("provinsi_domisili")
+  alamatKtp            String?              @map("alamat_ktp")
+  kotaKtp              String?              @map("kota_ktp")
+  provinsiKtp          String?              @map("provinsi_ktp")
+  nomorHandphone2      String?              @map("nomor_handphone_2")
+  nomorTeleponRumah1   String?              @map("nomor_telepon_rumah_1")
+  nomorTeleponRumah2   String?              @map("nomor_telepon_rumah_2")
+  statusPernikahan     String?              @map("status_pernikahan")
+  namaPasangan         String?              @map("nama_pasangan")
+  tanggalMenikah       DateTime?            @map("tanggal_menikah") @db.Date
+  tanggalCerai         DateTime?            @map("tanggal_cerai") @db.Date
+  tanggalWafatPasangan DateTime?            @map("tanggal_wafat_pasangan") @db.Date
+  pekerjaanPasangan    String?              @map("pekerjaan_pasangan")
+  jumlahAnak           Int?                 @map("jumlah_anak")
+  nomorRekening        String?              @map("nomor_rekening")
+  namaPemegangRekening String?              @map("nama_pemegang_rekening")
+  namaBank             String?              @map("nama_bank")
+  cabangBank           String?              @map("cabang_bank")
+  jenisHubunganKerjaId String?              @map("jenis_hubungan_kerja_id") @db.Uuid
+  tanggalMasukGroup    DateTime?            @map("tanggal_masuk_group") @db.Date
+  tanggalMasuk         DateTime?            @map("tanggal_masuk") @db.Date
+  tanggalPermanent     DateTime?            @map("tanggal_permanent") @db.Date
+  tanggalKontrak       DateTime?            @map("tanggal_kontrak") @db.Date
+  tanggalAkhirKontrak  DateTime?            @map("tanggal_akhir_kontrak") @db.Date
+  tanggalBerhenti      DateTime?            @map("tanggal_berhenti") @db.Date
+  tingkatPendidikan    String?              @map("tingkat_pendidikan")
+  bidangStudi          String?              @map("bidang_studi")
+  namaSekolah          String?              @map("nama_sekolah")
+  kotaSekolah          String?              @map("kota_sekolah")
+  statusKelulusan      String?              @map("status_kelulusan")
+  keteranganPendidikan String?              @map("keterangan_pendidikan")
+  kategoriPangkatId    String?              @map("kategori_pangkat_id") @db.Uuid
+  golonganId           String?              @map("golongan_id") @db.Uuid
+  subGolonganId        String?              @map("sub_golongan_id") @db.Uuid
+  noDanaPensiun        String?              @map("no_dana_pensiun")
+  pointOfOriginal      String?              @map("point_of_original")
+  pointOfHire          String?              @map("point_of_hire")
+  ukuranSeragamKerja   String?              @map("ukuran_seragam_kerja")
+  ukuranSepatuKerja    String?              @map("ukuran_sepatu_kerja")
+  lokasiSebelumnyaId   String?              @map("lokasi_sebelumnya_id") @db.Uuid
+  tanggalMutasi        DateTime?            @map("tanggal_mutasi") @db.Date
+  siklusPembayaranGaji String?              @map("siklus_pembayaran_gaji")
+  costing              String?
+  assign               String?
+  actual               String?
+  anakKe               Int?                 @map("anak_ke")
+  jumlahSaudaraKandung Int?                 @map("jumlah_saudara_kandung")
+  createdAt            DateTime             @default(now()) @map("created_at")
+  updatedAt            DateTime             @updatedAt @map("updated_at")
+  divisi               Divisi               @relation(fields: [divisiId], references: [id])
+  department           Department           @relation(fields: [departmentId], references: [id])
+  posisiJabatan        PosisiJabatan        @relation(fields: [posisiJabatanId], references: [id])
+  statusKaryawan       StatusKaryawan       @relation(fields: [statusKaryawanId], references: [id])
+  lokasiKerja          LokasiKerja          @relation("LokasiKerjaUtama", fields: [lokasiKerjaId], references: [id])
+  tag                  Tag?                 @relation(fields: [tagId], references: [id])
+  jenisHubunganKerja   JenisHubunganKerja?  @relation(fields: [jenisHubunganKerjaId], references: [id])
+  kategoriPangkat      KategoriPangkat?     @relation(fields: [kategoriPangkatId], references: [id])
+  golongan             Golongan?            @relation(fields: [golonganId], references: [id])
+  subGolongan          SubGolongan?         @relation(fields: [subGolonganId], references: [id])
+  lokasiSebelumnya     LokasiKerja?         @relation("LokasiKerjaSebelumnya", fields: [lokasiSebelumnyaId], references: [id])
+  anak                 KaryawanAnak[]
+  saudaraKandung       KaryawanSaudaraKandung[]
+  kontakDarurat        KaryawanKontakDarurat[]
+  orangTuaKandung      KaryawanOrangTuaKandung?
+  orangTuaMertua       KaryawanOrangTuaMertua?
+  keluarga             KaryawanKeluarga?
+
+  @@map("karyawan")
+}
+
+model KaryawanAnak {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  karyawanId       String    @map("karyawan_id") @db.Uuid
+  urutan           Int
+  namaAnak         String?   @map("nama_anak")
+  jenisKelaminAnak String?   @map("jenis_kelamin_anak")
+  tanggalLahirAnak DateTime? @map("tanggal_lahir_anak") @db.Date
+  keteranganAnak   String?   @map("keterangan_anak")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+  karyawan         Karyawan  @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
+
+  @@unique([karyawanId, urutan])
+  @@map("karyawan_anak")
+}
+
+model KaryawanSaudaraKandung {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  karyawanId         String    @map("karyawan_id") @db.Uuid
+  urutan             Int
+  nama               String?
+  jenisKelamin       String?   @map("jenis_kelamin")
+  tanggalLahir       DateTime? @map("tanggal_lahir") @db.Date
+  pendidikanTerakhir String?   @map("pendidikan_terakhir")
+  pekerjaan          String?
+  keterangan         String?
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+  karyawan           Karyawan  @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
+
+  @@unique([karyawanId, urutan])
+  @@map("karyawan_saudara_kandung")
+}
+
+model KaryawanOrangTuaKandung {
+  id                            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  karyawanId                    String    @unique @map("karyawan_id") @db.Uuid
+  namaAyahKandung               String?   @map("nama_ayah_kandung")
+  tanggalLahirAyahKandung       DateTime? @map("tanggal_lahir_ayah_kandung") @db.Date
+  pendidikanTerakhirAyahKandung String?   @map("pendidikan_terakhir_ayah_kandung")
+  pekerjaanAyahKandung          String?   @map("pekerjaan_ayah_kandung")
+  keteranganAyahKandung         String?   @map("keterangan_ayah_kandung")
+  namaIbuKandung                String?   @map("nama_ibu_kandung")
+  tanggalLahirIbuKandung        DateTime? @map("tanggal_lahir_ibu_kandung") @db.Date
+  pendidikanTerakhirIbuKandung  String?   @map("pendidikan_terakhir_ibu_kandung")
+  pekerjaanIbuKandung           String?   @map("pekerjaan_ibu_kandung")
+  keteranganIbuKandung          String?   @map("keterangan_ibu_kandung")
+  createdAt                     DateTime  @default(now()) @map("created_at")
+  updatedAt                     DateTime  @updatedAt @map("updated_at")
+  karyawan                      Karyawan  @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
+
+  @@map("karyawan_orang_tua_kandung")
+}
+
+model KaryawanOrangTuaMertua {
+  id                           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  karyawanId                   String    @unique @map("karyawan_id") @db.Uuid
+  namaAyahMertua               String?   @map("nama_ayah_mertua")
+  tanggalLahirAyahMertua       DateTime? @map("tanggal_lahir_ayah_mertua") @db.Date
+  pendidikanTerakhirAyahMertua String?   @map("pendidikan_terakhir_ayah_mertua")
+  pekerjaanAyahMertua          String?   @map("pekerjaan_ayah_mertua")
+  keteranganAyahMertua         String?   @map("keterangan_ayah_mertua")
+  namaIbuMertua                String?   @map("nama_ibu_mertua")
+  tanggalLahirIbuMertua        DateTime? @map("tanggal_lahir_ibu_mertua") @db.Date
+  pendidikanTerakhirIbuMertua  String?   @map("pendidikan_terakhir_ibu_mertua")
+  pekerjaanIbuMertua           String?   @map("pekerjaan_ibu_mertua")
+  keteranganIbuMertua          String?   @map("keterangan_ibu_mertua")
+  createdAt                    DateTime  @default(now()) @map("created_at")
+  updatedAt                    DateTime  @updatedAt @map("updated_at")
+  karyawan                     Karyawan  @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
+
+  @@map("karyawan_orang_tua_mertua")
+}
+
+model KaryawanKontakDarurat {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  karyawanId   String    @map("karyawan_id") @db.Uuid
+  urutan       Int
+  nama         String?
+  nomorTelepon String?   @map("nomor_telepon")
+  hubungan     String?
+  alamat       String?
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  karyawan     Karyawan  @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
+
+  @@unique([karyawanId, urutan])
+  @@map("karyawan_kontak_darurat")
+}
+
+model KaryawanKeluarga {
+  id                         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  karyawanId                 String    @unique @map("karyawan_id") @db.Uuid
+  tanggalLahirPasangan       DateTime? @map("tanggal_lahir_pasangan") @db.Date
+  pendidikanTerakhirPasangan String?   @map("pendidikan_terakhir_pasangan")
+  keteranganPasangan         String?   @map("keterangan_pasangan")
+  createdAt                  DateTime  @default(now()) @map("created_at")
+  updatedAt                  DateTime  @updatedAt @map("updated_at")
+  karyawan                   Karyawan  @relation(fields: [karyawanId], references: [id], onDelete: Cascade)
+
+  @@map("karyawan_keluarga")
+}
