@@ -9,11 +9,12 @@ import {
   updateKaryawanApi,
 } from "@/api/karyawan";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toastError, toastSuccess } from "@/lib/toast";
 import { KaryawanHeadCard } from "@/modules/hr/karyawan/components/KaryawanHeadCard";
+import { TabInformasiHR } from "@/modules/hr/karyawan/components/TabInformasiHR";
+import { TabInformasiKeluarga } from "@/modules/hr/karyawan/components/TabInformasiKeluarga";
 import { TabPersonalInfo } from "@/modules/hr/karyawan/components/TabPersonalInfo";
 import type { Karyawan, KaryawanFormPayload } from "@/types/karyawan";
 
@@ -27,6 +28,10 @@ function toDateInputValue(value?: string | null) {
 
 function normalizeOptionalString(value?: string | null) {
   return value ?? "";
+}
+
+function createDefaultKontakDarurat() {
+  return [{ urutan: 1 }, { urutan: 2 }];
 }
 
 function getDefaultValues(): KaryawanFormPayload {
@@ -105,10 +110,29 @@ function getDefaultValues(): KaryawanFormPayload {
     actual: "",
     anakKe: null,
     jumlahSaudaraKandung: null,
+    anak: [],
+    saudaraKandung: [],
+    kontakDarurat: createDefaultKontakDarurat(),
+    orangTuaKandung: {},
+    orangTuaMertua: {},
+    keluarga: {},
   };
 }
 
 function mapKaryawanToFormValues(karyawan: Karyawan): KaryawanFormPayload {
+  const kontakDarurat = createDefaultKontakDarurat().map((item) => {
+    const existingItem = karyawan.kontakDarurat?.find(
+      (kontak) => kontak.urutan === item.urutan,
+    );
+
+    return existingItem
+      ? {
+          ...existingItem,
+          urutan: item.urutan,
+        }
+      : item;
+  });
+
   return {
     nomorIndukKaryawan: karyawan.nomorIndukKaryawan,
     namaLengkap: karyawan.namaLengkap,
@@ -184,12 +208,53 @@ function mapKaryawanToFormValues(karyawan: Karyawan): KaryawanFormPayload {
     actual: normalizeOptionalString(karyawan.actual),
     anakKe: karyawan.anakKe ?? null,
     jumlahSaudaraKandung: karyawan.jumlahSaudaraKandung ?? null,
+    anak:
+      karyawan.anak?.map((item) => ({
+        ...item,
+        tanggalLahirAnak: toDateInputValue(item.tanggalLahirAnak),
+      })) ?? [],
+    saudaraKandung:
+      karyawan.saudaraKandung?.map((item) => ({
+        ...item,
+        tanggalLahir: toDateInputValue(item.tanggalLahir),
+      })) ?? [],
+    kontakDarurat,
+    orangTuaKandung: {
+      ...(karyawan.orangTuaKandung ?? {}),
+      tanggalLahirAyahKandung: toDateInputValue(
+        karyawan.orangTuaKandung?.tanggalLahirAyahKandung,
+      ),
+      tanggalLahirIbuKandung: toDateInputValue(
+        karyawan.orangTuaKandung?.tanggalLahirIbuKandung,
+      ),
+    },
+    orangTuaMertua: {
+      ...(karyawan.orangTuaMertua ?? {}),
+      tanggalLahirAyahMertua: toDateInputValue(
+        karyawan.orangTuaMertua?.tanggalLahirAyahMertua,
+      ),
+      tanggalLahirIbuMertua: toDateInputValue(
+        karyawan.orangTuaMertua?.tanggalLahirIbuMertua,
+      ),
+    },
+    keluarga: {
+      ...(karyawan.keluarga ?? {}),
+      tanggalLahirPasangan: toDateInputValue(karyawan.keluarga?.tanggalLahirPasangan),
+    },
   };
 }
 
 function normalizePayload(values: KaryawanFormPayload): KaryawanFormPayload {
   const normalizedEntries = Object.entries(values).map(([key, value]) => {
-    if (key === "tagIds") {
+    if (
+      key === "tagIds" ||
+      key === "anak" ||
+      key === "saudaraKandung" ||
+      key === "kontakDarurat" ||
+      key === "orangTuaKandung" ||
+      key === "orangTuaMertua" ||
+      key === "keluarga"
+    ) {
       return [key, value];
     }
 
@@ -325,19 +390,21 @@ export default function KaryawanProfilePage() {
         </TabsContent>
 
         <TabsContent value="hr">
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-10 text-center text-muted-foreground">
-              Dikerjakan di fase berikutnya.
-            </CardContent>
-          </Card>
+          <TabInformasiHR
+            control={form.control}
+            errors={form.formState.errors}
+            register={form.register}
+            watch={form.watch}
+          />
         </TabsContent>
 
         <TabsContent value="keluarga">
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-10 text-center text-muted-foreground">
-              Dikerjakan di fase berikutnya.
-            </CardContent>
-          </Card>
+          <TabInformasiKeluarga
+            control={form.control}
+            errors={form.formState.errors}
+            register={form.register}
+            watch={form.watch}
+          />
         </TabsContent>
       </Tabs>
 

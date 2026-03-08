@@ -316,6 +316,12 @@ export interface KaryawanFormPayload {
   actual?: string | null;
   anakKe?: number | null;
   jumlahSaudaraKandung?: number | null;
+  anak: KaryawanAnak[];
+  saudaraKandung: KaryawanSaudaraKandung[];
+  kontakDarurat: KaryawanKontakDarurat[];
+  orangTuaKandung: KaryawanOrangTuaKandung;
+  orangTuaMertua: KaryawanOrangTuaMertua;
+  keluarga: KaryawanKeluarga;
 }
 
 export interface KaryawanListParams {

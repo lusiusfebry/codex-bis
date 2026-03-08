@@ -185,6 +185,20 @@ function hasMeaningfulData(value: unknown): boolean {
   );
 }
 
+function shouldClearSingletonRelation(body: GenericRecord, key: string): boolean {
+  if (!(key in body)) {
+    return false;
+  }
+
+  const value = body[key];
+
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+
+  return !hasMeaningfulData(value);
+}
+
 function normalizeRecordData(
   input: Record<string, unknown>,
   options?: {
@@ -875,12 +889,14 @@ export async function update(req: Request, res: Response, next: NextFunction): P
     } = buildCreatePayload(req.body as GenericRecord);
 
     await prisma.$transaction(async (tx) => {
+      const requestBody = req.body as GenericRecord;
+
       await tx.karyawan.update({
         where: { id },
         data: normalizedScalarData,
       });
 
-      if (Array.isArray((req.body as GenericRecord).anak)) {
+      if (Array.isArray(requestBody.anak)) {
         await tx.karyawanAnak.deleteMany({ where: { karyawanId: id } });
         if (normalizedAnak.length > 0) {
           await tx.karyawanAnak.createMany({
@@ -892,7 +908,7 @@ export async function update(req: Request, res: Response, next: NextFunction): P
         }
       }
 
-      if (Array.isArray((req.body as GenericRecord).saudaraKandung)) {
+      if (Array.isArray(requestBody.saudaraKandung)) {
         await tx.karyawanSaudaraKandung.deleteMany({ where: { karyawanId: id } });
         if (normalizedSaudaraKandung.length > 0) {
           await tx.karyawanSaudaraKandung.createMany({
@@ -904,7 +920,7 @@ export async function update(req: Request, res: Response, next: NextFunction): P
         }
       }
 
-      if (Array.isArray((req.body as GenericRecord).kontakDarurat)) {
+      if (Array.isArray(requestBody.kontakDarurat)) {
         await tx.karyawanKontakDarurat.deleteMany({ where: { karyawanId: id } });
         if (normalizedKontakDarurat.length > 0) {
           await tx.karyawanKontakDarurat.createMany({
@@ -922,6 +938,8 @@ export async function update(req: Request, res: Response, next: NextFunction): P
           update: normalizedOrangTuaKandung,
           create: { karyawanId: id, ...normalizedOrangTuaKandung },
         });
+      } else if (shouldClearSingletonRelation(requestBody, "orangTuaKandung")) {
+        await tx.karyawanOrangTuaKandung.deleteMany({ where: { karyawanId: id } });
       }
 
       if (normalizedOrangTuaMertua) {
@@ -930,6 +948,8 @@ export async function update(req: Request, res: Response, next: NextFunction): P
           update: normalizedOrangTuaMertua,
           create: { karyawanId: id, ...normalizedOrangTuaMertua },
         });
+      } else if (shouldClearSingletonRelation(requestBody, "orangTuaMertua")) {
+        await tx.karyawanOrangTuaMertua.deleteMany({ where: { karyawanId: id } });
       }
 
       if (normalizedKeluarga) {
@@ -938,6 +958,8 @@ export async function update(req: Request, res: Response, next: NextFunction): P
           update: normalizedKeluarga,
           create: { karyawanId: id, ...normalizedKeluarga },
         });
+      } else if (shouldClearSingletonRelation(requestBody, "keluarga")) {
+        await tx.karyawanKeluarga.deleteMany({ where: { karyawanId: id } });
       }
     });
 
