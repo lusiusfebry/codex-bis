@@ -33,10 +33,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toastError, toastSuccess, toastWarning } from "@/lib/toast";
+import { toastError, toastSuccess } from "@/lib/toast";
 import { DeleteConfirmDialog } from "@/modules/hr/master-data/components/DeleteConfirmDialog";
 import { MasterDataPagination } from "@/modules/hr/master-data/components/MasterDataPagination";
 import { useMasterDataOptions } from "@/modules/hr/master-data/hooks/useMasterDataOptions";
+import ImportExcelModal from "@/modules/hr/karyawan/components/ImportExcelModal";
 import { useKaryawanList } from "@/modules/hr/karyawan/hooks/useKaryawanList";
 import type { Department, Divisi, LokasiKerja, StatusKaryawan } from "@/types/masterData";
 import type { KaryawanListItem } from "@/types/karyawan";
@@ -102,6 +103,7 @@ export default function KaryawanListPage() {
   const [selectedItem, setSelectedItem] = useState<KaryawanListItem | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
 
   const mapDivisiOption = useCallback(
     (item: Divisi) => ({ label: item.namaDivisi, value: item.id }),
@@ -194,7 +196,7 @@ export default function KaryawanListPage() {
           </Button>
           <Button
             className="gap-2"
-            onClick={() => toastWarning("Import Excel dikerjakan di fase berikutnya.")}
+            onClick={() => setImportOpen(true)}
             variant="outline"
           >
             <Upload className="h-4 w-4" />
@@ -456,6 +458,14 @@ export default function KaryawanListPage() {
         }}
         onConfirm={handleDelete}
         open={deleteOpen}
+      />
+
+      <ImportExcelModal
+        onClose={() => setImportOpen(false)}
+        onSuccess={() => {
+          void refetch();
+        }}
+        open={importOpen}
       />
     </div>
   );

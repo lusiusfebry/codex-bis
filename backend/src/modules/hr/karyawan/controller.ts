@@ -347,6 +347,15 @@ function getCellValue(row: unknown[], columnNumber: number): unknown {
   return row[columnNumber - 1];
 }
 
+function getPreviewWorksheet(workbook: XLSX.WorkBook) {
+  if (workbook.Sheets.Masterdata) {
+    return workbook.Sheets.Masterdata;
+  }
+
+  const firstSheetName = workbook.SheetNames[0];
+  return firstSheetName ? workbook.Sheets[firstSheetName] : undefined;
+}
+
 function buildMasterMap<T extends Record<string, unknown>>(rows: T[], field: keyof T): Map<string, string> {
   return new Map(
     rows
@@ -1078,9 +1087,17 @@ export async function generateQrCode(req: Request, res: Response, next: NextFunc
       return;
     }
 
-    await QRCode.toDataURL(karyawan.nomorIndukKaryawan);
     const buffer = await QRCode.toBuffer(karyawan.nomorIndukKaryawan);
+    const format = String(req.query.format ?? "").toLowerCase();
     const shouldDownload = String(req.query.download ?? "").toLowerCase() === "true";
+
+    if (format === "base64") {
+      res.json({
+        success: true,
+        data: `data:image/png;base64,${buffer.toString("base64")}`,
+      });
+      return;
+    }
 
     res.setHeader("Content-Type", "image/png");
     if (shouldDownload) {
@@ -1090,6 +1107,59 @@ export async function generateQrCode(req: Request, res: Response, next: NextFunc
       );
     }
     res.send(buffer);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function importPreview(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    if (!req.file) {
+      res.status(400).json({
+        success: false,
+        message: "File Excel wajib diunggah.",
+      });
+      return;
+    }
+
+    const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
+    const worksheet = getPreviewWorksheet(workbook);
+
+    if (!worksheet) {
+      res.status(400).json({
+        success: false,
+        message: "Sheet preview tidak ditemukan.",
+      });
+      return;
+    }
+
+    const rows = XLSX.utils.sheet_to_json(worksheet, {
+      header: 1,
+      raw: true,
+      defval: null,
+    }) as unknown[][];
+
+    const previewRows = rows
+      .slice(1)
+      .map((row, index) => ({
+        row,
+        baris: index + 2,
+      }))
+      .filter(({ row }) => row.some((value) => value !== null && value !== ""))
+      .slice(0, 10)
+      .map(({ row, baris }) => ({
+        baris,
+        nik: normalizeStringValue(getCellValue(row, 2)) ?? undefined,
+        namaLengkap: normalizeStringValue(getCellValue(row, 3)) ?? undefined,
+        divisi: normalizeStringValue(getCellValue(row, 127)) ?? undefined,
+        department: normalizeStringValue(getCellValue(row, 126)) ?? undefined,
+        posisiJabatan: normalizeStringValue(getCellValue(row, 4)) ?? undefined,
+      }));
+
+    res.json({
+      success: true,
+      data: previewRows,
+    });
   } catch (error) {
     next(error);
   }
@@ -1260,6 +1330,26 @@ export async function importExcel(req: Request, res: Response, next: NextFunctio
         detail,
       },
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function downloadTemplate(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const filePath = path.resolve(process.cwd(), "uploads", "template-import.xlsx");
+
+    try {
+      await fs.access(filePath);
+    } catch {
+      res.status(404).json({
+        success: false,
+        message: "Template import tidak ditemukan di server.",
+      });
+      return;
+    }
+
+    res.download(filePath, "template-import-karyawan.xlsx");
   } catch (error) {
     next(error);
   }

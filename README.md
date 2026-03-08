@@ -6,7 +6,9 @@ Saat ini cakupan implementasi yang sudah ada meliputi:
 - autentikasi pengguna berbasis JWT
 - dashboard dan layout aplikasi frontend
 - CRUD master data HR
-- API karyawan, import Excel, upload foto, dan QR code karyawan
+- modul karyawan frontend dan backend
+- API karyawan, import Excel, preview import, upload foto, dan QR code karyawan
+- sistem notifikasi global berbasis toast + notification bell
 
 ## Daftar Isi
 
@@ -83,10 +85,10 @@ codex-bis/
 │   │   ├── api/              # axios instance + API layer
 │   │   ├── components/       # layout dan UI components
 │   │   ├── hooks/            # hooks reusable
-│   │   ├── modules/hr/       # modul master data HR
+│   │   ├── modules/hr/       # modul master data HR + karyawan
 │   │   ├── pages/            # login, welcome, placeholder
 │   │   ├── router/           # route definitions + guards
-│   │   ├── stores/           # zustand auth store
+│   │   ├── stores/           # zustand stores (auth, notification)
 │   │   └── types/            # typescript types
 │   └── public/
 ├── planning/                 # catatan dan artefak planning internal
@@ -113,6 +115,8 @@ codex-bis/
   - `status-karyawan`
 - CRUD karyawan
 - import data karyawan via Excel
+- preview data import Excel sebelum commit ke database
+- download template import Excel
 - upload foto karyawan
 - generate QR code karyawan
 
@@ -122,13 +126,18 @@ codex-bis/
 - protected app layout
 - welcome dashboard
 - modul master data HR lengkap untuk 10 resource
-- navigasi sidebar HR
+- daftar karyawan
+- form profil karyawan multi-tab
+- upload foto karyawan dengan preview lokal
+- QR code karyawan dengan download dan print
+- import Excel karyawan dengan preview dan laporan hasil
+- notification bell terintegrasi dengan toast global
 
 ### Catatan Status Implementasi
 
 - UI untuk **Master Data HR** sudah tersedia.
 - Route `/hr` saat ini diarahkan ke `/hr/master-data`.
-- Menu **Karyawan** di sidebar masih menuju placeholder `/hr`, jadi modul UI karyawan belum tersedia penuh di frontend walaupun API backend-nya sudah ada.
+- Modul **Karyawan** sudah tersedia di frontend, termasuk list, create, edit, upload foto, QR code, dan import Excel.
 
 ## Prasyarat
 
@@ -334,12 +343,16 @@ Komponen penting:
   - handle `401` secara kontekstual
 - `src/stores/authStore.ts`
   - state auth dengan Zustand
+- `src/stores/notificationStore.ts`
+  - state notifikasi global untuk notification bell dan toast history
 - `src/router/index.tsx`
   - definisi route aplikasi
 - `src/components/layout/*`
   - sidebar, header, notifikasi, breadcrumb
 - `src/modules/hr/master-data/*`
   - modul master data HR berbasis halaman generik + form modal per resource
+- `src/modules/hr/karyawan/*`
+  - list karyawan, profile page, head card, tab form, import Excel modal
 
 ## API yang Tersedia
 
@@ -407,6 +420,8 @@ GET /api/hr/master-data/divisi?page=1&limit=10&search=operasional&status=Aktif
 
 | Method | Endpoint | Keterangan |
 | --- | --- | --- |
+| `GET` | `/api/hr/karyawan/template` | Download template import Excel |
+| `POST` | `/api/hr/karyawan/import/preview` | Preview 10 baris pertama file import |
 | `POST` | `/api/hr/karyawan/import` | Import Excel |
 | `GET` | `/api/hr/karyawan` | List karyawan |
 | `POST` | `/api/hr/karyawan` | Buat karyawan |
@@ -414,7 +429,7 @@ GET /api/hr/master-data/divisi?page=1&limit=10&search=operasional&status=Aktif
 | `PUT` | `/api/hr/karyawan/:id` | Update karyawan |
 | `DELETE` | `/api/hr/karyawan/:id` | Hapus karyawan |
 | `POST` | `/api/hr/karyawan/:id/foto` | Upload foto |
-| `GET` | `/api/hr/karyawan/:id/qrcode` | Generate QR code |
+| `GET` | `/api/hr/karyawan/:id/qrcode` | Generate QR code PNG atau base64 |
 
 ## Frontend Routes
 
@@ -424,6 +439,9 @@ GET /api/hr/master-data/divisi?page=1&limit=10&search=operasional&status=Aktif
 | `/` | Welcome dashboard |
 | `/hr` | Redirect ke `/hr/master-data` |
 | `/hr/master-data` | Index master data |
+| `/hr/karyawan` | Daftar karyawan |
+| `/hr/karyawan/tambah` | Tambah karyawan |
+| `/hr/karyawan/:id` | Edit/detail profil karyawan |
 | `/hr/master-data/divisi` | CRUD Divisi |
 | `/hr/master-data/department` | CRUD Department |
 | `/hr/master-data/posisi-jabatan` | CRUD Posisi Jabatan |
@@ -553,6 +571,25 @@ Periksa:
 ## Build frontend warning chunk size
 
 Saat ini build frontend dapat mengeluarkan warning ukuran bundle Vite. Ini belum memblokir build, tetapi bisa menjadi kandidat optimasi berikutnya bila modul bertambah besar.
+
+## Upload, QR, dan Import Karyawan
+
+Fitur karyawan yang sudah tersedia saat ini:
+
+- upload foto karyawan dari profile page melalui endpoint `POST /api/hr/karyawan/:id/foto`
+- QR code karyawan dari `nomor_induk_karyawan`, tersedia untuk preview, download PNG, dan print
+- import Excel karyawan dengan alur:
+  1. download template
+  2. upload file `.xlsx`
+  3. preview 10 baris pertama via endpoint preview
+  4. proses import penuh
+  5. lihat laporan sukses/gagal per baris
+
+Template import backend disajikan dari:
+
+```text
+backend/uploads/template-import.xlsx
+```
 
 ## Panduan Update README
 

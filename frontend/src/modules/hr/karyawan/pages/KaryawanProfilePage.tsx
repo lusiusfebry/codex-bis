@@ -330,12 +330,12 @@ export default function KaryawanProfilePage() {
       if (id) {
         await updateKaryawanApi(id, payload);
         toastSuccess("Karyawan berhasil diperbarui.");
+        navigate("/hr/karyawan");
       } else {
-        await createKaryawanApi(payload);
+        const createdKaryawan = await createKaryawanApi(payload);
         toastSuccess("Karyawan berhasil ditambahkan.");
+        navigate(`/hr/karyawan/${createdKaryawan.id}`);
       }
-
-      navigate("/hr/karyawan");
     } catch (error) {
       toastError(error instanceof Error ? error.message : "Gagal menyimpan data karyawan.");
     } finally {
@@ -368,6 +368,7 @@ export default function KaryawanProfilePage() {
         control={form.control}
         errors={form.formState.errors}
         fotoKaryawan={fotoKaryawan}
+        karyawanId={id}
         register={form.register}
         setValue={form.setValue}
         watch={form.watch}

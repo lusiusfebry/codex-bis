@@ -1,5 +1,6 @@
 import axiosInstance from "@/api/axiosInstance";
 import type {
+  ImportResultRow,
   Karyawan,
   KaryawanFormPayload,
   KaryawanListItem,
@@ -25,6 +26,43 @@ type SingleResponse<T> = {
   data: T;
   message?: string;
 };
+
+type UploadFotoResponse = {
+  success: boolean;
+  data: {
+    fotoKaryawan: string;
+  };
+};
+
+type UploadFotoKaryawanResult = {
+  path: string;
+  url: string;
+};
+
+type QrCodeResponse = {
+  success: boolean;
+  data: string;
+};
+
+type ImportExcelResponse = {
+  success: boolean;
+  laporan?: {
+    detail?: ImportResultRow[];
+  };
+};
+
+function getUploadsUrl(path?: string | null) {
+  if (!path) {
+    return "";
+  }
+
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path;
+  }
+
+  const baseUrl = (import.meta.env.VITE_API_BASE_URL as string).replace(/\/api\/?$/, "");
+  return `${baseUrl}/uploads/${path}`;
+}
 
 export async function getKaryawanStatsApi(params?: Record<string, string | number>) {
   const response = await axiosInstance.get<ListResponse>("/hr/karyawan", {
@@ -80,4 +118,50 @@ export async function searchKaryawanActiveApi(
   });
 
   return response.data.data;
+}
+
+export async function uploadFotoKaryawanApi(
+  id: string,
+  file: File,
+): Promise<UploadFotoKaryawanResult> {
+  const formData = new FormData();
+  formData.append("foto", file);
+
+  const response = await axiosInstance.post<UploadFotoResponse>(
+    `/hr/karyawan/${id}/foto`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+
+  return {
+    path: response.data.data.fotoKaryawan,
+    url: getUploadsUrl(response.data.data.fotoKaryawan),
+  };
+}
+
+export async function getQrCodeApi(id: string): Promise<string> {
+  const response = await axiosInstance.get<QrCodeResponse>(`/hr/karyawan/${id}/qrcode`, {
+    params: {
+      format: "base64",
+    },
+  });
+
+  return response.data.data;
+}
+
+export async function importKaryawanExcelApi(file: File): Promise<ImportResultRow[]> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await axiosInstance.post<ImportExcelResponse>("/hr/karyawan/import", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data.laporan?.detail ?? [];
 }

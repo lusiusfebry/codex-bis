@@ -2,9 +2,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Camera,
   Check,
+  Download,
   Loader2,
   Mail,
   Phone,
+  Printer,
   QrCode,
   Search,
   ShieldCheck,
@@ -18,10 +20,15 @@ import {
   type UseFormWatch,
 } from "react-hook-form";
 
-import { searchKaryawanActiveApi } from "@/api/karyawan";
+import {
+  getQrCodeApi,
+  searchKaryawanActiveApi,
+  uploadFotoKaryawanApi,
+} from "@/api/karyawan";
 import { fetchMasterData, MASTER_DATA_PATHS } from "@/api/masterData";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,7 +39,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toastWarning } from "@/lib/toast";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toastError, toastInfo, toastSuccess, toastWarning } from "@/lib/toast";
 import type {
   Department,
   Divisi,
@@ -50,11 +58,16 @@ type KaryawanHeadCardProps = {
   setValue: UseFormSetValue<KaryawanFormPayload>;
   errors: FieldErrors<KaryawanFormPayload>;
   fotoKaryawan?: string | null;
+  karyawanId?: string;
 };
 
 function getFotoUrl(path?: string | null) {
   if (!path) {
     return undefined;
+  }
+
+  if (path.startsWith("blob:") || path.startsWith("data:")) {
+    return path;
   }
 
   if (path.startsWith("http://") || path.startsWith("https://")) {
@@ -218,6 +231,7 @@ export function KaryawanHeadCard({
   setValue,
   errors,
   fotoKaryawan,
+  karyawanId,
 }: KaryawanHeadCardProps) {
   const [divisiOptions, setDivisiOptions] = useState<Divisi[]>([]);
   const [departmentOptions, setDepartmentOptions] = useState<Department[]>([]);
@@ -225,8 +239,13 @@ export function KaryawanHeadCard({
   const [statusOptions, setStatusOptions] = useState<StatusKaryawan[]>([]);
   const [lokasiOptions, setLokasiOptions] = useState<LokasiKerja[]>([]);
   const [tagOptions, setTagOptions] = useState<Tag[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [localFotoUrl, setLocalFotoUrl] = useState<string | null>(getFotoUrl(fotoKaryawan) ?? null);
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const [qrLoading, setQrLoading] = useState(false);
   const previousDivisiId = useRef<string | undefined>(undefined);
   const previousDepartmentId = useRef<string | undefined>(undefined);
+  const localPreviewRef = useRef<string | null>(null);
 
   const divisiId = watch("divisiId");
   const departmentId = watch("departmentId");
@@ -256,6 +275,49 @@ export function KaryawanHeadCard({
 
     void loadOptions();
   }, []);
+
+  useEffect(() => {
+    setLocalFotoUrl(getFotoUrl(fotoKaryawan) ?? null);
+  }, [fotoKaryawan]);
+
+  useEffect(() => {
+    return () => {
+      if (localPreviewRef.current) {
+        URL.revokeObjectURL(localPreviewRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!karyawanId) {
+      setQrDataUrl(null);
+      setQrLoading(false);
+      return;
+    }
+
+    let active = true;
+
+    const loadQrCode = async () => {
+      setQrLoading(true);
+
+      try {
+        const dataUrl = await getQrCodeApi(karyawanId);
+        if (active) {
+          setQrDataUrl(dataUrl);
+        }
+      } finally {
+        if (active) {
+          setQrLoading(false);
+        }
+      }
+    };
+
+    void loadQrCode();
+
+    return () => {
+      active = false;
+    };
+  }, [karyawanId]);
 
   useEffect(() => {
     if (previousDivisiId.current !== undefined && previousDivisiId.current !== divisiId) {
@@ -296,20 +358,154 @@ export function KaryawanHeadCard({
   const selectedStatus = statusOptions.find((item) => item.id === statusKaryawanId);
   const selectedTags = tagOptions.filter((item) => tagIds.includes(item.id));
 
+  const handleFotoChange = async (file?: File) => {
+    if (!file) {
+      return;
+    }
+
+    const isValidType = ["image/jpeg", "image/png"].includes(file.type);
+    const isValidSize = file.size <= 2 * 1024 * 1024;
+
+    if (!isValidType || !isValidSize) {
+      toastWarning("Gunakan file JPG/PNG dengan ukuran maksimal 2MB.");
+      return;
+    }
+
+    if (localPreviewRef.current) {
+      URL.revokeObjectURL(localPreviewRef.current);
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    localPreviewRef.current = previewUrl;
+    setLocalFotoUrl(previewUrl);
+
+    if (!karyawanId) {
+      toastInfo("Foto bisa diupload setelah data karyawan disimpan.");
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const uploadedFoto = await uploadFotoKaryawanApi(karyawanId, file);
+      if (localPreviewRef.current) {
+        URL.revokeObjectURL(localPreviewRef.current);
+        localPreviewRef.current = null;
+      }
+      setValue("fotoKaryawan", uploadedFoto.path, {
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+      setLocalFotoUrl(uploadedFoto.url);
+      toastSuccess("Foto berhasil diupload");
+    } catch (error) {
+      toastError(error instanceof Error ? error.message : "Gagal upload foto karyawan.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDownloadQr = () => {
+    if (!qrDataUrl) {
+      return;
+    }
+
+    const anchor = document.createElement("a");
+    anchor.href = qrDataUrl;
+    anchor.download = `QRCode-${nomorIndukKaryawan || "karyawan"}.png`;
+    anchor.click();
+  };
+
+  const handlePrintQr = () => {
+    if (!qrDataUrl) {
+      return;
+    }
+
+    const printWindow = window.open("", "_blank", "width=480,height=640");
+
+    if (!printWindow) {
+      toastInfo("Popup print diblokir browser.");
+      return;
+    }
+
+    const { document } = printWindow;
+    document.open();
+    document.title = "Print QR Code";
+
+    const style = document.createElement("style");
+    style.textContent = `
+      @media print {
+        body { margin: 0; }
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        font-family: Arial, sans-serif;
+      }
+      .wrapper {
+        text-align: center;
+      }
+      .wrapper img {
+        width: 320px;
+        height: 320px;
+        object-fit: contain;
+      }
+      .wrapper p {
+        margin-top: 16px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+    `;
+    document.head.appendChild(style);
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "wrapper";
+
+    const image = document.createElement("img");
+    image.src = qrDataUrl;
+    image.alt = "QR Code";
+
+    const label = document.createElement("p");
+    label.textContent = nomorIndukKaryawan || namaLengkap || "QR Code Karyawan";
+
+    wrapper.appendChild(image);
+    wrapper.appendChild(label);
+    document.body.appendChild(wrapper);
+    document.close();
+
+    printWindow.onload = () => {
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+      };
+    };
+  };
+
   return (
     <Card className="sticky top-4 border-0 shadow-sm">
       <CardContent className="grid gap-6 p-6 lg:grid-cols-[280px_minmax(0,1fr)]">
         <div className="space-y-4 rounded-3xl bg-muted/40 p-5">
           <div className="flex flex-col items-center gap-4 text-center">
-            <Avatar className="h-40 w-40 border-4 border-background shadow-lg">
-              <AvatarImage
-                alt={namaLengkap || "Karyawan"}
-                src={getFotoUrl(fotoKaryawan)}
-              />
-              <AvatarFallback className="text-3xl font-semibold">
-                {getInitials(namaLengkap || "BSI")}
-              </AvatarFallback>
-            </Avatar>
+            <div className="relative">
+              <Avatar className="h-40 w-40 border-4 border-background shadow-lg">
+                <AvatarImage
+                  alt={namaLengkap || "Karyawan"}
+                  src={localFotoUrl ?? undefined}
+                />
+                <AvatarFallback className="text-3xl font-semibold">
+                  {getInitials(namaLengkap || "BSI")}
+                </AvatarFallback>
+              </Avatar>
+              {uploading ? (
+                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background/70">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+              ) : null}
+            </div>
             <div>
               <div className="text-lg font-semibold text-foreground">
                 {namaLengkap || "Nama karyawan"}
@@ -325,21 +521,8 @@ export function KaryawanHeadCard({
                 accept="image/png,image/jpeg"
                 className="hidden"
                 onChange={(event) => {
-                  const file = event.target.files?.[0];
-
-                  if (!file) {
-                    return;
-                  }
-
-                  const isValidType = ["image/jpeg", "image/png"].includes(file.type);
-                  const isValidSize = file.size <= 2 * 1024 * 1024;
-
-                  if (!isValidType || !isValidSize) {
-                    toastWarning("Gunakan file JPG/PNG dengan ukuran maksimal 2MB.");
-                    return;
-                  }
-
-                  toastWarning("Upload foto dikerjakan di fase berikutnya.");
+                  void handleFotoChange(event.target.files?.[0]);
+                  event.target.value = "";
                 }}
                 type="file"
               />
@@ -347,11 +530,47 @@ export function KaryawanHeadCard({
           </div>
 
           <div className="rounded-2xl border border-dashed bg-background p-6 text-center">
-            <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
-              <QrCode className="h-8 w-8" />
-            </div>
-            <div className="text-sm font-medium text-foreground">QR Code</div>
-            <div className="text-xs text-muted-foreground">Placeholder fase berikutnya</div>
+            <div className="mb-3 text-sm font-medium text-foreground">QR Code</div>
+            {!karyawanId ? (
+              <div className="space-y-2 text-xs text-muted-foreground">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+                  <QrCode className="h-8 w-8" />
+                </div>
+                <p>QR Code tersedia setelah data disimpan.</p>
+              </div>
+            ) : qrLoading ? (
+              <div className="space-y-3">
+                <Skeleton className="mx-auto h-40 w-40 rounded-2xl" />
+                <Skeleton className="mx-auto h-9 w-40" />
+              </div>
+            ) : qrDataUrl ? (
+              <div className="space-y-4">
+                <div className="rounded-2xl border bg-white p-3">
+                  <img
+                    alt="QR Code Karyawan"
+                    className="mx-auto h-40 w-40 object-contain"
+                    src={qrDataUrl}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Button className="gap-2" onClick={handleDownloadQr} size="sm" type="button" variant="outline">
+                    <Download className="h-4 w-4" />
+                    Download PNG
+                  </Button>
+                  <Button className="gap-2" onClick={handlePrintQr} size="sm" type="button" variant="outline">
+                    <Printer className="h-4 w-4" />
+                    Print
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2 text-xs text-muted-foreground">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+                  <QrCode className="h-8 w-8" />
+                </div>
+                <p>QR Code belum tersedia.</p>
+              </div>
+            )}
           </div>
         </div>
 

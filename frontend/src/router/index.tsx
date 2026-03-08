@@ -1,6 +1,6 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 
-import { AppLayout } from "@/components/layout/AppLayout";
+import { AppLayout, AppLayoutNoSidebar } from "@/components/layout/AppLayout";
 import KaryawanListPage from "@/modules/hr/karyawan/pages/KaryawanListPage";
 import KaryawanProfilePage from "@/modules/hr/karyawan/pages/KaryawanProfilePage";
 import DepartmentPage from "@/modules/hr/master-data/pages/DepartmentPage";
@@ -32,12 +32,17 @@ export const router = createBrowserRouter([
     element: <AuthGuard />,
     children: [
       {
-        element: <AppLayout />,
+        element: <AppLayoutNoSidebar />,
         children: [
           {
             path: "/",
             element: <WelcomePage />,
           },
+        ],
+      },
+      {
+        element: <AppLayout />,
+        children: [
           {
             path: "/hr",
             element: <Navigate replace to="/hr/karyawan" />,

@@ -344,3 +344,11 @@ export interface PaginatedKaryawanResponse {
     totalPages: number;
   };
 }
+
+export type ImportResultRow = {
+  baris: number;
+  nik?: string;
+  nama?: string;
+  status: "sukses" | "gagal";
+  keterangan?: string;
+};
