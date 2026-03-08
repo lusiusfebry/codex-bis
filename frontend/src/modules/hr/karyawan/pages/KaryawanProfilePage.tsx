@@ -48,7 +48,7 @@ function getDefaultValues(): KaryawanFormPayload {
     nomorHandphone: "",
     statusKaryawanId: "",
     lokasiKerjaId: "",
-    tagIds: [],
+    tagId: null,
     jenisKelamin: "",
     tempatLahir: "",
     tanggalLahir: "",
@@ -113,7 +113,6 @@ function getDefaultValues(): KaryawanFormPayload {
     anak: [],
     saudaraKandung: [],
     kontakDarurat: createDefaultKontakDarurat(),
-    orangTuaKandung: {},
     orangTuaMertua: {},
     keluarga: {},
   };
@@ -146,7 +145,7 @@ function mapKaryawanToFormValues(karyawan: Karyawan): KaryawanFormPayload {
     nomorHandphone: normalizeOptionalString(karyawan.nomorHandphone),
     statusKaryawanId: karyawan.statusKaryawanId,
     lokasiKerjaId: karyawan.lokasiKerjaId,
-    tagIds: karyawan.tags?.map((item) => item.id) ?? (karyawan.tag ? [karyawan.tag.id] : []),
+    tagId: karyawan.tag?.id ?? karyawan.tags?.[0]?.id ?? null,
     jenisKelamin: normalizeOptionalString(karyawan.jenisKelamin),
     tempatLahir: normalizeOptionalString(karyawan.tempatLahir),
     tanggalLahir: toDateInputValue(karyawan.tanggalLahir),
@@ -219,15 +218,6 @@ function mapKaryawanToFormValues(karyawan: Karyawan): KaryawanFormPayload {
         tanggalLahir: toDateInputValue(item.tanggalLahir),
       })) ?? [],
     kontakDarurat,
-    orangTuaKandung: {
-      ...(karyawan.orangTuaKandung ?? {}),
-      tanggalLahirAyahKandung: toDateInputValue(
-        karyawan.orangTuaKandung?.tanggalLahirAyahKandung,
-      ),
-      tanggalLahirIbuKandung: toDateInputValue(
-        karyawan.orangTuaKandung?.tanggalLahirIbuKandung,
-      ),
-    },
     orangTuaMertua: {
       ...(karyawan.orangTuaMertua ?? {}),
       tanggalLahirAyahMertua: toDateInputValue(
@@ -247,11 +237,10 @@ function mapKaryawanToFormValues(karyawan: Karyawan): KaryawanFormPayload {
 function normalizePayload(values: KaryawanFormPayload): KaryawanFormPayload {
   const normalizedEntries = Object.entries(values).map(([key, value]) => {
     if (
-      key === "tagIds" ||
+      key === "tagId" ||
       key === "anak" ||
       key === "saudaraKandung" ||
       key === "kontakDarurat" ||
-      key === "orangTuaKandung" ||
       key === "orangTuaMertua" ||
       key === "keluarga"
     ) {
@@ -280,7 +269,7 @@ function normalizePayload(values: KaryawanFormPayload): KaryawanFormPayload {
     posisiJabatanId: values.posisiJabatanId,
     statusKaryawanId: values.statusKaryawanId,
     lokasiKerjaId: values.lokasiKerjaId,
-    tagIds: Array.from(new Set(values.tagIds.filter(Boolean))),
+    tagId: values.tagId || null,
   };
 }
 

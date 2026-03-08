@@ -254,7 +254,7 @@ export interface KaryawanFormPayload {
   nomorHandphone?: string | null;
   statusKaryawanId: string;
   lokasiKerjaId: string;
-  tagIds: string[];
+  tagId?: string | null;
   jenisKelamin?: string | null;
   tempatLahir?: string | null;
   tanggalLahir?: string | null;
@@ -319,7 +319,6 @@ export interface KaryawanFormPayload {
   anak: KaryawanAnak[];
   saudaraKandung: KaryawanSaudaraKandung[];
   kontakDarurat: KaryawanKontakDarurat[];
-  orangTuaKandung: KaryawanOrangTuaKandung;
   orangTuaMertua: KaryawanOrangTuaMertua;
   keluarga: KaryawanKeluarga;
 }

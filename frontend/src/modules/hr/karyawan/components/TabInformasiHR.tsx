@@ -408,7 +408,7 @@ export function TabInformasiHR({
       <Section title="Kepegawaian">
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>NIK</Label>
+            <Label>Nomor Induk Karyawan</Label>
             <Input readOnly value={watch("nomorIndukKaryawan") || ""} />
           </div>
           <div className="space-y-2">
@@ -551,7 +551,7 @@ export function TabInformasiHR({
             />
           </div>
           <div className="space-y-2">
-            <Label>Golongan</Label>
+            <Label>Golongan Pangkat</Label>
             <Controller
               control={control}
               name="golonganId"
@@ -567,7 +567,7 @@ export function TabInformasiHR({
             />
           </div>
           <div className="space-y-2">
-            <Label>Sub Golongan</Label>
+            <Label>Sub Golongan Pangkat</Label>
             <Controller
               control={control}
               name="subGolonganId"

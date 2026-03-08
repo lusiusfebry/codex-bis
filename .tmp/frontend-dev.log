@@ -8,3 +8,16 @@
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3000[22m/[39m
 [2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m2:14:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/modules/hr/karyawan/components/TabInformasiHR.tsx[22m
+[2m2:14:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/modules/hr/karyawan/components/TabInformasiKeluarga.tsx[22m
+[2m2:21:17 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m2:21:22 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/modules/hr/karyawan/pages/KaryawanProfilePage.tsx, /src/index.css[22m
+[2m2:22:49 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/modules/hr/karyawan/components/KaryawanHeadCard.tsx[22m
+[2m2:22:56 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/modules/hr/karyawan/components/KaryawanHeadCard.tsx[22m
+[2m2:23:14 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/modules/hr/karyawan/components/KaryawanHeadCard.tsx[22m
+[2m2:23:40 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/modules/hr/karyawan/components/KaryawanHeadCard.tsx[22m
+[2m2:23:56 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/modules/hr/karyawan/components/KaryawanHeadCard.tsx[22m
+[2m2:35:08 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m2:35:17 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/modules/hr/karyawan/pages/KaryawanProfilePage.tsx, /src/index.css[22m
+[2m2:35:38 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/modules/hr/karyawan/components/TabInformasiKeluarga.tsx[22m
+[2m3:37:04 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/modules/hr/karyawan/components/TabPersonalInfo.tsx[22m

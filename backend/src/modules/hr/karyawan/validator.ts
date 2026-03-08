@@ -27,8 +27,8 @@ const nestedArrayValidators = [
   body("anak").optional().isArray().withMessage("anak harus berupa array."),
   body("anak.*.urutan")
     .optional()
-    .isInt({ min: 1, max: 4 })
-    .withMessage("Urutan anak harus berupa angka 1 sampai 4."),
+    .isInt({ min: 1 })
+    .withMessage("Urutan anak harus berupa angka minimal 1."),
   body("anak.*.namaAnak").optional().isString().withMessage("Nama anak harus berupa teks."),
   body("saudaraKandung").optional().isArray().withMessage("saudaraKandung harus berupa array."),
   body("saudaraKandung.*.urutan")
@@ -47,8 +47,8 @@ const optionalFieldValidators = [
   body("emailPribadi").optional({ values: "falsy" }).isEmail().withMessage("Email pribadi harus valid."),
   body("jumlahAnak")
     .optional({ values: "falsy" })
-    .isInt({ min: 0, max: 4 })
-    .withMessage("Jumlah anak harus berupa angka 0 sampai 4."),
+    .isInt({ min: 0 })
+    .withMessage("Jumlah anak harus berupa angka minimal 0."),
 ];
 
 export const karyawanIdValidator = [

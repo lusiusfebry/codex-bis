@@ -343,6 +343,72 @@ function buildWhereClause(req: Request): Record<string, unknown> {
   return where;
 }
 
+type KaryawanReferenceValidationInput = {
+  managerNik?: unknown;
+  atasanLangsungNik?: unknown;
+  nomorIndukKaryawan?: unknown;
+  excludeKaryawanId?: string;
+};
+
+async function validateKaryawanReferences({
+  managerNik,
+  atasanLangsungNik,
+  nomorIndukKaryawan,
+  excludeKaryawanId,
+}: KaryawanReferenceValidationInput): Promise<string[]> {
+  const errors: string[] = [];
+  const managerValue = normalizeStringValue(managerNik);
+  const atasanValue = normalizeStringValue(atasanLangsungNik);
+  const nomorIndukValue = normalizeStringValue(nomorIndukKaryawan);
+  const notClause = excludeKaryawanId ? { NOT: { id: excludeKaryawanId } } : {};
+
+  if (managerValue && nomorIndukValue && managerValue === nomorIndukValue) {
+    errors.push("Manager tidak boleh sama dengan nomor induk karyawan.");
+  }
+
+  if (atasanValue && nomorIndukValue && atasanValue === nomorIndukValue) {
+    errors.push("Atasan langsung tidak boleh sama dengan nomor induk karyawan.");
+  }
+
+  if (managerValue) {
+    const manager = await prisma.karyawan.findFirst({
+      where: {
+        nomorIndukKaryawan: managerValue,
+        statusKaryawan: { status: "Aktif" },
+        posisiJabatan: {
+          namaPosisiJabatan: {
+            contains: "head",
+            mode: "insensitive",
+          },
+        },
+        ...notClause,
+      },
+      select: { id: true },
+    });
+
+    if (!manager) {
+      errors.push("Manager harus karyawan aktif dengan posisi jabatan mengandung 'head'.");
+    }
+  }
+
+  if (atasanValue) {
+    const atasan = await prisma.karyawan.findFirst({
+      where: {
+        nomorIndukKaryawan: atasanValue,
+        statusKaryawan: { status: "Aktif" },
+        ...notClause,
+      },
+      select: { id: true },
+    });
+
+    if (!atasan) {
+      errors.push("Atasan langsung harus karyawan aktif.");
+    }
+  }
+
+  return errors;
+}
+
 function getCellValue(row: unknown[], columnNumber: number): unknown {
   return row[columnNumber - 1];
 }
@@ -814,6 +880,20 @@ export async function create(req: Request, res: Response, next: NextFunction): P
       normalizedKeluarga,
     } = buildCreatePayload(req.body as GenericRecord);
 
+    const referenceErrors = await validateKaryawanReferences({
+      managerNik: normalizedScalarData.managerNik,
+      atasanLangsungNik: normalizedScalarData.atasanLangsungNik,
+      nomorIndukKaryawan: normalizedScalarData.nomorIndukKaryawan,
+    });
+
+    if (referenceErrors.length > 0) {
+      res.status(400).json({
+        success: false,
+        message: referenceErrors.join(" "),
+      });
+      return;
+    }
+
     const data = await prisma.karyawan.create({
       data: {
         ...(normalizedScalarData as Record<string, unknown>),
@@ -896,6 +976,21 @@ export async function update(req: Request, res: Response, next: NextFunction): P
       normalizedOrangTuaMertua,
       normalizedKeluarga,
     } = buildCreatePayload(req.body as GenericRecord);
+
+    const referenceErrors = await validateKaryawanReferences({
+      managerNik: normalizedScalarData.managerNik,
+      atasanLangsungNik: normalizedScalarData.atasanLangsungNik,
+      nomorIndukKaryawan: normalizedScalarData.nomorIndukKaryawan,
+      excludeKaryawanId: id,
+    });
+
+    if (referenceErrors.length > 0) {
+      res.status(400).json({
+        success: false,
+        message: referenceErrors.join(" "),
+      });
+      return;
+    }
 
     await prisma.$transaction(async (tx) => {
       const requestBody = req.body as GenericRecord;

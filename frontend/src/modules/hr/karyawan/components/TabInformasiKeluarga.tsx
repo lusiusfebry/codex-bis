@@ -88,7 +88,7 @@ export function TabInformasiKeluarga({
       name: "saudaraKandung",
     }) ?? EMPTY_SAUDARA_KANDUNG;
   const jumlahAnak = Number(watchedJumlahAnak ?? 0);
-  const targetJumlahAnak = Math.max(0, Math.min(Number.isNaN(jumlahAnak) ? 0 : jumlahAnak, 4));
+  const targetJumlahAnak = Math.max(0, Number.isNaN(jumlahAnak) ? 0 : jumlahAnak);
 
   useEffect(() => {
     if (anakFields.length < targetJumlahAnak) {
@@ -193,7 +193,7 @@ export function TabInformasiKeluarga({
             <Input readOnly value={watch("jumlahAnak") ?? ""} />
           </div>
           <div className="space-y-2 md:col-span-2 xl:col-span-3">
-            <Label htmlFor="keluarga-keteranganPasangan">Keterangan</Label>
+            <Label htmlFor="keluarga-keteranganPasangan">Keterangan Pasangan</Label>
             <Textarea
               id="keluarga-keteranganPasangan"
               {...register("keluarga.keteranganPasangan")}
@@ -220,7 +220,7 @@ export function TabInformasiKeluarga({
                   {...register(`anak.${index}.urutan`, { valueAsNumber: true })}
                 />
                 <div className="space-y-2">
-                  <Label htmlFor={`anak-${index}-namaAnak`}>Nama</Label>
+                  <Label htmlFor={`anak-${index}-namaAnak`}>Nama Anak</Label>
                   <Input id={`anak-${index}-namaAnak`} {...register(`anak.${index}.namaAnak`)} />
                 </div>
                 <div className="space-y-2">
@@ -253,7 +253,7 @@ export function TabInformasiKeluarga({
                   />
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor={`anak-${index}-keteranganAnak`}>Keterangan</Label>
+                  <Label htmlFor={`anak-${index}-keteranganAnak`}>Keterangan Anak</Label>
                   <Textarea
                     id={`anak-${index}-keteranganAnak`}
                     {...register(`anak.${index}.keteranganAnak`)}
@@ -317,7 +317,7 @@ export function TabInformasiKeluarga({
                   {...register(`saudaraKandung.${index}.urutan`, { valueAsNumber: true })}
                 />
                 <div className="space-y-2">
-                  <Label htmlFor={`saudara-${index}-nama`}>Nama</Label>
+                  <Label htmlFor={`saudara-${index}-nama`}>Nama Saudara Kandung</Label>
                   <Input id={`saudara-${index}-nama`} {...register(`saudaraKandung.${index}.nama`)} />
                 </div>
                 <div className="space-y-2">
@@ -350,7 +350,9 @@ export function TabInformasiKeluarga({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor={`saudara-${index}-pendidikanTerakhir`}>Pendidikan</Label>
+                  <Label htmlFor={`saudara-${index}-pendidikanTerakhir`}>
+                    Pendidikan Terakhir
+                  </Label>
                   <Input
                     id={`saudara-${index}-pendidikanTerakhir`}
                     {...register(`saudaraKandung.${index}.pendidikanTerakhir`)}
@@ -376,92 +378,6 @@ export function TabInformasiKeluarga({
         </div>
       </Section>
 
-      <Section title="Orang Tua Kandung">
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card className="border border-border/60 shadow-none">
-            <CardHeader>
-              <CardTitle className="text-base">Ayah Kandung</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="namaAyahKandung">Nama</Label>
-                <Input id="namaAyahKandung" {...register("orangTuaKandung.namaAyahKandung")} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="tanggalLahirAyahKandung">Tanggal Lahir</Label>
-                <Input
-                  id="tanggalLahirAyahKandung"
-                  type="date"
-                  {...register("orangTuaKandung.tanggalLahirAyahKandung")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="pendidikanTerakhirAyahKandung">Pendidikan</Label>
-                <Input
-                  id="pendidikanTerakhirAyahKandung"
-                  {...register("orangTuaKandung.pendidikanTerakhirAyahKandung")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="pekerjaanAyahKandung">Pekerjaan</Label>
-                <Input
-                  id="pekerjaanAyahKandung"
-                  {...register("orangTuaKandung.pekerjaanAyahKandung")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="keteranganAyahKandung">Keterangan</Label>
-                <Textarea
-                  id="keteranganAyahKandung"
-                  {...register("orangTuaKandung.keteranganAyahKandung")}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border border-border/60 shadow-none">
-            <CardHeader>
-              <CardTitle className="text-base">Ibu Kandung</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="namaIbuKandung">Nama</Label>
-                <Input id="namaIbuKandung" {...register("orangTuaKandung.namaIbuKandung")} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="tanggalLahirIbuKandung">Tanggal Lahir</Label>
-                <Input
-                  id="tanggalLahirIbuKandung"
-                  type="date"
-                  {...register("orangTuaKandung.tanggalLahirIbuKandung")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="pendidikanTerakhirIbuKandung">Pendidikan</Label>
-                <Input
-                  id="pendidikanTerakhirIbuKandung"
-                  {...register("orangTuaKandung.pendidikanTerakhirIbuKandung")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="pekerjaanIbuKandung">Pekerjaan</Label>
-                <Input
-                  id="pekerjaanIbuKandung"
-                  {...register("orangTuaKandung.pekerjaanIbuKandung")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="keteranganIbuKandung">Keterangan</Label>
-                <Textarea
-                  id="keteranganIbuKandung"
-                  {...register("orangTuaKandung.keteranganIbuKandung")}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </Section>
-
       <Section title="Orang Tua Mertua">
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="border border-border/60 shadow-none">
@@ -481,20 +397,13 @@ export function TabInformasiKeluarga({
                   {...register("orangTuaMertua.tanggalLahirAyahMertua")}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="pendidikanTerakhirAyahMertua">Pendidikan</Label>
-                <Input
-                  id="pendidikanTerakhirAyahMertua"
-                  {...register("orangTuaMertua.pendidikanTerakhirAyahMertua")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="pekerjaanAyahMertua">Pekerjaan</Label>
-                <Input
-                  id="pekerjaanAyahMertua"
-                  {...register("orangTuaMertua.pekerjaanAyahMertua")}
-                />
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="pendidikanTerakhirAyahMertua">Pendidikan Terakhir</Label>
+                  <Input
+                    id="pendidikanTerakhirAyahMertua"
+                    {...register("orangTuaMertua.pendidikanTerakhirAyahMertua")}
+                  />
+                </div>
               <div className="space-y-2">
                 <Label htmlFor="keteranganAyahMertua">Keterangan</Label>
                 <Textarea
@@ -522,20 +431,13 @@ export function TabInformasiKeluarga({
                   {...register("orangTuaMertua.tanggalLahirIbuMertua")}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="pendidikanTerakhirIbuMertua">Pendidikan</Label>
-                <Input
-                  id="pendidikanTerakhirIbuMertua"
-                  {...register("orangTuaMertua.pendidikanTerakhirIbuMertua")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="pekerjaanIbuMertua">Pekerjaan</Label>
-                <Input
-                  id="pekerjaanIbuMertua"
-                  {...register("orangTuaMertua.pekerjaanIbuMertua")}
-                />
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="pendidikanTerakhirIbuMertua">Pendidikan Terakhir</Label>
+                  <Input
+                    id="pendidikanTerakhirIbuMertua"
+                    {...register("orangTuaMertua.pendidikanTerakhirIbuMertua")}
+                  />
+                </div>
               <div className="space-y-2">
                 <Label htmlFor="keteranganIbuMertua">Keterangan</Label>
                 <Textarea

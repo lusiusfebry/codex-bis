@@ -282,7 +282,7 @@ export function TabPersonalInfo({
           </div>
           <div className="space-y-2">
             <Label htmlFor="jumlahAnak">Jumlah Anak</Label>
-            <Input id="jumlahAnak" max={10} min={0} type="number" {...register("jumlahAnak", { valueAsNumber: true })} />
+            <Input id="jumlahAnak" min={0} type="number" {...register("jumlahAnak", { valueAsNumber: true })} />
             <FieldError message={errors.jumlahAnak?.message} />
           </div>
         </div>

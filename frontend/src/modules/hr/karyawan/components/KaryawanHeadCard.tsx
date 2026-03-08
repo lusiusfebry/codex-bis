@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Camera,
-  Check,
   Download,
   Loader2,
   Mail,
@@ -224,6 +223,74 @@ function KaryawanSearchSelect({
   );
 }
 
+type MasterOption = {
+  id: string;
+};
+
+function SearchableMasterSelect<TOption extends MasterOption>({
+  label,
+  options,
+  value,
+  onChange,
+  getLabel,
+  placeholder,
+  emptyLabel = "Tidak dipilih",
+}: {
+  label: string;
+  options: TOption[];
+  value?: string | null;
+  onChange: (value: string | null) => void;
+  getLabel: (option: TOption) => string;
+  placeholder: string;
+  emptyLabel?: string;
+}) {
+  const emptyValue = "__none__";
+  const [query, setQuery] = useState("");
+
+  const filteredOptions = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+      return options;
+    }
+
+    return options.filter((option) => getLabel(option).toLowerCase().includes(normalizedQuery));
+  }, [getLabel, options, query]);
+
+  return (
+    <div className="space-y-2">
+      <Label>{label}</Label>
+      <div className="space-y-2 rounded-xl border p-3">
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            className="pl-9"
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={`Cari ${label.toLowerCase()}...`}
+            value={query}
+          />
+        </div>
+        <Select
+          onValueChange={(selected) => onChange(selected === emptyValue ? null : selected)}
+          value={value || emptyValue}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder={placeholder} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={emptyValue}>{emptyLabel}</SelectItem>
+            {filteredOptions.map((option) => (
+              <SelectItem key={option.id} value={option.id}>
+                {getLabel(option)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+}
+
 export function KaryawanHeadCard({
   control,
   register,
@@ -250,7 +317,7 @@ export function KaryawanHeadCard({
   const divisiId = watch("divisiId");
   const departmentId = watch("departmentId");
   const statusKaryawanId = watch("statusKaryawanId");
-  const tagIds = watch("tagIds") ?? [];
+  const tagId = watch("tagId");
   const namaLengkap = watch("namaLengkap");
   const nomorIndukKaryawan = watch("nomorIndukKaryawan");
 
@@ -356,7 +423,7 @@ export function KaryawanHeadCard({
   }, [departmentId, posisiOptions]);
 
   const selectedStatus = statusOptions.find((item) => item.id === statusKaryawanId);
-  const selectedTags = tagOptions.filter((item) => tagIds.includes(item.id));
+  const selectedTag = tagOptions.find((item) => item.id === tagId);
 
   const handleFotoChange = async (file?: File) => {
     if (!file) {
@@ -604,24 +671,19 @@ export function KaryawanHeadCard({
             </div>
 
             <div className="space-y-2">
-              <Label>Divisi</Label>
               <Controller
                 control={control}
                 name="divisiId"
                 rules={{ required: "Divisi wajib dipilih." }}
                 render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value || undefined}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih divisi" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {divisiOptions.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
-                          {item.namaDivisi}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SearchableMasterSelect
+                    getLabel={(item: Divisi) => item.namaDivisi}
+                    label="Divisi"
+                    onChange={(selected) => field.onChange(selected ?? "")}
+                    options={divisiOptions}
+                    placeholder="Pilih divisi"
+                    value={field.value}
+                  />
                 )}
               />
               {errors.divisiId ? (
@@ -630,24 +692,19 @@ export function KaryawanHeadCard({
             </div>
 
             <div className="space-y-2">
-              <Label>Department</Label>
               <Controller
                 control={control}
                 name="departmentId"
                 rules={{ required: "Department wajib dipilih." }}
                 render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value || undefined}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih department" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {filteredDepartments.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
-                          {item.namaDepartmen}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SearchableMasterSelect
+                    getLabel={(item: Department) => item.namaDepartmen}
+                    label="Department"
+                    onChange={(selected) => field.onChange(selected ?? "")}
+                    options={filteredDepartments}
+                    placeholder="Pilih department"
+                    value={field.value}
+                  />
                 )}
               />
               {errors.departmentId ? (
@@ -656,24 +713,19 @@ export function KaryawanHeadCard({
             </div>
 
             <div className="space-y-2">
-              <Label>Posisi Jabatan</Label>
               <Controller
                 control={control}
                 name="posisiJabatanId"
                 rules={{ required: "Posisi jabatan wajib dipilih." }}
                 render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value || undefined}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih posisi jabatan" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {filteredPosisi.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
-                          {item.namaPosisiJabatan}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SearchableMasterSelect
+                    getLabel={(item: PosisiJabatan) => item.namaPosisiJabatan}
+                    label="Posisi Jabatan"
+                    onChange={(selected) => field.onChange(selected ?? "")}
+                    options={filteredPosisi}
+                    placeholder="Pilih posisi jabatan"
+                    value={field.value}
+                  />
                 )}
               />
               {errors.posisiJabatanId ? (
@@ -735,24 +787,19 @@ export function KaryawanHeadCard({
             </div>
 
             <div className="space-y-2">
-              <Label>Status Karyawan</Label>
               <Controller
                 control={control}
                 name="statusKaryawanId"
                 rules={{ required: "Status karyawan wajib dipilih." }}
                 render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value || undefined}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih status karyawan" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {statusOptions.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
-                          {item.namaStatus}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SearchableMasterSelect
+                    getLabel={(item: StatusKaryawan) => item.namaStatus}
+                    label="Status Karyawan"
+                    onChange={(selected) => field.onChange(selected ?? "")}
+                    options={statusOptions}
+                    placeholder="Pilih status karyawan"
+                    value={field.value}
+                  />
                 )}
               />
               {selectedStatus ? (
@@ -769,24 +816,19 @@ export function KaryawanHeadCard({
             </div>
 
             <div className="space-y-2">
-              <Label>Lokasi Kerja</Label>
               <Controller
                 control={control}
                 name="lokasiKerjaId"
                 rules={{ required: "Lokasi kerja wajib dipilih." }}
                 render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value || undefined}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih lokasi kerja" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {lokasiOptions.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
-                          {item.namaLokasiKerja}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SearchableMasterSelect
+                    getLabel={(item: LokasiKerja) => item.namaLokasiKerja}
+                    label="Lokasi Kerja"
+                    onChange={(selected) => field.onChange(selected ?? "")}
+                    options={lokasiOptions}
+                    placeholder="Pilih lokasi kerja"
+                    value={field.value}
+                  />
                 )}
               />
               {errors.lokasiKerjaId ? (
@@ -795,72 +837,32 @@ export function KaryawanHeadCard({
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <Label>Tag</Label>
               <Controller
                 control={control}
-                name="tagIds"
-                render={({ field }) => {
-                  const currentValue = field.value ?? [];
-
-                  return (
-                    <div className="space-y-3 rounded-xl border p-3">
-                      <div className="flex flex-wrap gap-2">
-                        {selectedTags.length > 0 ? (
-                          selectedTags.map((item) => (
-                            <Badge
-                              key={item.id}
-                              style={{
-                                backgroundColor: item.warnaTag,
-                                color: "#fff",
-                              }}
-                            >
-                              {item.namaTag}
-                            </Badge>
-                          ))
-                        ) : (
-                          <p className="text-sm text-muted-foreground">
-                            Belum ada tag dipilih.
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-                        {tagOptions.map((item) => {
-                          const isSelected = currentValue.includes(item.id);
-
-                          return (
-                            <button
-                              key={item.id}
-                              className={`flex items-center justify-between rounded-xl border px-3 py-2 text-left text-sm transition ${
-                                isSelected
-                                  ? "border-primary bg-primary/5 text-foreground"
-                                  : "border-border bg-background text-muted-foreground hover:bg-accent/10"
-                              }`}
-                              onClick={() => {
-                                const nextValue = isSelected
-                                  ? currentValue.filter((tagId) => tagId !== item.id)
-                                  : [...currentValue, item.id];
-
-                                field.onChange(nextValue);
-                              }}
-                              type="button"
-                            >
-                              <span className="flex items-center gap-2">
-                                <span
-                                  className="h-3 w-3 rounded-full"
-                                  style={{ backgroundColor: item.warnaTag }}
-                                />
-                                <span>{item.namaTag}</span>
-                              </span>
-                              {isSelected ? <Check className="h-4 w-4 text-primary" /> : null}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                }}
+                name="tagId"
+                render={({ field }) => (
+                  <SearchableMasterSelect
+                    emptyLabel="Tidak ada tag"
+                    getLabel={(item: Tag) => item.namaTag}
+                    label="Tag"
+                    onChange={field.onChange}
+                    options={tagOptions}
+                    placeholder="Pilih tag"
+                    value={field.value}
+                  />
+                )}
               />
+              {selectedTag ? (
+                <Badge
+                  className="hover:opacity-100"
+                  style={{
+                    backgroundColor: selectedTag.warnaTag,
+                    color: "#fff",
+                  }}
+                >
+                  {selectedTag.namaTag}
+                </Badge>
+              ) : null}
             </div>
           </div>
         </div>
