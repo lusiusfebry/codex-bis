@@ -45,15 +45,25 @@ export function useMasterData<T>({ resource, initialLimit = 10, initialStatus = 
 
     try {
       const response = await fetchMasterData<T>(resource, queryParams);
+      const responseTotalItems = response.meta.total || 0;
+      const responseTotalPages = response.meta.totalPages || 1;
+
+      if (responseTotalItems > 0 && page > responseTotalPages) {
+        setTotalPages(responseTotalPages);
+        setTotalItems(responseTotalItems);
+        setPage(responseTotalPages);
+        return;
+      }
+
       setData(response.data);
-      setTotalPages(response.meta.totalPages || 1);
-      setTotalItems(response.meta.total || 0);
+      setTotalPages(responseTotalPages);
+      setTotalItems(responseTotalItems);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Gagal memuat data.");
     } finally {
       setLoading(false);
     }
-  }, [queryParams, resource]);
+  }, [page, queryParams, resource]);
 
   useEffect(() => {
     void refetch();

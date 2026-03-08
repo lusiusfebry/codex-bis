@@ -57,6 +57,10 @@ export const karyawanIdValidator = [
 
 export const karyawanListValidator = [
   query("search").optional().trim(),
+  query("referenceMode")
+    .optional()
+    .isIn(["manager", "atasan"])
+    .withMessage("referenceMode harus bernilai manager atau atasan."),
   query("page")
     .optional()
     .isInt({ min: 1 })

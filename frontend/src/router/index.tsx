@@ -1,6 +1,8 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 
 import { AppLayout } from "@/components/layout/AppLayout";
+import KaryawanListPage from "@/modules/hr/karyawan/pages/KaryawanListPage";
+import KaryawanProfilePage from "@/modules/hr/karyawan/pages/KaryawanProfilePage";
 import DepartmentPage from "@/modules/hr/master-data/pages/DepartmentPage";
 import DivisiPage from "@/modules/hr/master-data/pages/DivisiPage";
 import GolonganPage from "@/modules/hr/master-data/pages/GolonganPage";
@@ -12,7 +14,6 @@ import PosisiJabatanPage from "@/modules/hr/master-data/pages/PosisiJabatanPage"
 import StatusKaryawanPage from "@/modules/hr/master-data/pages/StatusKaryawanPage";
 import SubGolonganPage from "@/modules/hr/master-data/pages/SubGolonganPage";
 import TagPage from "@/modules/hr/master-data/pages/TagPage";
-import HrPlaceholderPage from "@/pages/HrPlaceholderPage";
 import LoginPage from "@/pages/LoginPage";
 import WelcomePage from "@/pages/WelcomePage";
 import { AuthGuard, GuestGuard } from "@/router/guards";
@@ -39,7 +40,19 @@ export const router = createBrowserRouter([
           },
           {
             path: "/hr",
-            element: <HrPlaceholderPage />,
+            element: <Navigate replace to="/hr/karyawan" />,
+          },
+          {
+            path: "/hr/karyawan",
+            element: <KaryawanListPage />,
+          },
+          {
+            path: "/hr/karyawan/tambah",
+            element: <KaryawanProfilePage />,
+          },
+          {
+            path: "/hr/karyawan/:id",
+            element: <KaryawanProfilePage />,
           },
           {
             path: "/hr/master-data",

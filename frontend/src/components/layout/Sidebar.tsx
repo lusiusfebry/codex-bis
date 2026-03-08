@@ -130,10 +130,12 @@ export function Sidebar() {
                   className={({ isActive }) =>
                     cn(
                       "flex w-full items-center rounded-xl px-3 py-2 text-left text-sm text-sidebar-foreground/80 transition-colors hover:bg-sidebar-accent hover:text-white",
-                      isActive && "bg-sidebar-accent text-white",
+                      (isActive || window.location.pathname.startsWith("/hr/karyawan")) &&
+                        "bg-sidebar-accent text-white",
                     )
                   }
-                  to="/hr"
+                  end
+                  to="/hr/karyawan"
                 >
                   Karyawan
                 </NavLink>

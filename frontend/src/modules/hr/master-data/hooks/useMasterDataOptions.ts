@@ -20,8 +20,6 @@ export function useMasterDataOptions<T extends { id: string }>(
 
       try {
         const response = await fetchMasterData<T>(resource, {
-          page: 1,
-          limit: 100,
           status: "Aktif",
         });
         setOptions(response.data.map(mapOption));

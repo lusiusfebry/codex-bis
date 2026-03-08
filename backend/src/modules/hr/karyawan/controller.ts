@@ -281,7 +281,8 @@ async function loadKaryawanDetail(id: string) {
 }
 
 function buildWhereClause(req: Request): Record<string, unknown> {
-  const { search, divisiId, departmentId, statusKaryawanId, lokasiKerjaId } = req.query;
+  const { search, divisiId, departmentId, statusKaryawanId, lokasiKerjaId, referenceMode } =
+    req.query;
   const where: Record<string, unknown> = {};
 
   if (typeof divisiId === "string" && divisiId) {
@@ -298,6 +299,24 @@ function buildWhereClause(req: Request): Record<string, unknown> {
 
   if (typeof lokasiKerjaId === "string" && lokasiKerjaId) {
     where.lokasiKerjaId = lokasiKerjaId;
+  }
+
+  if (typeof referenceMode === "string" && referenceMode.length > 0) {
+    where.statusKaryawan = {
+      ...(typeof where.statusKaryawan === "object" && where.statusKaryawan
+        ? (where.statusKaryawan as Record<string, unknown>)
+        : {}),
+      status: "Aktif",
+    };
+
+    if (referenceMode === "manager") {
+      where.posisiJabatan = {
+        namaPosisiJabatan: {
+          contains: "head",
+          mode: "insensitive",
+        },
+      };
+    }
   }
 
   if (typeof search === "string" && search.trim()) {
