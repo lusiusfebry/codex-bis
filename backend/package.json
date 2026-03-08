@@ -9,6 +9,7 @@
     "start": "node dist/server.js",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
+    "db:reset-master": "ts-node prisma/reset-master-data.ts",
     "db:generate": "prisma generate"
   },
   "keywords": [

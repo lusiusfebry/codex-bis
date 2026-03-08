@@ -26,6 +26,7 @@ type FieldConfig = {
   type?: "text" | "textarea" | "switch" | "select" | "color";
   placeholder?: string;
   required?: boolean;
+  readOnly?: boolean;
   options?: SelectOption[];
 };
 
@@ -34,6 +35,7 @@ type BaseMasterDataFormModalProps<T extends { id: string }, F extends BaseFormVa
   onClose: () => void;
   onSuccess: () => void;
   initialData?: T;
+  nextCode?: string;
   resourcePath: string;
   title: string;
   description: string;
@@ -52,6 +54,7 @@ export function BaseMasterDataFormModal<T extends { id: string }, F extends Base
   onClose,
   onSuccess,
   initialData,
+  nextCode,
   resourcePath,
   title,
   description,
@@ -71,8 +74,14 @@ export function BaseMasterDataFormModal<T extends { id: string }, F extends Base
   });
 
   useEffect(() => {
-    form.reset(resolvedValues as DefaultValues<F>);
-  }, [form, resolvedValues]);
+    const values = { ...resolvedValues } as Record<string, string>;
+
+    if (!initialData && nextCode && "code" in values) {
+      values.code = nextCode;
+    }
+
+    form.reset(values as DefaultValues<F>);
+  }, [form, initialData, nextCode, resolvedValues]);
 
   const handleSubmit = form.handleSubmit(async (values) => {
     setSubmitting(true);
@@ -202,7 +211,9 @@ export function BaseMasterDataFormModal<T extends { id: string }, F extends Base
                 <div className="space-y-2" key={field.name}>
                   <Label>{field.label}</Label>
                   <Input
+                    className={field.readOnly ? "bg-muted" : undefined}
                     placeholder={field.placeholder}
+                    readOnly={field.readOnly}
                     {...form.register(fieldName, field.required ? { required: `${field.label} wajib diisi.` } : undefined)}
                   />
                   {fieldError ? <p className="text-sm font-medium text-destructive">{fieldError}</p> : null}

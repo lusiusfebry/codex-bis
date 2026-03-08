@@ -31,7 +31,7 @@ export function MasterDataCrudPage<T extends { id: string; status: string }>({
   getItemName,
 }: MasterDataCrudPageProps<T>) {
   const config = getMasterDataConfig(resourceKey);
-  const { data, loading, page, search, statusFilter, totalPages, totalItems, refetch, handlePageChange, handleSearch, handleStatusFilter } =
+  const { data, loading, page, search, statusFilter, totalPages, totalItems, nextCode, refetch, handlePageChange, handleSearch, handleStatusFilter } =
     useMasterData<T>({
       resource: config.path,
     });
@@ -48,6 +48,7 @@ export function MasterDataCrudPage<T extends { id: string; status: string }>({
             onClose: () => void;
             onSuccess: () => void;
             initialData?: T;
+            nextCode?: string;
           }>)
         : null,
     [formModal],
@@ -101,6 +102,7 @@ export function MasterDataCrudPage<T extends { id: string; status: string }>({
             onClose: () => setFormOpen(false),
             onSuccess: refetch,
             initialData: selectedItem,
+            nextCode,
           })
         : null}
 

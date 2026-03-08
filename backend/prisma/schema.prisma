@@ -9,6 +9,7 @@ datasource db {
 
 model Divisi {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code        String       @unique
   namaDivisi  String       @unique @map("nama_divisi")
   keterangan  String?
   status      String       @default("Aktif")
@@ -22,6 +23,7 @@ model Divisi {
 
 model Department {
   id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code           String          @unique
   namaDepartmen  String          @map("nama_departmen")
   divisiId       String          @map("divisi_id") @db.Uuid
   managerNik     String?         @map("manager_nik")
@@ -39,6 +41,7 @@ model Department {
 
 model PosisiJabatan {
   id                String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code              String      @unique
   namaPosisiJabatan String      @map("nama_posisi_jabatan")
   departmentId      String      @map("department_id") @db.Uuid
   keterangan        String?
@@ -54,6 +57,7 @@ model PosisiJabatan {
 
 model KategoriPangkat {
   id                  String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code                String     @unique
   namaKategoriPangkat String     @unique @map("nama_kategori_pangkat")
   keterangan          String?
   status              String     @default("Aktif")
@@ -66,6 +70,7 @@ model KategoriPangkat {
 
 model Golongan {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code         String     @unique
   namaGolongan String     @unique @map("nama_golongan")
   keterangan   String?
   status       String     @default("Aktif")
@@ -78,6 +83,7 @@ model Golongan {
 
 model SubGolongan {
   id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code            String     @unique
   namaSubGolongan String     @unique @map("nama_sub_golongan")
   keterangan      String?
   status          String     @default("Aktif")
@@ -90,6 +96,7 @@ model SubGolongan {
 
 model JenisHubunganKerja {
   id                     String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code                   String     @unique
   namaJenisHubunganKerja String     @unique @map("nama_jenis_hubungan_kerja")
   keterangan             String?
   status                 String     @default("Aktif")
@@ -102,6 +109,7 @@ model JenisHubunganKerja {
 
 model Tag {
   id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code       String     @unique
   namaTag    String     @unique @map("nama_tag")
   warnaTag   String     @map("warna_tag")
   keterangan String?
@@ -115,6 +123,7 @@ model Tag {
 
 model LokasiKerja {
   id               String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code             String     @unique
   namaLokasiKerja  String     @unique @map("nama_lokasi_kerja")
   alamat           String?
   keterangan       String?
@@ -129,6 +138,7 @@ model LokasiKerja {
 
 model StatusKaryawan {
   id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code       String     @unique
   namaStatus String     @unique @map("nama_status")
   keterangan String?
   status     String     @default("Aktif")

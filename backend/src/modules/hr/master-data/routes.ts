@@ -17,65 +17,75 @@ const router = Router();
 router.use(authenticate);
 
 const divisiController = buildMasterDataController(prisma.divisi, {
-  orderField: "namaDivisi",
+  codePrefix: "DIV",
+  orderField: "code",
   nameField: "namaDivisi",
-  searchFields: ["namaDivisi", "keterangan"],
+  searchFields: ["code", "namaDivisi", "keterangan"],
 });
 
 const departmentController = buildMasterDataController(prisma.department, {
-  orderField: "namaDepartmen",
+  codePrefix: "DEP",
+  orderField: "code",
   nameField: "namaDepartmen",
-  searchFields: ["namaDepartmen", "keterangan"],
+  searchFields: ["code", "namaDepartmen", "keterangan"],
   include: { divisi: { select: { namaDivisi: true } } },
 });
 
 const posisiJabatanController = buildMasterDataController(prisma.posisiJabatan, {
-  orderField: "namaPosisiJabatan",
+  codePrefix: "POS",
+  orderField: "code",
   nameField: "namaPosisiJabatan",
-  searchFields: ["namaPosisiJabatan", "keterangan"],
+  searchFields: ["code", "namaPosisiJabatan", "keterangan"],
   include: { department: { select: { namaDepartmen: true, divisiId: true } } },
 });
 
 const kategoriPangkatController = buildMasterDataController(prisma.kategoriPangkat, {
-  orderField: "namaKategoriPangkat",
+  codePrefix: "KAT",
+  orderField: "code",
   nameField: "namaKategoriPangkat",
-  searchFields: ["namaKategoriPangkat", "keterangan"],
+  searchFields: ["code", "namaKategoriPangkat", "keterangan"],
 });
 
 const golonganController = buildMasterDataController(prisma.golongan, {
-  orderField: "namaGolongan",
+  codePrefix: "GOL",
+  orderField: "code",
   nameField: "namaGolongan",
-  searchFields: ["namaGolongan", "keterangan"],
+  searchFields: ["code", "namaGolongan", "keterangan"],
 });
 
 const subGolonganController = buildMasterDataController(prisma.subGolongan, {
-  orderField: "namaSubGolongan",
+  codePrefix: "SUB",
+  orderField: "code",
   nameField: "namaSubGolongan",
-  searchFields: ["namaSubGolongan", "keterangan"],
+  searchFields: ["code", "namaSubGolongan", "keterangan"],
 });
 
 const jenisHubunganKerjaController = buildMasterDataController(prisma.jenisHubunganKerja, {
-  orderField: "namaJenisHubunganKerja",
+  codePrefix: "JHK",
+  orderField: "code",
   nameField: "namaJenisHubunganKerja",
-  searchFields: ["namaJenisHubunganKerja", "keterangan"],
+  searchFields: ["code", "namaJenisHubunganKerja", "keterangan"],
 });
 
 const tagController = buildMasterDataController(prisma.tag, {
-  orderField: "namaTag",
+  codePrefix: "TAG",
+  orderField: "code",
   nameField: "namaTag",
-  searchFields: ["namaTag", "warnaTag", "keterangan"],
+  searchFields: ["code", "namaTag", "warnaTag", "keterangan"],
 });
 
 const lokasiKerjaController = buildMasterDataController(prisma.lokasiKerja, {
-  orderField: "namaLokasiKerja",
+  codePrefix: "LOK",
+  orderField: "code",
   nameField: "namaLokasiKerja",
-  searchFields: ["namaLokasiKerja", "alamat", "keterangan"],
+  searchFields: ["code", "namaLokasiKerja", "alamat", "keterangan"],
 });
 
 const statusKaryawanController = buildMasterDataController(prisma.statusKaryawan, {
-  orderField: "namaStatus",
+  codePrefix: "STK",
+  orderField: "code",
   nameField: "namaStatus",
-  searchFields: ["namaStatus", "keterangan"],
+  searchFields: ["code", "namaStatus", "keterangan"],
 });
 
 router

@@ -3,6 +3,7 @@ import { getMasterDataConfig } from "@/modules/hr/master-data/config";
 import type { LokasiKerja } from "@/types/masterData";
 
 type LokasiKerjaFormValues = {
+  code: string;
   namaLokasiKerja: string;
   alamat: string;
   keterangan: string;
@@ -28,15 +29,17 @@ export function LokasiKerjaFormModal(props: LokasiKerjaFormModalProps) {
         keterangan: values.keterangan || undefined,
         status: values.status,
       })}
-      defaultValues={{ namaLokasiKerja: "", alamat: "", keterangan: "", status: "Aktif" }}
+      defaultValues={{ code: "", namaLokasiKerja: "", alamat: "", keterangan: "", status: "Aktif" }}
       description="Kelola lokasi kerja, site, maupun kantor yang digunakan pada sistem HR."
       fields={[
+        { name: "code", label: "Code", placeholder: "Otomatis saat disimpan", readOnly: true },
         { name: "namaLokasiKerja", label: "Nama Lokasi Kerja", required: true, placeholder: "Masukkan nama lokasi kerja" },
         { name: "alamat", label: "Alamat", type: "textarea", placeholder: "Masukkan alamat lokasi" },
         { name: "keterangan", label: "Keterangan", type: "textarea", placeholder: "Tambahkan keterangan opsional" },
         { name: "status", label: "Status", type: "switch" },
       ]}
       mapInitialData={(data) => ({
+        code: data?.code ?? "",
         namaLokasiKerja: data?.namaLokasiKerja ?? "",
         alamat: data?.alamat ?? "",
         keterangan: data?.keterangan ?? "",

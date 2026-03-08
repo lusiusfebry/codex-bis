@@ -6,11 +6,13 @@ export interface PaginatedResponse<T> {
     page: number;
     limit: number;
     totalPages: number;
+    nextCode?: string;
   };
 }
 
 export interface Divisi {
   id: string;
+  code: string;
   namaDivisi: string;
   keterangan?: string | null;
   status: string;
@@ -18,6 +20,7 @@ export interface Divisi {
 
 export interface Department {
   id: string;
+  code: string;
   namaDepartmen: string;
   divisiId: string;
   keterangan?: string | null;
@@ -29,6 +32,7 @@ export interface Department {
 
 export interface PosisiJabatan {
   id: string;
+  code: string;
   namaPosisiJabatan: string;
   departmentId: string;
   keterangan?: string | null;
@@ -41,6 +45,7 @@ export interface PosisiJabatan {
 
 export interface KategoriPangkat {
   id: string;
+  code: string;
   namaKategoriPangkat: string;
   keterangan?: string | null;
   status: string;
@@ -48,6 +53,7 @@ export interface KategoriPangkat {
 
 export interface Golongan {
   id: string;
+  code: string;
   namaGolongan: string;
   keterangan?: string | null;
   status: string;
@@ -55,6 +61,7 @@ export interface Golongan {
 
 export interface SubGolongan {
   id: string;
+  code: string;
   namaSubGolongan: string;
   keterangan?: string | null;
   status: string;
@@ -62,6 +69,7 @@ export interface SubGolongan {
 
 export interface JenisHubunganKerja {
   id: string;
+  code: string;
   namaJenisHubunganKerja: string;
   keterangan?: string | null;
   status: string;
@@ -69,6 +77,7 @@ export interface JenisHubunganKerja {
 
 export interface Tag {
   id: string;
+  code: string;
   namaTag: string;
   warnaTag: string;
   keterangan?: string | null;
@@ -77,6 +86,7 @@ export interface Tag {
 
 export interface LokasiKerja {
   id: string;
+  code: string;
   namaLokasiKerja: string;
   alamat?: string | null;
   keterangan?: string | null;
@@ -85,6 +95,7 @@ export interface LokasiKerja {
 
 export interface StatusKaryawan {
   id: string;
+  code: string;
   namaStatus: string;
   keterangan?: string | null;
   status: string;

@@ -3,6 +3,7 @@ import { getMasterDataConfig } from "@/modules/hr/master-data/config";
 import type { Tag } from "@/types/masterData";
 
 type TagFormValues = {
+  code: string;
   namaTag: string;
   warnaTag: string;
   keterangan: string;
@@ -28,15 +29,17 @@ export function TagFormModal(props: TagFormModalProps) {
         keterangan: values.keterangan || undefined,
         status: values.status,
       })}
-      defaultValues={{ namaTag: "", warnaTag: "#1B2A47", keterangan: "", status: "Aktif" }}
+      defaultValues={{ code: "", namaTag: "", warnaTag: "#1B2A47", keterangan: "", status: "Aktif" }}
       description="Tetapkan nama tag beserta warna visual yang akan dipakai pada tampilan data."
       fields={[
+        { name: "code", label: "Code", placeholder: "Otomatis saat disimpan", readOnly: true },
         { name: "namaTag", label: "Nama Tag", required: true, placeholder: "Masukkan nama tag" },
         { name: "warnaTag", label: "Warna Tag", type: "color", required: true },
         { name: "keterangan", label: "Keterangan", type: "textarea", placeholder: "Tambahkan keterangan opsional" },
         { name: "status", label: "Status", type: "switch" },
       ]}
       mapInitialData={(data) => ({
+        code: data?.code ?? "",
         namaTag: data?.namaTag ?? "",
         warnaTag: data?.warnaTag ?? "#1B2A47",
         keterangan: data?.keterangan ?? "",

@@ -3,6 +3,7 @@ import { getMasterDataConfig } from "@/modules/hr/master-data/config";
 import type { KategoriPangkat } from "@/types/masterData";
 
 type KategoriPangkatFormValues = {
+  code: string;
   namaKategoriPangkat: string;
   keterangan: string;
   status: string;
@@ -26,14 +27,16 @@ export function KategoriPangkatFormModal(props: KategoriPangkatFormModalProps) {
         keterangan: values.keterangan || undefined,
         status: values.status,
       })}
-      defaultValues={{ namaKategoriPangkat: "", keterangan: "", status: "Aktif" }}
+      defaultValues={{ code: "", namaKategoriPangkat: "", keterangan: "", status: "Aktif" }}
       description="Kelola kategori pangkat yang dipakai di data kepegawaian."
       fields={[
+        { name: "code", label: "Code", placeholder: "Otomatis saat disimpan", readOnly: true },
         { name: "namaKategoriPangkat", label: "Nama Kategori Pangkat", required: true, placeholder: "Masukkan nama kategori pangkat" },
         { name: "keterangan", label: "Keterangan", type: "textarea", placeholder: "Tambahkan keterangan opsional" },
         { name: "status", label: "Status", type: "switch" },
       ]}
       mapInitialData={(data) => ({
+        code: data?.code ?? "",
         namaKategoriPangkat: data?.namaKategoriPangkat ?? "",
         keterangan: data?.keterangan ?? "",
         status: data?.status ?? "Aktif",

@@ -3,6 +3,7 @@ import { getMasterDataConfig } from "@/modules/hr/master-data/config";
 import type { StatusKaryawan } from "@/types/masterData";
 
 type StatusKaryawanFormValues = {
+  code: string;
   namaStatus: string;
   keterangan: string;
   status: string;
@@ -26,14 +27,16 @@ export function StatusKaryawanFormModal(props: StatusKaryawanFormModalProps) {
         keterangan: values.keterangan || undefined,
         status: values.status,
       })}
-      defaultValues={{ namaStatus: "", keterangan: "", status: "Aktif" }}
+      defaultValues={{ code: "", namaStatus: "", keterangan: "", status: "Aktif" }}
       description="Kelola status kepegawaian yang akan dipakai saat filtering dan validasi data."
       fields={[
+        { name: "code", label: "Code", placeholder: "Otomatis saat disimpan", readOnly: true },
         { name: "namaStatus", label: "Nama Status", required: true, placeholder: "Masukkan nama status" },
         { name: "keterangan", label: "Keterangan", type: "textarea", placeholder: "Tambahkan keterangan opsional" },
         { name: "status", label: "Status", type: "switch" },
       ]}
       mapInitialData={(data) => ({
+        code: data?.code ?? "",
         namaStatus: data?.namaStatus ?? "",
         keterangan: data?.keterangan ?? "",
         status: data?.status ?? "Aktif",

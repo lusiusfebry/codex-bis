@@ -15,9 +15,44 @@ type MasterDataDelegate = {
 type MasterDataConfig = {
   orderField: string;
   nameField: string;
+  codePrefix: string;
   searchFields: string[];
   include?: Record<string, unknown>;
 };
+
+function sanitizePayload(input: Record<string, unknown>): Record<string, unknown> {
+  const { code, id, createdAt, updatedAt, ...payload } = input;
+  return payload;
+}
+
+async function generateMasterDataCode(
+  model: MasterDataDelegate,
+  prefix: string,
+): Promise<string> {
+  const latestRows = await model.findMany({
+    where: {
+      code: {
+        startsWith: `${prefix}-`,
+      },
+    },
+    select: {
+      code: true,
+    },
+    orderBy: {
+      code: "desc",
+    },
+    take: 1,
+  });
+
+  const latestCode =
+    latestRows.length > 0 && latestRows[0] && typeof latestRows[0] === "object"
+      ? String((latestRows[0] as { code?: string }).code ?? "")
+      : "";
+  const latestSequence = Number(latestCode.split("-")[1] ?? 0);
+  const nextSequence = Number.isFinite(latestSequence) ? latestSequence + 1 : 1;
+
+  return `${prefix}-${String(nextSequence).padStart(4, "0")}`;
+}
 
 function normalizeStatusQuery(value: string): "Aktif" | "Tidak Aktif" | null {
   const normalized = value.trim().toLowerCase().replace(/[\s_-]+/g, " ");
@@ -100,6 +135,7 @@ export function buildMasterDataController(model: MasterDataDelegate, config: Mas
           model.findMany(findManyArgs),
           model.count({ where }),
         ]);
+        const nextCode = await generateMasterDataCode(model, config.codePrefix);
 
         const effectiveLimit = dropdownMode ? total || data.length || 1 : limit;
 
@@ -111,6 +147,7 @@ export function buildMasterDataController(model: MasterDataDelegate, config: Mas
             page,
             limit: effectiveLimit,
             totalPages: dropdownMode ? 1 : Math.ceil(total / limit) || 1,
+            nextCode,
           },
         });
       } catch (error) {
@@ -123,8 +160,12 @@ export function buildMasterDataController(model: MasterDataDelegate, config: Mas
           return;
         }
 
+        const payload = sanitizePayload(req.body as Record<string, unknown>);
         const data = await model.create({
-          data: req.body,
+          data: {
+            ...payload,
+            code: await generateMasterDataCode(model, config.codePrefix),
+          },
         });
 
         res.status(201).json({
@@ -170,7 +211,7 @@ export function buildMasterDataController(model: MasterDataDelegate, config: Mas
 
         const data = await model.update({
           where: { id: req.params.id },
-          data: req.body,
+          data: sanitizePayload(req.body as Record<string, unknown>),
         });
 
         res.json({

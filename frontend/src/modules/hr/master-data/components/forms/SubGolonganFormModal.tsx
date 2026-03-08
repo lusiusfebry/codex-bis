@@ -3,6 +3,7 @@ import { getMasterDataConfig } from "@/modules/hr/master-data/config";
 import type { SubGolongan } from "@/types/masterData";
 
 type SubGolonganFormValues = {
+  code: string;
   namaSubGolongan: string;
   keterangan: string;
   status: string;
@@ -26,14 +27,16 @@ export function SubGolonganFormModal(props: SubGolonganFormModalProps) {
         keterangan: values.keterangan || undefined,
         status: values.status,
       })}
-      defaultValues={{ namaSubGolongan: "", keterangan: "", status: "Aktif" }}
+      defaultValues={{ code: "", namaSubGolongan: "", keterangan: "", status: "Aktif" }}
       description="Kelola sub golongan turunan sesuai kebutuhan struktur perusahaan."
       fields={[
+        { name: "code", label: "Code", placeholder: "Otomatis saat disimpan", readOnly: true },
         { name: "namaSubGolongan", label: "Nama Sub Golongan", required: true, placeholder: "Masukkan nama sub golongan" },
         { name: "keterangan", label: "Keterangan", type: "textarea", placeholder: "Tambahkan keterangan opsional" },
         { name: "status", label: "Status", type: "switch" },
       ]}
       mapInitialData={(data) => ({
+        code: data?.code ?? "",
         namaSubGolongan: data?.namaSubGolongan ?? "",
         keterangan: data?.keterangan ?? "",
         status: data?.status ?? "Aktif",

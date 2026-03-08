@@ -2,6 +2,15 @@
 > backend@1.0.0 dev
 > ts-node-dev --respawn --transpile-only src/server.ts
 
-[INFO] 01:09:17 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+[INFO] 01:52:48 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+Server berjalan di http://localhost:5000
+[INFO] 01:54:49 Restarting: C:\project-it\codex-bis\backend\src\modules\hr\master-data\routes.ts has been modified
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+Server berjalan di http://localhost:5000
+[INFO] 01:58:07 Restarting: C:\project-it\codex-bis\backend\src\modules\hr\master-data\controller.ts has been modified
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+Server berjalan di http://localhost:5000
+[INFO] 02:01:35 Restarting: C:\project-it\codex-bis\backend\src\modules\hr\master-data\routes.ts has been modified
 [dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
 Server berjalan di http://localhost:5000

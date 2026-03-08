@@ -10,6 +10,7 @@ import {
   type UseFormWatch,
 } from "react-hook-form";
 
+import { searchKaryawanActiveApi } from "@/api/karyawan";
 import { fetchMasterData, MASTER_DATA_PATHS } from "@/api/masterData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -226,6 +227,8 @@ export function TabInformasiHR({
   watch,
   errors,
 }: TabInformasiHRProps) {
+  const [managerLabel, setManagerLabel] = useState("");
+  const [atasanLangsungLabel, setAtasanLangsungLabel] = useState("");
   const [options, setOptions] = useState<MasterOptionsState>({
     jenisHubunganKerja: [],
     kategoriPangkat: [],
@@ -249,6 +252,8 @@ export function TabInformasiHR({
   const divisiId = useWatch({ control, name: "divisiId" });
   const departmentId = useWatch({ control, name: "departmentId" });
   const posisiJabatanId = useWatch({ control, name: "posisiJabatanId" });
+  const managerNik = useWatch({ control, name: "managerNik" });
+  const atasanLangsungNik = useWatch({ control, name: "atasanLangsungNik" });
 
   useEffect(() => {
     const loadOptions = async () => {
@@ -309,6 +314,39 @@ export function TabInformasiHR({
       replace(normalizedKontakDarurat);
     }
   }, [replace, watchedKontakDarurat]);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadReferenceLabels = async () => {
+      const [managerResult, atasanResult] = await Promise.all([
+        managerNik ? searchKaryawanActiveApi(managerNik, "manager") : Promise.resolve([]),
+        atasanLangsungNik ? searchKaryawanActiveApi(atasanLangsungNik, "atasan") : Promise.resolve([]),
+      ]);
+
+      if (!active) {
+        return;
+      }
+
+      const manager = managerResult.find((item) => item.nomorIndukKaryawan === managerNik);
+      const atasan = atasanResult.find(
+        (item) => item.nomorIndukKaryawan === atasanLangsungNik,
+      );
+
+      setManagerLabel(
+        manager ? `${manager.namaLengkap} · ${manager.nomorIndukKaryawan}` : managerNik || "",
+      );
+      setAtasanLangsungLabel(
+        atasan ? `${atasan.namaLengkap} · ${atasan.nomorIndukKaryawan}` : atasanLangsungNik || "",
+      );
+    };
+
+    void loadReferenceLabels();
+
+    return () => {
+      active = false;
+    };
+  }, [atasanLangsungNik, managerNik]);
 
   const selectedDivisi = useMemo(
     () => options.divisi.find((item) => item.id === divisiId)?.namaDivisi ?? "",
@@ -391,11 +429,11 @@ export function TabInformasiHR({
           </div>
           <div className="space-y-2">
             <Label>Manager</Label>
-            <Input readOnly value={watch("managerNik") || ""} />
+            <Input readOnly value={managerLabel} />
           </div>
           <div className="space-y-2">
             <Label>Atasan Langsung</Label>
-            <Input readOnly value={watch("atasanLangsungNik") || ""} />
+            <Input readOnly value={atasanLangsungLabel} />
           </div>
         </div>
       </Section>

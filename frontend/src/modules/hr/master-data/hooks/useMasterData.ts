@@ -19,6 +19,7 @@ export function useMasterData<T>({ resource, initialLimit = 10, initialStatus = 
   const [statusFilter, setStatusFilter] = useState<MasterDataStatusFilter>(initialStatus);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
+  const [nextCode, setNextCode] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
@@ -58,6 +59,7 @@ export function useMasterData<T>({ resource, initialLimit = 10, initialStatus = 
       setData(response.data);
       setTotalPages(responseTotalPages);
       setTotalItems(responseTotalItems);
+      setNextCode(response.meta.nextCode);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Gagal memuat data.");
     } finally {
@@ -91,6 +93,7 @@ export function useMasterData<T>({ resource, initialLimit = 10, initialStatus = 
     statusFilter,
     totalPages,
     totalItems,
+    nextCode,
     refetch,
     handlePageChange,
     handleSearch,

@@ -8,6 +8,7 @@ import { useMasterDataOptions } from "@/modules/hr/master-data/hooks/useMasterDa
 import type { Department, PosisiJabatan } from "@/types/masterData";
 
 type PosisiJabatanFormValues = {
+  code: string;
   namaPosisiJabatan: string;
   departmentId: string;
   keterangan: string;
@@ -36,15 +37,17 @@ export function PosisiJabatanFormModal(props: PosisiJabatanFormModalProps) {
         keterangan: values.keterangan || undefined,
         status: values.status,
       })}
-      defaultValues={{ namaPosisiJabatan: "", departmentId: "", keterangan: "", status: "Aktif" }}
+      defaultValues={{ code: "", namaPosisiJabatan: "", departmentId: "", keterangan: "", status: "Aktif" }}
       description="Tentukan department induk untuk posisi jabatan ini."
       fields={[
+        { name: "code", label: "Code", placeholder: "Otomatis saat disimpan", readOnly: true },
         { name: "namaPosisiJabatan", label: "Nama Posisi Jabatan", required: true, placeholder: "Masukkan nama posisi" },
         { name: "departmentId", label: "Department", type: "select", required: true, options },
         { name: "keterangan", label: "Keterangan", type: "textarea", placeholder: "Tambahkan keterangan opsional" },
         { name: "status", label: "Status", type: "switch" },
       ]}
       mapInitialData={(data) => ({
+        code: data?.code ?? "",
         namaPosisiJabatan: data?.namaPosisiJabatan ?? "",
         departmentId: data?.departmentId ?? "",
         keterangan: data?.keterangan ?? "",

@@ -6,6 +6,10 @@ const activeStatus = "Aktif";
 
 type MasterSeedResult = Awaited<ReturnType<typeof seedMasterData>>;
 
+function buildCode(prefix: string, index: number): string {
+  return `${prefix.toUpperCase()}-${String(index + 1).padStart(4, "0")}`;
+}
+
 async function seedMasterData() {
   const divisiEntries = [
     "Operasi Tambang",
@@ -20,11 +24,11 @@ async function seedMasterData() {
   ];
 
   const divisis = await Promise.all(
-    divisiEntries.map((namaDivisi) =>
+    divisiEntries.map((namaDivisi, index) =>
       prisma.divisi.upsert({
         where: { namaDivisi },
-        update: { status: activeStatus },
-        create: { namaDivisi, status: activeStatus },
+        update: { code: buildCode("DIV", index), status: activeStatus },
+        create: { code: buildCode("DIV", index), namaDivisi, status: activeStatus },
       }),
     ),
   );
@@ -49,7 +53,7 @@ async function seedMasterData() {
   ] as const;
 
   const departments = await Promise.all(
-    departmentEntries.map(([namaDepartmen, divisiNama]) =>
+    departmentEntries.map(([namaDepartmen, divisiNama], index) =>
       prisma.department.upsert({
         where: {
           namaDepartmen_divisiId: {
@@ -57,8 +61,9 @@ async function seedMasterData() {
             divisiId: divisiByName[divisiNama].id,
           },
         },
-        update: { status: activeStatus },
+        update: { code: buildCode("DEP", index), status: activeStatus },
         create: {
+          code: buildCode("DEP", index),
           namaDepartmen,
           divisiId: divisiByName[divisiNama].id,
           status: activeStatus,
@@ -84,7 +89,7 @@ async function seedMasterData() {
   ] as const;
 
   const posisi = await Promise.all(
-    posisiEntries.map(([namaPosisiJabatan, departmentNama]) =>
+    posisiEntries.map(([namaPosisiJabatan, departmentNama], index) =>
       prisma.posisiJabatan.upsert({
         where: {
           namaPosisiJabatan_departmentId: {
@@ -92,8 +97,9 @@ async function seedMasterData() {
             departmentId: departmentsByName[departmentNama].id,
           },
         },
-        update: { status: activeStatus },
+        update: { code: buildCode("POS", index), status: activeStatus },
         create: {
+          code: buildCode("POS", index),
           namaPosisiJabatan,
           departmentId: departmentsByName[departmentNama].id,
           status: activeStatus,
@@ -104,41 +110,41 @@ async function seedMasterData() {
 
   const kategoriPangkat = await Promise.all(
     ["Staff", "Supervisor", "Superintendent", "Manager", "General Manager", "Direktur"].map(
-      (namaKategoriPangkat) =>
+      (namaKategoriPangkat, index) =>
         prisma.kategoriPangkat.upsert({
           where: { namaKategoriPangkat },
-          update: { status: activeStatus },
-          create: { namaKategoriPangkat, status: activeStatus },
+          update: { code: buildCode("KAT", index), status: activeStatus },
+          create: { code: buildCode("KAT", index), namaKategoriPangkat, status: activeStatus },
         }),
     ),
   );
 
   const golongan = await Promise.all(
-    ["I", "II", "III", "IV", "V"].map((namaGolongan) =>
+    ["I", "II", "III", "IV", "V"].map((namaGolongan, index) =>
       prisma.golongan.upsert({
         where: { namaGolongan },
-        update: { status: activeStatus },
-        create: { namaGolongan, status: activeStatus },
+        update: { code: buildCode("GOL", index), status: activeStatus },
+        create: { code: buildCode("GOL", index), namaGolongan, status: activeStatus },
       }),
     ),
   );
 
   const subGolongan = await Promise.all(
-    ["A", "B", "C", "D"].map((namaSubGolongan) =>
+    ["A", "B", "C", "D"].map((namaSubGolongan, index) =>
       prisma.subGolongan.upsert({
         where: { namaSubGolongan },
-        update: { status: activeStatus },
-        create: { namaSubGolongan, status: activeStatus },
+        update: { code: buildCode("SUB", index), status: activeStatus },
+        create: { code: buildCode("SUB", index), namaSubGolongan, status: activeStatus },
       }),
     ),
   );
 
   const jenisHubunganKerja = await Promise.all(
-    ["PKWT", "PKWTT", "Kontrak Harian Lepas", "Outsourcing"].map((namaJenisHubunganKerja) =>
+    ["PKWT", "PKWTT", "Kontrak Harian Lepas", "Outsourcing"].map((namaJenisHubunganKerja, index) =>
       prisma.jenisHubunganKerja.upsert({
         where: { namaJenisHubunganKerja },
-        update: { status: activeStatus },
-        create: { namaJenisHubunganKerja, status: activeStatus },
+        update: { code: buildCode("JHK", index), status: activeStatus },
+        create: { code: buildCode("JHK", index), namaJenisHubunganKerja, status: activeStatus },
       }),
     ),
   );
@@ -150,11 +156,11 @@ async function seedMasterData() {
       ["Probation", "#3b82f6"],
       ["Key Person", "#8b5cf6"],
       ["Warning", "#ef4444"],
-    ].map(([namaTag, warnaTag]) =>
+    ].map(([namaTag, warnaTag], index) =>
       prisma.tag.upsert({
         where: { namaTag },
-        update: { warnaTag, status: activeStatus },
-        create: { namaTag, warnaTag, status: activeStatus },
+        update: { code: buildCode("TAG", index), warnaTag, status: activeStatus },
+        create: { code: buildCode("TAG", index), namaTag, warnaTag, status: activeStatus },
       }),
     ),
   );
@@ -168,21 +174,21 @@ async function seedMasterData() {
       "ROM Pad",
       "Workshop",
       "Pelabuhan",
-    ].map((namaLokasiKerja) =>
+    ].map((namaLokasiKerja, index) =>
       prisma.lokasiKerja.upsert({
         where: { namaLokasiKerja },
-        update: { status: activeStatus },
-        create: { namaLokasiKerja, status: activeStatus },
+        update: { code: buildCode("LOK", index), status: activeStatus },
+        create: { code: buildCode("LOK", index), namaLokasiKerja, status: activeStatus },
       }),
     ),
   );
 
   const statusKaryawan = await Promise.all(
-    ["Aktif", "Cuti Panjang", "Suspend", "Resign", "Pensiun", "PHK"].map((namaStatus) =>
+    ["Aktif", "Cuti Panjang", "Suspend", "Resign", "Pensiun", "PHK"].map((namaStatus, index) =>
       prisma.statusKaryawan.upsert({
         where: { namaStatus },
-        update: { status: activeStatus },
-        create: { namaStatus, status: activeStatus },
+        update: { code: buildCode("STK", index), status: activeStatus },
+        create: { code: buildCode("STK", index), namaStatus, status: activeStatus },
       }),
     ),
   );
@@ -533,18 +539,20 @@ async function seedKaryawan(master: MasterSeedResult) {
   });
 }
 
-async function main() {
+export async function main() {
   const master = await seedMasterData();
   await seedUsers();
   await seedKaryawan(master);
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (error) => {
-    console.error("Seed gagal dijalankan:", error);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+if (require.main === module) {
+  main()
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (error) => {
+      console.error("Seed gagal dijalankan:", error);
+      await prisma.$disconnect();
+      process.exit(1);
+    });
+}

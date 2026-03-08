@@ -8,6 +8,7 @@ import type { Department, Divisi } from "@/types/masterData";
 import { MASTER_DATA_PATHS } from "@/api/masterData";
 
 type DepartmentFormValues = {
+  code: string;
   namaDepartmen: string;
   divisiId: string;
   keterangan: string;
@@ -36,15 +37,17 @@ export function DepartmentFormModal(props: DepartmentFormModalProps) {
         keterangan: values.keterangan || undefined,
         status: values.status,
       })}
-      defaultValues={{ namaDepartmen: "", divisiId: "", keterangan: "", status: "Aktif" }}
+      defaultValues={{ code: "", namaDepartmen: "", divisiId: "", keterangan: "", status: "Aktif" }}
       description="Pilih divisi induk untuk department ini."
       fields={[
+        { name: "code", label: "Code", placeholder: "Otomatis saat disimpan", readOnly: true },
         { name: "namaDepartmen", label: "Nama Department", required: true, placeholder: "Masukkan nama department" },
         { name: "divisiId", label: "Divisi", type: "select", required: true, options },
         { name: "keterangan", label: "Keterangan", type: "textarea", placeholder: "Tambahkan keterangan opsional" },
         { name: "status", label: "Status", type: "switch" },
       ]}
       mapInitialData={(data) => ({
+        code: data?.code ?? "",
         namaDepartmen: data?.namaDepartmen ?? "",
         divisiId: data?.divisiId ?? "",
         keterangan: data?.keterangan ?? "",

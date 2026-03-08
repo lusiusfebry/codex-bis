@@ -3,6 +3,7 @@ import { getMasterDataConfig } from "@/modules/hr/master-data/config";
 import type { JenisHubunganKerja } from "@/types/masterData";
 
 type JenisHubunganKerjaFormValues = {
+  code: string;
   namaJenisHubunganKerja: string;
   keterangan: string;
   status: string;
@@ -26,14 +27,16 @@ export function JenisHubunganKerjaFormModal(props: JenisHubunganKerjaFormModalPr
         keterangan: values.keterangan || undefined,
         status: values.status,
       })}
-      defaultValues={{ namaJenisHubunganKerja: "", keterangan: "", status: "Aktif" }}
+      defaultValues={{ code: "", namaJenisHubunganKerja: "", keterangan: "", status: "Aktif" }}
       description="Kelola jenis hubungan kerja yang tersedia bagi karyawan."
       fields={[
+        { name: "code", label: "Code", placeholder: "Otomatis saat disimpan", readOnly: true },
         { name: "namaJenisHubunganKerja", label: "Nama Jenis Hubungan Kerja", required: true, placeholder: "Masukkan jenis hubungan kerja" },
         { name: "keterangan", label: "Keterangan", type: "textarea", placeholder: "Tambahkan keterangan opsional" },
         { name: "status", label: "Status", type: "switch" },
       ]}
       mapInitialData={(data) => ({
+        code: data?.code ?? "",
         namaJenisHubunganKerja: data?.namaJenisHubunganKerja ?? "",
         keterangan: data?.keterangan ?? "",
         status: data?.status ?? "Aktif",
