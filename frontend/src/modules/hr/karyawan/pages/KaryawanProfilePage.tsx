@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Building2, Heart, Save, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -126,9 +126,9 @@ function mapKaryawanToFormValues(karyawan: Karyawan): KaryawanFormPayload {
 
     return existingItem
       ? {
-          ...existingItem,
-          urutan: item.urutan,
-        }
+        ...existingItem,
+        urutan: item.urutan,
+      }
       : item;
   });
 
@@ -334,25 +334,38 @@ export default function KaryawanProfilePage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <Skeleton className="h-6 w-72" />
-        <Skeleton className="h-[320px] w-full rounded-3xl" />
-        <Skeleton className="h-[520px] w-full rounded-3xl" />
+      <div className="mx-auto max-w-[1240px] space-y-5">
+        <Skeleton className="h-16 w-full rounded-2xl" />
+        <Skeleton className="h-[320px] w-full rounded-2xl" />
+        <Skeleton className="h-[520px] w-full rounded-2xl" />
       </div>
     );
   }
 
   return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
-      <div className="space-y-2">
-        <div className="text-sm text-muted-foreground">
-          Dashboard / HR / Karyawan / {pageTitle}
+    <form className="mx-auto max-w-[1240px] space-y-5 pb-8" onSubmit={handleSubmit}>
+      {/* ── Minimal Breadcrumb Header ── */}
+      <div className="flex items-center gap-4 px-1">
+        <Button
+          className="h-9 w-9 shrink-0 rounded-xl"
+          onClick={() => navigate("/hr/karyawan")}
+          size="icon"
+          type="button"
+          variant="outline"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <div className="min-w-0 flex-1">
+          <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            HR / Karyawan
+          </div>
+          <h1 className="truncate text-xl font-extrabold tracking-tight text-foreground md:text-2xl">
+            {pageTitle}
+          </h1>
         </div>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-          {pageTitle}
-        </h1>
       </div>
 
+      {/* ── Head Card ── */}
       <KaryawanHeadCard
         control={form.control}
         errors={form.formState.errors}
@@ -363,11 +376,30 @@ export default function KaryawanProfilePage() {
         watch={form.watch}
       />
 
-      <Tabs defaultValue="personal">
-        <TabsList>
-          <TabsTrigger value="personal">Personal Information</TabsTrigger>
-          <TabsTrigger value="hr">Informasi HR</TabsTrigger>
-          <TabsTrigger value="keluarga">Informasi Keluarga</TabsTrigger>
+      {/* ── Tabs ── */}
+      <Tabs className="space-y-5" defaultValue="personal">
+        <TabsList className="grid h-auto w-full grid-cols-1 gap-1.5 rounded-xl border bg-muted/30 p-1.5 shadow-sm md:grid-cols-3">
+          <TabsTrigger
+            className="flex items-center gap-2 rounded-lg py-2.5 text-sm font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            value="personal"
+          >
+            <User className="h-4 w-4" />
+            Personal Information
+          </TabsTrigger>
+          <TabsTrigger
+            className="flex items-center gap-2 rounded-lg py-2.5 text-sm font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            value="hr"
+          >
+            <Building2 className="h-4 w-4" />
+            Informasi HR
+          </TabsTrigger>
+          <TabsTrigger
+            className="flex items-center gap-2 rounded-lg py-2.5 text-sm font-medium data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            value="keluarga"
+          >
+            <Heart className="h-4 w-4" />
+            Informasi Keluarga
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="personal">
@@ -398,12 +430,22 @@ export default function KaryawanProfilePage() {
         </TabsContent>
       </Tabs>
 
-      <div className="sticky bottom-4 z-10 flex flex-wrap justify-end gap-3 rounded-2xl border bg-background/95 p-4 shadow-lg backdrop-blur">
-        <Button onClick={() => navigate("/hr/karyawan")} type="button" variant="outline">
+      {/* ── Bottom Action Bar ── */}
+      <div className="sticky bottom-4 z-10 flex flex-wrap justify-end gap-3 rounded-xl border bg-background/95 p-4 shadow-lg backdrop-blur-md">
+        <Button
+          className="rounded-lg"
+          onClick={() => navigate("/hr/karyawan")}
+          type="button"
+          variant="outline"
+        >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Batal
         </Button>
-        <Button disabled={submitting} type="submit">
+        <Button
+          className="rounded-lg bg-primary shadow-md shadow-primary/20"
+          disabled={submitting}
+          type="submit"
+        >
           <Save className="mr-2 h-4 w-4" />
           {submitting ? "Menyimpan..." : "Simpan"}
         </Button>

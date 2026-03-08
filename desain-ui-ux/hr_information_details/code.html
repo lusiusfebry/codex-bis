@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1173d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Employee HR Information - HRMS Portal</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-2xl">corporate_fare</span>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-tight">HRMS Portal</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Admin Management</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto p-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Employee Directory</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Payroll</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span class="text-sm font-medium">Attendance</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="text-sm font-medium">Performance</span>
+</a>
+<div class="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+<img alt="Admin user" class="w-full h-full object-cover" data-alt="Portrait of an administrator in profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADvxsVIzbHyq5Ox027qPa0NqebetqtcBeeG1XcQtnfqtDbl-wIXBOWnaoavB4xlIXFN-694Z_bP2f3WsV-LuszOC1m7wIsog56a8oAG3wk9-iSKHoO2I_oTnKZkbIDphTpbida2-5ZiGQmcmB5QMwoY68qbKL8abVlQH5AF4UXzfVrnqZvmIGF5mDK-vA-5mJ_S6PuV4YJUChXLTXPIS7Lq9UTbOo4d8o7gB_zN5SUDWhKrq9duu5uyoy0nJVCkMbUdf4hAwdfrIQ3"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold truncate">Alex Rivera</p>
+<p class="text-xs text-slate-500 truncate">HR Director</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Navbar -->
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center flex-1">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="Search employee, department, or ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<button class="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-6 w-px bg-slate-200 dark:border-slate-700 mx-2"></div>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">account_circle</span>
+<span class="text-sm font-medium">Account</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Page Content -->
+<main class="flex-1 overflow-y-auto bg-slate-50 dark:bg-background-dark">
+<!-- Profile Header Card -->
+<div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-7xl mx-auto px-8 py-8">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+<div class="flex items-center gap-6">
+<div class="w-24 h-24 rounded-2xl bg-slate-100 dark:bg-slate-800 p-1 border-2 border-primary/20">
+<div class="w-full h-full rounded-xl overflow-hidden">
+<img alt="John Doe" class="w-full h-full object-cover" data-alt="Senior software engineer male portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuj987Nw4aN_kxvyuBIIbanW0-fTcXaDDszd9SnQZgdO67C1PkWpj6vZWqmDA4vcbGnpqeDW8xdfaWi_pUBFdCF-b5wQQTrUuT7xVRbCeTz5qEwqyHbHKmFe2CFK_DDynkSZ-fBPxqJdVSkcL_b8UbUkoAnODvkp93PnPans2oNXKjpKQmmz1VGxOfEaSEPZAXUhxDz8OYOPGW1FBuzgtstnHSSCraCS4poqMS0zas-4lgVFBK-s7B_RB8lwwwpkZshNDHxQ8iDs4C"/>
+</div>
+</div>
+<div>
+<h1 class="text-3xl font-bold text-slate-900 dark:text-white leading-tight">John Doe</h1>
+<div class="flex flex-wrap items-center gap-y-1 gap-x-4 mt-1">
+<p class="text-slate-600 dark:text-slate-400 font-medium">Senior Software Engineer</p>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 hidden md:block"></span>
+<p class="text-slate-500 dark:text-slate-500 text-sm">Employee ID: 12345678</p>
+<span class="px-2 py-0.5 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold rounded uppercase tracking-wider">Active</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">edit</span>
+                                    Edit Profile
+                                </button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+                                    Export PDF
+                                </button>
+</div>
+</div>
+<!-- Tabs Navigation -->
+<div class="mt-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2">
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">Personal</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-white bg-primary whitespace-nowrap" href="#">HR Information</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">Leave</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">Documents</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">Payroll &amp; Tax</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">History</a>
+</div>
+</div>
+</div>
+</div>
+<!-- HR Information Detailed Content -->
+<div class="max-w-7xl mx-auto px-8 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- 1. Employment (Kepegawaian) -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined">badge</span>
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Employment (Kepegawaian)</h3>
+</div>
+<div class="space-y-4 flex-1">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Employee ID (NIK)</span>
+<span class="text-sm font-medium mt-1">12345678</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Job Position</span>
+<span class="text-sm font-medium mt-1">Senior Software Engineer</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Division</span>
+<span class="text-sm font-medium mt-1">Technology</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Department</span>
+<span class="text-sm font-medium mt-1">Product Dev</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Company Email</span>
+<span class="text-sm font-medium mt-1 text-primary">john.doe@corporate.com</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Manager</span>
+<span class="text-sm font-medium mt-1">Sarah Williamson</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Direct Supervisor</span>
+<span class="text-sm font-medium mt-1">Michael Tan</span>
+</div>
+</div>
+</div>
+<!-- 2. Contract (Kontrak) -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined">description</span>
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Contract (Kontrak)</h3>
+</div>
+<div class="space-y-4 flex-1">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Employment Type</span>
+<span class="text-sm font-medium mt-1">Permanent (PKWTT)</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Group Join Date</span>
+<span class="text-sm font-medium mt-1">Oct 15, 2018</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Join Date</span>
+<span class="text-sm font-medium mt-1">Oct 15, 2018</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Permanent Date</span>
+<span class="text-sm font-medium mt-1">Jan 15, 2019</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Contract Date</span>
+<span class="text-sm font-medium mt-1">Oct 15, 2018</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Contract End Date</span>
+<span class="text-sm font-medium mt-1 text-slate-400">—</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Termination Date</span>
+<span class="text-sm font-medium mt-1 text-slate-400">—</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Education -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full lg:row-span-2">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined">school</span>
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Education</h3>
+</div>
+<div class="space-y-4 flex-1">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Level</span>
+<span class="text-sm font-medium mt-1">Bachelor's Degree (S1)</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Field of Study</span>
+<span class="text-sm font-medium mt-1">Computer Science &amp; Software Eng.</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Institution Name</span>
+<span class="text-sm font-medium mt-1">University of Indonesia</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">City</span>
+<span class="text-sm font-medium mt-1">Depok</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Graduation Status</span>
+<span class="text-sm font-medium mt-1">Graduated</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Notes</span>
+<p class="text-sm text-slate-600 dark:text-slate-400 mt-1 italic">GPA: 3.85 / 4.00, Cum Laude</p>
+</div>
+<div class="pt-6 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 mb-4 text-primary">
+<span class="material-symbols-outlined">receipt_long</span>
+<h4 class="font-bold text-slate-900 dark:text-white">Costing</h4>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-slate-50 dark:border-slate-800">
+<span class="text-xs text-slate-500 uppercase">Payroll Cycle</span>
+<span class="text-sm font-semibold">Monthly - IDR</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-slate-50 dark:border-slate-800">
+<span class="text-xs text-slate-500 uppercase">Costing</span>
+<span class="text-sm font-semibold">IT-DEV-001</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase">Assign</span>
+<span class="text-sm font-medium mt-1">100%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase">Actual</span>
+<span class="text-sm font-medium mt-1">100%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Rank & Grade -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined">stairs</span>
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Rank &amp; Grade</h3>
+</div>
+<div class="space-y-4 flex-1">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Rank Category</span>
+<span class="text-sm font-medium mt-1">Senior Staff</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Salary Grade</span>
+<span class="text-sm font-medium mt-1">Grade 9</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Sub-Grade</span>
+<span class="text-sm font-medium mt-1">9-C</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Pension Fund No.</span>
+<span class="text-sm font-medium mt-1">PN-8829-1029-XX</span>
+</div>
+</div>
+</div>
+<!-- 5. Emergency Contacts -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined">contact_emergency</span>
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Emergency Contact</h3>
+</div>
+<div class="space-y-6 flex-1">
+<div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<span class="text-[10px] px-1.5 py-0.5 bg-primary/20 text-primary font-bold rounded mb-2 inline-block">CONTACT 1</span>
+<div class="grid grid-cols-1 gap-2">
+<p class="text-sm font-bold">Jane Doe <span class="text-xs font-normal text-slate-500">(Spouse)</span></p>
+<p class="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">call</span> +62 812-3456-7890
+                                    </p>
+<p class="text-xs text-slate-600 dark:text-slate-400 flex items-start gap-1">
+<span class="material-symbols-outlined text-sm shrink-0">location_on</span>
+<span>Jl. Kemang Timur No. 12, Jakarta Selatan</span>
+</p>
+</div>
+</div>
+<div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<span class="text-[10px] px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded mb-2 inline-block">CONTACT 2</span>
+<div class="grid grid-cols-1 gap-2">
+<p class="text-sm font-bold">Robert Doe <span class="text-xs font-normal text-slate-500">(Father)</span></p>
+<p class="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">call</span> +62 813-9876-5432
+                                    </p>
+<p class="text-xs text-slate-600 dark:text-slate-400 flex items-start gap-1">
+<span class="material-symbols-outlined text-sm shrink-0">location_on</span>
+<span>Perumahan Griya Indah Blok C/10, Bogor</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 6. POO/POH -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined">location_city</span>
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">POO / POH</h3>
+</div>
+<div class="space-y-4 flex-1">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Point of Origin (POO)</span>
+<span class="text-sm font-medium mt-1">Jakarta, Indonesia</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Point of Hire (POH)</span>
+<span class="text-sm font-medium mt-1">Head Office - Jakarta</span>
+</div>
+</div>
+</div>
+<!-- 7. Uniform & Shoes -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined">apparel</span>
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Uniform &amp; Shoes</h3>
+</div>
+<div class="space-y-4 flex-1">
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Uniform Size</span>
+<span class="text-sm font-medium mt-1">Large (L)</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Shoe Size</span>
+<span class="text-sm font-medium mt-1">43 (EU)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 8. Employee Movement -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined">trending_flat</span>
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Employee Movement</h3>
+</div>
+<div class="space-y-4 flex-1">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Previous Location</span>
+<span class="text-sm font-medium mt-1">Bandung Hub - Software Dev</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Mutation Date</span>
+<span class="text-sm font-medium mt-1">March 01, 2021</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>
+
+
+

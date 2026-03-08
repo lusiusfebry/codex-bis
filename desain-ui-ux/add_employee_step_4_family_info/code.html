@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1173d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Nexus HR - Add New Employee</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col fixed h-full">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">corporate_fare</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-none">Nexus HR</h1>
+<p class="text-xs text-slate-500 mt-1">Admin Panel</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Employees</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Payroll</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm font-medium">Attendance</span>
+</a>
+<div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</nav>
+<div class="p-4 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
+<div class="w-8 h-8 rounded-full bg-slate-300" data-alt="User profile avatar placeholder"></div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-bold truncate">Alex Smith</p>
+<p class="text-[10px] text-slate-500 truncate">HR Manager</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-8">
+<!-- Header -->
+<header class="flex justify-between items-start mb-8">
+<div>
+<div class="flex items-center gap-2 text-sm text-slate-500 mb-2">
+<a class="hover:text-primary" href="#">Home</a>
+<span>/</span>
+<a class="hover:text-primary" href="#">Employees</a>
+<span>/</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">Add New Employee</span>
+</div>
+<h2 class="text-3xl font-black tracking-tight">Step 4 of 4: Family Information</h2>
+<p class="text-slate-500 mt-1">Finalize employee personal and family records</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined leading-none">notifications</span>
+</button>
+<button class="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined leading-none">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Progress Bar Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-6 mb-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-center mb-3">
+<span class="text-sm font-bold text-primary">Final Step</span>
+<span class="text-sm font-bold text-primary">100%</span>
+</div>
+<div class="w-full bg-primary/10 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 100%"></div>
+</div>
+<p class="text-xs text-slate-500 mt-3">All necessary information has been gathered. Please review family details before submission.</p>
+</div>
+<!-- Form Wizard Area -->
+<div class="space-y-8 pb-24">
+<!-- Section 1: Pasangan & Anak Summary -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">family_restroom</span>
+                            Pasangan dan Anak (Spouse &amp; Children Summary)
+                        </h3>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Spouse Name</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" placeholder="Full name of spouse" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Date of Birth</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" type="date"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Education</label>
+<select class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm">
+<option>Select education level</option>
+<option>High School</option>
+<option>Bachelor's Degree</option>
+<option>Master's Degree</option>
+<option>Doctorate</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Occupation</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" placeholder="Spouse's current job" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Number of Children</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" min="0" placeholder="0" type="number"/>
+</div>
+<div class="md:col-span-2 lg:col-span-3 space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Spouse Remarks</label>
+<textarea class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" placeholder="Any additional notes about spouse..." rows="2"></textarea>
+</div>
+</div>
+</section>
+<!-- Section 2: Identitas Anak (Repeatable) -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex justify-between items-center">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">child_care</span>
+                            Identitas Anak (Children's Identity)
+                        </h3>
+<button class="flex items-center gap-1 text-xs font-bold text-primary hover:bg-primary/5 px-3 py-1.5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">add</span> Add Child
+                        </button>
+</div>
+<div class="p-6">
+<div class="p-5 border border-slate-100 dark:border-slate-800 rounded-xl bg-slate-50/30 dark:bg-slate-800/30">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Child's Name</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" placeholder="Full name" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Gender</label>
+<div class="flex gap-4 pt-2">
+<label class="flex items-center gap-2 text-sm cursor-pointer">
+<input class="text-primary focus:ring-primary" name="gender_child_1" type="radio"/> Male
+                                        </label>
+<label class="flex items-center gap-2 text-sm cursor-pointer">
+<input class="text-primary focus:ring-primary" name="gender_child_1" type="radio"/> Female
+                                        </label>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Date of Birth</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" type="date"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Remarks</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" placeholder="Optional notes" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Saudara Kandung -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-1">
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden h-full">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">groups</span>
+                                    Saudara Kandung (Siblings)
+                                </h3>
+</div>
+<div class="p-6 space-y-6">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Child Number</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" placeholder="Position (e.g. 1 of 3)" type="number"/>
+<p class="text-[10px] text-slate-400 mt-1">Employee's birth order among siblings</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Siblings</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" placeholder="Total number" type="number"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 4: Identitas Saudara Kandung -->
+<div class="lg:col-span-2">
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden h-full">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex justify-between items-center">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">badge</span>
+                                    Identitas Saudara Kandung
+                                </h3>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Max 5 Entries</span>
+</div>
+<div class="p-6">
+<div class="p-4 border border-dashed border-slate-200 dark:border-slate-700 rounded-xl">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sibling's Name</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Gender</label>
+<select class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm">
+<option>Male</option>
+<option>Female</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">DOB</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="date"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Education</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Occupation</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="text"/>
+</div>
+<div class="md:col-span-2 space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Remarks</label>
+<textarea class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" rows="1"></textarea>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Orang Tua / Mertua -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">diversity_3</span>
+                            Orang Tua / Mertua (Parents / In-laws)
+                        </h3>
+</div>
+<div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-10">
+<!-- Father-in-law -->
+<div class="space-y-5">
+<h4 class="text-sm font-bold border-l-4 border-primary pl-3">Father-in-law Information</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1 md:col-span-2">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Full Name</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Date of Birth</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="date"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Education</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="text"/>
+</div>
+<div class="space-y-1 md:col-span-2">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Remarks</label>
+<textarea class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" rows="2"></textarea>
+</div>
+</div>
+</div>
+<!-- Mother-in-law -->
+<div class="space-y-5">
+<h4 class="text-sm font-bold border-l-4 border-primary pl-3">Mother-in-law Information</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1 md:col-span-2">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Full Name</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Date of Birth</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="date"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Education</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" type="text"/>
+</div>
+<div class="space-y-1 md:col-span-2">
+<label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Remarks</label>
+<textarea class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm" rows="2"></textarea>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Navigation -->
+<footer class="fixed bottom-0 right-0 left-64 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 p-4 z-10 flex justify-between items-center px-8">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+                    Previous Step
+                </button>
+<div class="flex gap-4">
+<button class="px-5 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                        Save Draft
+                    </button>
+<button class="bg-primary hover:bg-primary/90 text-white px-8 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+                        Finish &amp; Submit
+                        <span class="material-symbols-outlined text-base">check_circle</span>
+</button>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

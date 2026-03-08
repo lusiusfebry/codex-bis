@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { Database, Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -21,63 +21,69 @@ export function MasterDataTable<T extends { id: string }>({
   onDelete,
 }: MasterDataTableProps<T>) {
   return (
-    <div className="rounded-2xl border bg-card shadow-sm">
+    <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="bg-muted/30 hover:bg-muted/30">
             {columns.map((column) => (
-              <TableHead className={column.className} key={column.key}>
+              <TableHead className={`text-xs font-semibold uppercase tracking-wider ${column.className ?? ""}`} key={column.key}>
                 {column.header}
               </TableHead>
             ))}
-            <TableHead className="w-[120px] text-right">Aksi</TableHead>
+            <TableHead className="w-[100px] text-right text-xs font-semibold uppercase tracking-wider">Aksi</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {loading
             ? Array.from({ length: 5 }).map((_, index) => (
-                <TableRow key={`skeleton-${index}`}>
-                  {columns.map((column) => (
-                    <TableCell key={`${column.key}-${index}`}>
-                      <Skeleton className="h-5 w-full max-w-[180px]" />
-                    </TableCell>
-                  ))}
-                  <TableCell>
-                    <div className="flex justify-end gap-2">
-                      <Skeleton className="h-9 w-9 rounded-lg" />
-                      <Skeleton className="h-9 w-9 rounded-lg" />
-                    </div>
+              <TableRow key={`skeleton-${index}`}>
+                {columns.map((column) => (
+                  <TableCell key={`${column.key}-${index}`}>
+                    <Skeleton className="h-5 w-full max-w-[180px]" />
                   </TableCell>
-                </TableRow>
-              ))
+                ))}
+                <TableCell>
+                  <div className="flex justify-end gap-1.5">
+                    <Skeleton className="h-8 w-8 rounded-lg" />
+                    <Skeleton className="h-8 w-8 rounded-lg" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
             : null}
           {!loading && data.length === 0 ? (
             <TableRow>
-              <TableCell className="py-10 text-center text-muted-foreground" colSpan={columns.length + 1}>
-                Belum ada data untuk ditampilkan.
+              <TableCell className="py-12 text-center" colSpan={columns.length + 1}>
+                <div className="flex flex-col items-center gap-2">
+                  <Database className="h-8 w-8 text-muted-foreground/40" />
+                  <p className="text-sm text-muted-foreground">Belum ada data untuk ditampilkan.</p>
+                </div>
               </TableCell>
             </TableRow>
           ) : null}
           {!loading
-            ? data.map((item) => (
-                <TableRow key={item.id}>
-                  {columns.map((column) => (
-                    <TableCell className={column.className} key={`${item.id}-${column.key}`}>
-                      {column.render(item)}
-                    </TableCell>
-                  ))}
-                  <TableCell>
-                    <div className="flex justify-end gap-2">
-                      <Button onClick={() => onEdit(item)} size="icon" type="button" variant="outline">
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button onClick={() => onDelete(item)} size="icon" type="button" variant="destructive">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
+            ? data.map((item, index) => (
+              <TableRow
+                key={item.id}
+                className={`transition-colors ${index % 2 === 1 ? "bg-muted/10" : ""}`}
+              >
+                {columns.map((column) => (
+                  <TableCell className={`text-sm ${column.className ?? ""}`} key={`${item.id}-${column.key}`}>
+                    {column.render(item)}
                   </TableCell>
-                </TableRow>
-              ))
+                ))}
+                <TableCell>
+                  <div className="flex justify-end gap-1.5">
+                    <Button className="h-8 w-8" onClick={() => onEdit(item)} size="icon" type="button" variant="ghost">
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => onDelete(item)} size="icon" type="button" variant="ghost">
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
             : null}
         </TableBody>
       </Table>

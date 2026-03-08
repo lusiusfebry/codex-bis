@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1173d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Nexus HR - Add New Employee (Step 3)</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-10 py-3">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">hub</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]">Nexus HR</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Employees</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Payroll</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Reports</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+<div class="bg-primary/20 rounded-full size-10 overflow-hidden">
+<img alt="User Profile" class="size-full object-cover" data-alt="User profile avatar circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_qUcokzkkMBAPxl5mVoalHYP_6jLp2AgttqFY-Dc5i-UGsM7U2jau7E9QxEhv2kYd8ointQ9VwcE5SPKZMZg5PtyBkRsnG-8dEcEmvD2o6yscCSdttan2bk5m8cq3kCS0qDAx1ta9CXYjCMf1AK97iUs-C-V9K7qmNgbLLA0KWNh_JstezFapgPu4EJlSxI60K1rzsvrn_lrDJnD29oaEQPDdjkOYA6fw7tVj_wrHdRLGFSW_Z6WE6JCRX7b62x58TmXOmcnEB8tb"/>
+</div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-8">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1 px-4">
+<!-- Progress Header -->
+<div class="flex flex-col gap-3 mb-8">
+<div class="flex gap-6 justify-between">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold">Step 3 of 4: HR Information</p>
+<p class="text-primary text-sm font-bold">75% Complete</p>
+</div>
+<div class="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-800">
+<div class="h-2 rounded-full bg-primary" style="width: 75%;"></div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Professional and organizational details</p>
+</div>
+<div class="space-y-10">
+<!-- Section 1: Employment (Kepegawaian) -->
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">badge</span>
+                            Kepegawaian (Employment)
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">NIK</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" placeholder="Employee ID Number" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Position</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" placeholder="Job Title" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Division</label>
+<select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary">
+<option>Select Division</option>
+<option>Engineering</option>
+<option>Operations</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Department</label>
+<select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary">
+<option>Select Department</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Email (Company)</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" placeholder="name@nexus.com" type="email"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Manager</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" placeholder="Search Manager" type="text"/>
+</div>
+</div>
+</section>
+<!-- Section 2: Contract (Kontrak) -->
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">contract</span>
+                            Kontrak (Contract)
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Employment Type</label>
+<select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary">
+<option>Permanent</option>
+<option>Contract</option>
+<option>Probation</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Group Join Date</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" type="date"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Join Date</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" type="date"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Contract End Date</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" type="date"/>
+</div>
+</div>
+</section>
+<!-- Section 3: Education -->
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span>
+                            Education
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Level</label>
+<select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary">
+<option>Bachelor's Degree</option>
+<option>Master's Degree</option>
+<option>High School</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">School/University</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" placeholder="Institution Name" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Field of Study</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" placeholder="e.g. Computer Science" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Graduation Status</label>
+<select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary">
+<option>Graduated</option>
+<option>Ongoing</option>
+</select>
+</div>
+</div>
+</section>
+<!-- Section 4: Pangkat dan Golongan -->
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">military_tech</span>
+                            Pangkat dan Golongan
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Rank Category</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Salary Grade</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Sub-Grade</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Pension No.</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11 focus:ring-primary focus:border-primary" type="text"/>
+</div>
+</div>
+</section>
+<!-- Section 5: Emergency Contacts -->
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">contact_emergency</span>
+                            Kontak Darurat (Emergency Contact)
+                        </h3>
+<div class="space-y-6">
+<!-- Contact 1 -->
+<div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
+<p class="text-sm font-bold text-primary mb-3 uppercase tracking-wider">Contact 1</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-slate-500">Name</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-10 text-sm" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-slate-500">Phone</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-10 text-sm" type="tel"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-slate-500">Relation</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-10 text-sm" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-slate-500">Address</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-10 text-sm" type="text"/>
+</div>
+</div>
+</div>
+<!-- Contact 2 -->
+<div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
+<p class="text-sm font-bold text-primary mb-3 uppercase tracking-wider">Contact 2</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-slate-500">Name</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-10 text-sm" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-slate-500">Phone</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-10 text-sm" type="tel"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-slate-500">Relation</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-10 text-sm" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-slate-500">Address</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-10 text-sm" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Row: POO/POH and Uniform -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">location_on</span>
+                                POO / POH
+                            </h3>
+<div class="grid grid-cols-1 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Point of Original</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Point of Hire</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11" type="text"/>
+</div>
+</div>
+</section>
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">apparel</span>
+                                Seragam dan Sepatu
+                            </h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Uniform Size</label>
+<select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11">
+<option>S</option>
+<option>M</option>
+<option>L</option>
+<option>XL</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Shoe Size</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11" placeholder="e.g. 42" type="number"/>
+</div>
+</div>
+</section>
+</div>
+<!-- Section 8: Pergerakan Karyawan -->
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">move_down</span>
+                            Pergerakan Karyawan
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Previous Location</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Mutation Date</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11" type="date"/>
+</div>
+</div>
+</section>
+<!-- Section 9: Costing -->
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">payments</span>
+                            Costing
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Payroll Cycle</label>
+<select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11">
+<option>Monthly</option>
+<option>Bi-weekly</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Costing</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Assign</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Actual</label>
+<input class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 h-11" type="text"/>
+</div>
+</div>
+</section>
+</div>
+<!-- Action Buttons -->
+<div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+<button class="px-6 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                        Previous Step
+                    </button>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                            Save as Draft
+                        </button>
+<button class="px-8 py-2.5 rounded-lg bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:brightness-110 transition-all">
+                            Next: Review
+                        </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Footer (Optional) -->
+<footer class="py-10 text-center text-slate-500 text-sm">
+<p>© 2024 Nexus HR Management System. All rights reserved.</p>
+</footer>
+</div>
+</div>
+</body></html>

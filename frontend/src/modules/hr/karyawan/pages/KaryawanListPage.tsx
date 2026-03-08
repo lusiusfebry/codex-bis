@@ -1,12 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 import {
   Eye,
+  Filter,
   MapPin,
   Search,
   Trash2,
   Upload,
   UserPlus,
   UsersRound,
+  X,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -67,18 +69,18 @@ function getStatusVariant(status?: string) {
   const normalized = (status ?? "").toLowerCase();
 
   if (normalized.includes("aktif")) {
-    return "bg-emerald-100 text-emerald-700";
+    return "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20";
   }
 
   if (normalized.includes("kontrak")) {
-    return "bg-sky-100 text-sky-700";
+    return "bg-sky-50 text-sky-700 ring-1 ring-sky-600/20";
   }
 
   if (normalized.includes("permanent")) {
-    return "bg-violet-100 text-violet-700";
+    return "bg-violet-50 text-violet-700 ring-1 ring-violet-600/20";
   }
 
-  return "bg-slate-100 text-slate-700";
+  return "bg-slate-50 text-slate-600 ring-1 ring-slate-500/20";
 }
 
 export default function KaryawanListPage() {
@@ -172,41 +174,59 @@ export default function KaryawanListPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 rounded-3xl border bg-card p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Daftar Karyawan
-            </h1>
-            <Badge variant="secondary">{totalItems} karyawan</Badge>
+    <div className="mx-auto max-w-[1240px] space-y-5 pb-8">
+      {/* ── Hero Header ── */}
+      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-6 text-slate-50 shadow-lg lg:p-7">
+        <div className="pointer-events-none absolute -left-24 -top-12 h-64 w-64 rounded-full bg-cyan-500/15 blur-[80px]" />
+        <div className="pointer-events-none absolute -right-20 bottom-0 h-52 w-52 rounded-full bg-indigo-500/15 blur-[80px]" />
+        <div className="pointer-events-none absolute left-1/2 top-0 h-32 w-96 -translate-x-1/2 bg-gradient-to-b from-white/[0.03] to-transparent" />
+
+        <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/20 text-cyan-400">
+                <UsersRound className="h-5 w-5" />
+              </div>
+              <h1 className="text-2xl font-semibold tracking-tight lg:text-3xl">
+                Daftar Karyawan
+              </h1>
+              <Badge className="border border-white/20 bg-white/10 px-2.5 text-xs text-slate-200 backdrop-blur-sm hover:bg-white/15">
+                {totalItems} karyawan
+              </Badge>
+            </div>
+            <p className="max-w-xl text-sm leading-relaxed text-slate-400">
+              Kelola profil karyawan, lakukan filtering lintas struktur organisasi, dan buka detail untuk melengkapi data HR.
+            </p>
           </div>
-          <p className="max-w-2xl text-sm text-muted-foreground">
-            Kelola profil dasar karyawan, filter berdasarkan struktur organisasi, dan buka
-            detail profil untuk melanjutkan pengisian data.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <Button
-            className="gap-2"
-            onClick={() => navigate("/hr/karyawan/tambah")}
-          >
-            <UserPlus className="h-4 w-4" />
-            Tambah Karyawan
-          </Button>
-          <Button
-            className="gap-2"
-            onClick={() => setImportOpen(true)}
-            variant="outline"
-          >
-            <Upload className="h-4 w-4" />
-            Import Excel
-          </Button>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <Button
+              className="gap-2 rounded-xl bg-cyan-500 font-medium text-slate-950 shadow-lg shadow-cyan-500/20 transition-all hover:bg-cyan-400 hover:shadow-cyan-500/30"
+              onClick={() => navigate("/hr/karyawan/tambah")}
+            >
+              <UserPlus className="h-4 w-4" />
+              Tambah Karyawan
+            </Button>
+            <Button
+              className="gap-2 rounded-xl border-slate-600 bg-slate-800/80 text-slate-200 backdrop-blur-sm hover:bg-slate-700"
+              onClick={() => setImportOpen(true)}
+              variant="outline"
+            >
+              <Upload className="h-4 w-4" />
+              Import Excel
+            </Button>
+          </div>
         </div>
       </div>
 
-      <Card className="border-0 shadow-sm">
-        <CardContent className="space-y-4 p-6">
+      {/* ── Filter Card ── */}
+      <Card className="border shadow-sm">
+        <CardContent className="space-y-3 p-5">
+          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+            <Filter className="h-4 w-4" />
+            <span>Filter Pencarian</span>
+          </div>
+
           <div className="grid gap-3 xl:grid-cols-[1.3fr_repeat(4,minmax(0,1fr))]">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
@@ -299,8 +319,13 @@ export default function KaryawanListPage() {
           </div>
 
           {hasActiveFilters ? (
-            <div className="flex justify-end">
-              <Button onClick={resetFilters} size="sm" variant="ghost">
+            <div className="flex items-center justify-between rounded-lg bg-muted/50 px-3 py-2">
+              <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Filter className="h-3.5 w-3.5" />
+                Filter aktif diterapkan pada daftar karyawan.
+              </p>
+              <Button className="h-7 gap-1.5 px-2.5 text-xs" onClick={resetFilters} size="sm" variant="ghost">
+                <X className="h-3.5 w-3.5" />
                 Reset Filter
               </Button>
             </div>
@@ -308,18 +333,19 @@ export default function KaryawanListPage() {
         </CardContent>
       </Card>
 
-      <Card className="border-0 shadow-sm">
+      {/* ── Data Table ── */}
+      <Card className="overflow-hidden border shadow-sm">
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Karyawan</TableHead>
-                <TableHead>Posisi Jabatan</TableHead>
-                <TableHead>Divisi / Dept</TableHead>
-                <TableHead>Lokasi</TableHead>
-                <TableHead>Tag</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="w-28 text-right">Aksi</TableHead>
+              <TableRow className="border-b bg-muted/30 hover:bg-muted/30">
+                <TableHead className="font-semibold">Karyawan</TableHead>
+                <TableHead className="font-semibold">Posisi Jabatan</TableHead>
+                <TableHead className="font-semibold">Divisi / Dept</TableHead>
+                <TableHead className="font-semibold">Lokasi</TableHead>
+                <TableHead className="font-semibold">Tag</TableHead>
+                <TableHead className="font-semibold">Status</TableHead>
+                <TableHead className="w-24 text-right font-semibold">Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -347,13 +373,16 @@ export default function KaryawanListPage() {
 
               {!loading && data.length === 0 ? (
                 <TableRow>
-                  <TableCell className="py-16" colSpan={7}>
-                    <div className="flex flex-col items-center justify-center gap-3 text-center">
-                      <div className="rounded-full bg-muted p-5 text-muted-foreground">
-                        <UsersRound className="h-10 w-10" />
+                  <TableCell className="py-20" colSpan={7}>
+                    <div className="flex flex-col items-center justify-center gap-4 text-center">
+                      <div className="relative">
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-500/10 to-indigo-500/10 blur-xl" />
+                        <div className="relative rounded-2xl bg-muted/80 p-5 text-muted-foreground">
+                          <UsersRound className="h-10 w-10" />
+                        </div>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-lg font-semibold text-foreground">
+                        <p className="text-base font-semibold text-foreground">
                           Belum ada data karyawan
                         </p>
                         <p className="text-sm text-muted-foreground">
@@ -366,38 +395,55 @@ export default function KaryawanListPage() {
               ) : null}
 
               {!loading
-                ? data.map((item) => (
-                    <TableRow key={item.id}>
+                ? data.map((item, index) => (
+                    <TableRow
+                      className={`transition-colors duration-150 hover:bg-muted/40 ${
+                        index % 2 === 1 ? "bg-muted/10" : ""
+                      }`}
+                      key={item.id}
+                    >
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          <Avatar className="h-11 w-11 border">
+                          <Avatar className="h-10 w-10 ring-2 ring-background">
                             <AvatarImage
                               alt={item.namaLengkap}
                               src={getFotoUrl(item.fotoKaryawan)}
                             />
-                            <AvatarFallback>{getInitials(item.namaLengkap)}</AvatarFallback>
+                            <AvatarFallback className="bg-slate-100 text-xs font-semibold text-slate-600">
+                              {getInitials(item.namaLengkap)}
+                            </AvatarFallback>
                           </Avatar>
-                          <div className="space-y-0.5">
-                            <div className="font-medium text-foreground">{item.namaLengkap}</div>
-                            <div className="text-sm text-muted-foreground">
+                          <div className="min-w-0 space-y-0.5">
+                            <div className="truncate text-sm font-medium text-foreground">
+                              {item.namaLengkap}
+                            </div>
+                            <div className="truncate text-xs text-muted-foreground">
                               {item.nomorIndukKaryawan}
                             </div>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>{item.posisiJabatan?.namaPosisiJabatan ?? "-"}</TableCell>
-                      <TableCell>
-                        {(item.divisi?.namaDivisi ?? "-") + " · " + (item.department?.namaDepartmen ?? "-")}
+                      <TableCell className="text-sm">
+                        {item.posisiJabatan?.namaPosisiJabatan ?? "-"}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        <div className="space-y-0.5">
+                          <div className="font-medium">{item.divisi?.namaDivisi ?? "-"}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {item.department?.namaDepartmen ?? "-"}
+                          </div>
+                        </div>
                       </TableCell>
                       <TableCell>
-                        <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-                          <MapPin className="h-4 w-4" />
-                          {item.lokasiKerja?.namaLokasiKerja ?? "-"}
+                        <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+                          <MapPin className="h-3.5 w-3.5 shrink-0" />
+                          <span className="truncate">{item.lokasiKerja?.namaLokasiKerja ?? "-"}</span>
                         </span>
                       </TableCell>
                       <TableCell>
                         {item.tag ? (
                           <Badge
+                            className="text-xs shadow-sm"
                             style={{
                               backgroundColor: item.tag.warnaTag,
                               color: "#fff",
@@ -406,24 +452,26 @@ export default function KaryawanListPage() {
                             {item.tag.namaTag}
                           </Badge>
                         ) : (
-                          "-"
+                          <span className="text-sm text-muted-foreground">-</span>
                         )}
                       </TableCell>
                       <TableCell>
-                        <Badge className={getStatusVariant(item.statusKaryawan?.namaStatus)}>
+                        <Badge className={`text-xs ${getStatusVariant(item.statusKaryawan?.namaStatus)}`}>
                           {item.statusKaryawan?.namaStatus ?? "-"}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex justify-end gap-2">
+                        <div className="flex justify-end gap-1.5">
                           <Button
+                            className="h-8 w-8 rounded-lg"
                             onClick={() => navigate(`/hr/karyawan/${item.id}`)}
                             size="icon"
                             variant="ghost"
                           >
-                            <Eye className="h-4 w-4" />
+                            <Eye className="h-4 w-4 text-muted-foreground" />
                           </Button>
                           <Button
+                            className="h-8 w-8 rounded-lg"
                             onClick={() => {
                               setSelectedItem(item);
                               setDeleteOpen(true);
@@ -431,7 +479,7 @@ export default function KaryawanListPage() {
                             size="icon"
                             variant="ghost"
                           >
-                            <Trash2 className="h-4 w-4 text-destructive" />
+                            <Trash2 className="h-4 w-4 text-destructive/70" />
                           </Button>
                         </div>
                       </TableCell>

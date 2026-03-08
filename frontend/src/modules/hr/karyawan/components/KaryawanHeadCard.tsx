@@ -184,13 +184,13 @@ function KaryawanSearchSelect({
   }, [referenceMode, value]);
 
   return (
-    <div className="space-y-2">
-      <Label>{label}</Label>
-      <div className="space-y-2 rounded-xl border p-3">
+    <div className="space-y-1.5">
+      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+      <div className="space-y-2 rounded-lg border bg-muted/20 p-2.5">
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Search className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
           <Input
-            className="pl-9"
+            className="h-8 pl-8 text-sm"
             onChange={(event) => setQuery(event.target.value)}
             placeholder={`Cari ${label.toLowerCase()}...`}
             value={query}
@@ -200,7 +200,7 @@ function KaryawanSearchSelect({
           onValueChange={(selected) => onChange(selected === emptyValue ? null : selected)}
           value={value || emptyValue}
         >
-          <SelectTrigger>
+          <SelectTrigger className="h-8 text-sm">
             <SelectValue placeholder={`Pilih ${label.toLowerCase()}`} />
           </SelectTrigger>
           <SelectContent>
@@ -213,8 +213,8 @@ function KaryawanSearchSelect({
           </SelectContent>
         </Select>
         {loading ? (
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Loader2 className="h-3 w-3 animate-spin" />
             Memuat hasil pencarian...
           </div>
         ) : null}
@@ -258,13 +258,13 @@ function SearchableMasterSelect<TOption extends MasterOption>({
   }, [getLabel, options, query]);
 
   return (
-    <div className="space-y-2">
-      <Label>{label}</Label>
-      <div className="space-y-2 rounded-xl border p-3">
+    <div className="space-y-1.5">
+      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+      <div className="space-y-2 rounded-lg border bg-muted/20 p-2.5">
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Search className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
           <Input
-            className="pl-9"
+            className="h-8 pl-8 text-sm"
             onChange={(event) => setQuery(event.target.value)}
             placeholder={`Cari ${label.toLowerCase()}...`}
             value={query}
@@ -274,7 +274,7 @@ function SearchableMasterSelect<TOption extends MasterOption>({
           onValueChange={(selected) => onChange(selected === emptyValue ? null : selected)}
           value={value || emptyValue}
         >
-          <SelectTrigger>
+          <SelectTrigger className="h-8 text-sm">
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>
           <SelectContent>
@@ -287,6 +287,17 @@ function SearchableMasterSelect<TOption extends MasterOption>({
           </SelectContent>
         </Select>
       </div>
+    </div>
+  );
+}
+
+function FieldGroupHeader({ title }: { title: string }) {
+  return (
+    <div className="col-span-full flex items-center gap-3 pb-1 pt-2 first:pt-0">
+      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        {title}
+      </h3>
+      <div className="h-px flex-1 bg-border" />
     </div>
   );
 }
@@ -553,109 +564,133 @@ export function KaryawanHeadCard({
   };
 
   return (
-    <Card className="sticky top-4 border-0 shadow-sm">
-      <CardContent className="grid gap-6 p-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <div className="space-y-4 rounded-3xl bg-muted/40 p-5">
-          <div className="flex flex-col items-center gap-4 text-center">
-            <div className="relative">
-              <Avatar className="h-40 w-40 border-4 border-background shadow-lg">
+    <div className="space-y-5">
+      {/* ── Horizontal Profile Banner ── */}
+      <Card className="overflow-hidden border shadow-sm">
+        <CardContent className="flex flex-col gap-6 p-5 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-5">
+            <div className="relative shrink-0">
+              <Avatar className="h-20 w-20 ring-2 ring-border">
                 <AvatarImage
                   alt={namaLengkap || "Karyawan"}
                   src={localFotoUrl ?? undefined}
                 />
-                <AvatarFallback className="text-3xl font-semibold">
+                <AvatarFallback className="bg-slate-100 text-xl font-semibold text-slate-600">
                   {getInitials(namaLengkap || "BSI")}
                 </AvatarFallback>
               </Avatar>
               {uploading ? (
                 <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background/70">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <Loader2 className="h-5 w-5 animate-spin text-primary" />
                 </div>
               ) : null}
             </div>
-            <div>
-              <div className="text-lg font-semibold text-foreground">
-                {namaLengkap || "Nama karyawan"}
+            <div className="space-y-2">
+              <div>
+                <div className="text-xl font-bold text-foreground">
+                  {namaLengkap || "Nama karyawan"}
+                </div>
+                <div className="text-sm font-medium text-muted-foreground">
+                  {nomorIndukKaryawan || "Nomor induk karyawan"}
+                </div>
               </div>
-              <div className="text-sm text-muted-foreground">
-                {nomorIndukKaryawan || "Nomor induk karyawan"}
-              </div>
+              <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-secondary px-3 py-1.5 text-xs font-semibold text-secondary-foreground transition-colors hover:bg-secondary/80">
+                <Camera className="h-3.5 w-3.5" />
+                Ganti Foto
+                <input
+                  accept="image/png,image/jpeg"
+                  className="hidden"
+                  onChange={(event) => {
+                    void handleFotoChange(event.target.files?.[0]);
+                    event.target.value = "";
+                  }}
+                  type="file"
+                />
+              </label>
             </div>
-            <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent/10">
-              <Camera className="h-4 w-4" />
-              Ganti Foto
-              <input
-                accept="image/png,image/jpeg"
-                className="hidden"
-                onChange={(event) => {
-                  void handleFotoChange(event.target.files?.[0]);
-                  event.target.value = "";
-                }}
-                type="file"
-              />
-            </label>
           </div>
 
-          <div className="rounded-2xl border border-dashed bg-background p-6 text-center">
-            <div className="mb-3 text-sm font-medium text-foreground">QR Code</div>
+          {/* ── QR Code Section (Horizontal right side) ── */}
+          <div className="flex shrink-0 items-center justify-center rounded-xl bg-muted/30 p-4 md:min-w-[200px] md:justify-end md:bg-transparent md:p-0">
             {!karyawanId ? (
-              <div className="space-y-2 text-xs text-muted-foreground">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
-                  <QrCode className="h-8 w-8" />
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
+                  <QrCode className="h-5 w-5" />
                 </div>
-                <p>QR Code tersedia setelah data disimpan.</p>
+                <p className="max-w-[120px]">Tersedia setelah disimpan</p>
               </div>
             ) : qrLoading ? (
-              <div className="space-y-3">
-                <Skeleton className="mx-auto h-40 w-40 rounded-2xl" />
-                <Skeleton className="mx-auto h-9 w-40" />
+              <div className="flex items-center gap-3">
+                <Skeleton className="h-16 w-16 rounded-lg" />
+                <div className="space-y-2">
+                  <Skeleton className="h-3 w-16" />
+                  <Skeleton className="h-3 w-12" />
+                </div>
               </div>
             ) : qrDataUrl ? (
-              <div className="space-y-4">
-                <div className="rounded-2xl border bg-white p-3">
+              <div className="flex items-center gap-4">
+                <div className="rounded-lg bg-white p-1.5 shadow-sm ring-1 ring-border">
                   <img
                     alt="QR Code Karyawan"
-                    className="mx-auto h-40 w-40 object-contain"
+                    className="h-14 w-14 object-contain"
                     src={qrDataUrl}
                   />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <Button className="gap-2" onClick={handleDownloadQr} size="sm" type="button" variant="outline">
-                    <Download className="h-4 w-4" />
-                    Download PNG
+                <div className="flex flex-col gap-1.5">
+                  <Button
+                    className="h-7 justify-start gap-1.5 rounded-md px-2.5 text-[11px]"
+                    onClick={handleDownloadQr}
+                    size="sm"
+                    type="button"
+                    variant="outline"
+                  >
+                    <Download className="h-3 w-3" />
+                    Unduh PNG
                   </Button>
-                  <Button className="gap-2" onClick={handlePrintQr} size="sm" type="button" variant="outline">
-                    <Printer className="h-4 w-4" />
-                    Print
+                  <Button
+                    className="h-7 justify-start gap-1.5 rounded-md px-2.5 text-[11px]"
+                    onClick={handlePrintQr}
+                    size="sm"
+                    type="button"
+                    variant="outline"
+                  >
+                    <Printer className="h-3 w-3" />
+                    Cetak QR
                   </Button>
                 </div>
               </div>
             ) : (
-              <div className="space-y-2 text-xs text-muted-foreground">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
-                  <QrCode className="h-8 w-8" />
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
+                  <QrCode className="h-5 w-5" />
                 </div>
-                <p>QR Code belum tersedia.</p>
+                <p className="max-w-[120px]">Belum tersedia</p>
               </div>
             )}
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        <div className="space-y-5">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="namaLengkap">Nama Lengkap</Label>
+      {/* ── Form Fields Card ── */}
+      <Card className="overflow-hidden border shadow-sm">
+        <CardContent className="p-5">
+          <div className="grid gap-x-5 gap-y-4 md:grid-cols-2 lg:grid-cols-3">
+            {/* Info Utama */}
+            <FieldGroupHeader title="Info Utama" />
+
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground" htmlFor="namaLengkap">Nama Lengkap</Label>
               <Input
                 id="namaLengkap"
                 {...register("namaLengkap", { required: "Nama lengkap wajib diisi." })}
               />
               {errors.namaLengkap ? (
-                <p className="text-sm text-destructive">{errors.namaLengkap.message}</p>
+                <p className="text-xs text-destructive">{errors.namaLengkap.message}</p>
               ) : null}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="nomorIndukKaryawan">Nomor Induk Karyawan</Label>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground" htmlFor="nomorIndukKaryawan">Nomor Induk Karyawan</Label>
               <Input
                 id="nomorIndukKaryawan"
                 placeholder="Contoh: 02-03827"
@@ -664,13 +699,16 @@ export function KaryawanHeadCard({
                 })}
               />
               {errors.nomorIndukKaryawan ? (
-                <p className="text-sm text-destructive">
+                <p className="text-xs text-destructive">
                   {errors.nomorIndukKaryawan.message}
                 </p>
               ) : null}
             </div>
 
-            <div className="space-y-2">
+            {/* Organisasi */}
+            <FieldGroupHeader title="Organisasi" />
+
+            <div className="space-y-1.5">
               <Controller
                 control={control}
                 name="divisiId"
@@ -687,11 +725,11 @@ export function KaryawanHeadCard({
                 )}
               />
               {errors.divisiId ? (
-                <p className="text-sm text-destructive">{errors.divisiId.message}</p>
+                <p className="text-xs text-destructive">{errors.divisiId.message}</p>
               ) : null}
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Controller
                 control={control}
                 name="departmentId"
@@ -708,11 +746,11 @@ export function KaryawanHeadCard({
                 )}
               />
               {errors.departmentId ? (
-                <p className="text-sm text-destructive">{errors.departmentId.message}</p>
+                <p className="text-xs text-destructive">{errors.departmentId.message}</p>
               ) : null}
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Controller
                 control={control}
                 name="posisiJabatanId"
@@ -729,64 +767,74 @@ export function KaryawanHeadCard({
                 )}
               />
               {errors.posisiJabatanId ? (
-                <p className="text-sm text-destructive">
+                <p className="text-xs text-destructive">
                   {errors.posisiJabatanId.message}
                 </p>
               ) : null}
             </div>
 
-            <Controller
-              control={control}
-              name="managerNik"
-              render={({ field }) => (
-                <KaryawanSearchSelect
-                  label="Manager"
-                  referenceMode="manager"
-                  onChange={field.onChange}
-                  value={field.value}
-                />
-              )}
-            />
+            {/* Supervisi */}
+            <FieldGroupHeader title="Supervisi" />
 
-            <Controller
-              control={control}
-              name="atasanLangsungNik"
-              render={({ field }) => (
-                <KaryawanSearchSelect
-                  label="Atasan Langsung"
-                  referenceMode="atasan"
-                  onChange={field.onChange}
-                  value={field.value}
-                />
-              )}
-            />
+            <div className="space-y-1.5">
+              <Controller
+                control={control}
+                name="managerNik"
+                render={({ field }) => (
+                  <KaryawanSearchSelect
+                    label="Manager"
+                    referenceMode="manager"
+                    onChange={field.onChange}
+                    value={field.value}
+                  />
+                )}
+              />
+            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="emailPerusahaan">Email Perusahaan</Label>
+            <div className="space-y-1.5">
+              <Controller
+                control={control}
+                name="atasanLangsungNik"
+                render={({ field }) => (
+                  <KaryawanSearchSelect
+                    label="Atasan Langsung"
+                    referenceMode="atasan"
+                    onChange={field.onChange}
+                    value={field.value}
+                  />
+                )}
+              />
+            </div>
+
+            {/* Kontak & Status */}
+            <FieldGroupHeader title="Kontak & Status" />
+
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground" htmlFor="emailPerusahaan">Email Perusahaan</Label>
               <div className="relative">
-                <Mail className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Mail className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
                 <Input
                   id="emailPerusahaan"
-                  className="pl-9"
+                  className="h-9 pl-8 text-sm"
                   type="email"
                   {...register("emailPerusahaan")}
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="nomorHandphone">Nomor Handphone</Label>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-muted-foreground" htmlFor="nomorHandphone">Nomor Handphone</Label>
               <div className="relative">
-                <Phone className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Phone className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
                 <Input
                   id="nomorHandphone"
-                  className="pl-9"
+                  className="h-9 pl-8 text-sm"
                   {...register("nomorHandphone")}
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Controller
                 control={control}
                 name="statusKaryawanId"
@@ -803,19 +851,19 @@ export function KaryawanHeadCard({
                 )}
               />
               {selectedStatus ? (
-                <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
-                  <ShieldCheck className="mr-1 h-3.5 w-3.5" />
+                <Badge className="bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20 hover:bg-emerald-50">
+                  <ShieldCheck className="mr-1 h-3 w-3" />
                   {selectedStatus.namaStatus}
                 </Badge>
               ) : null}
               {errors.statusKaryawanId ? (
-                <p className="text-sm text-destructive">
+                <p className="text-xs text-destructive">
                   {errors.statusKaryawanId.message}
                 </p>
               ) : null}
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Controller
                 control={control}
                 name="lokasiKerjaId"
@@ -832,11 +880,11 @@ export function KaryawanHeadCard({
                 )}
               />
               {errors.lokasiKerjaId ? (
-                <p className="text-sm text-destructive">{errors.lokasiKerjaId.message}</p>
+                <p className="text-xs text-destructive">{errors.lokasiKerjaId.message}</p>
               ) : null}
             </div>
 
-            <div className="space-y-2 md:col-span-2">
+            <div className="space-y-1.5 md:col-span-2 lg:col-span-3">
               <Controller
                 control={control}
                 name="tagId"
@@ -865,8 +913,8 @@ export function KaryawanHeadCard({
               ) : null}
             </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1173d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Nexus HR - Family Information</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-10 py-3">
+<div class="flex items-center gap-4">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Nexus HR</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<label class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-100 dark:bg-slate-800">
+<div class="text-slate-500 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-slate-500 px-4 pl-2 text-base font-normal" placeholder="Search" value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200 dark:border-slate-700" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBbS16gwhHhhf1as13KXt-nN8OEi9ouF8x5U9mgCgpr9cEpjkqaqw9dmSiG9lQtuJz851Pr3QZbXDfxubz7H7EwG1hLVFOsbZC7aq7Gp-6Tup7o3ouE53CaNtuMXNn7wO8-8RSSzp2eJJOtrjTMKaM5Wuate6-UBD8k0K8FsvD794Hc88mw9i2SJOnKibjmGkXH5g6ggVpd2pe90CnfzqhmiHW4dMACxTXwDGxsKRbPs1GeHcY0-zNdB2dc6JHCkAmgaZwXRbw3x0e7");'></div>
+</div>
+</header>
+<div class="flex flex-1">
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 flex flex-col gap-4">
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold">Nexus HR</h1>
+<p class="text-slate-500 text-xs font-normal">Enterprise Resource Planning</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Employees</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="text-sm font-medium">Master Data</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Payroll</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 mt-4 border-t border-slate-100 dark:border-slate-800 pt-4" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</aside>
+
+<main class="flex-1 flex flex-col overflow-y-auto">
+<div class="p-8 space-y-6">
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+<div class="flex flex-col lg:flex-row gap-6 lg:items-center lg:justify-between">
+<div class="flex items-center gap-5">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl size-24 border-4 border-slate-50 dark:border-slate-800 shadow-sm" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDxEHGL_-gu8Rl5Sw4d5UC2vFjbIiAkgmN-aaq9dIzvvAsRYoCPxsgMc7P92BQtEJGL2Ajmz4fEHH_pc5ywY_VdGm7L12ZQ-MskTzmZgbi7vHmPOgkUwtRr3VxNLO1asasXcyqv5ak0XLX-zlDwXOAtPr5QLfniYyFWgttaGC9yJvIoOAyk3pBDCZ7yKK3sFsDr4YLFZYtDMoSTZrp36nJgJFMqCQ-ZcZfwOw8S03s8OulZV-hSKm8RYZFUF08Vv414WuQSP7aQw8M5");'></div>
+<div>
+<h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Anwar Sani</h2>
+<p class="text-slate-500 text-base md:text-lg font-medium">Senior Software Engineer</p>
+<div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+<span class="px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800">NIK: 202301045</span>
+<span class="px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800">Jakarta, Indonesia</span>
+<span class="px-2 py-1 rounded-md bg-primary/10 text-primary">Status: Active</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 rounded-lg h-10 px-5 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white text-sm font-bold">
+<span class="material-symbols-outlined text-lg">download</span>
+                                    Download CV
+                                </button>
+<button class="flex items-center justify-center gap-2 rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-md">
+<span class="material-symbols-outlined text-lg">qr_code</span>
+                                    Generate QR
+                                </button>
+</div>
+</div>
+</div>
+
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-2">
+<nav class="grid grid-cols-2 md:grid-cols-5 gap-2">
+<a class="flex items-center justify-center gap-2 rounded-lg px-3 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-base">person</span>
+<span>Personal Data</span>
+</a>
+<a class="flex items-center justify-center gap-2 rounded-lg px-3 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-base">badge</span>
+<span>Employment</span>
+</a>
+<a class="flex items-center justify-center gap-2 rounded-lg px-3 py-3 bg-primary text-white text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-base">family_restroom</span>
+<span>Family Information</span>
+</a>
+<a class="flex items-center justify-center gap-2 rounded-lg px-3 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-base">school</span>
+<span>Education</span>
+</a>
+<a class="flex items-center justify-center gap-2 rounded-lg px-3 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-base">description</span>
+<span>Documents</span>
+</a>
+</nav>
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+<div class="xl:col-span-8 space-y-6">
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-5">
+<div class="flex items-center gap-2">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Pasangan dan Anak</h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-4"><p class="text-[11px] uppercase font-bold text-slate-500">Nama Pasangan</p><p class="mt-1 font-medium">Siti Aminah</p></div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-4"><p class="text-[11px] uppercase font-bold text-slate-500">Tanggal Lahir Pasangan</p><p class="mt-1 font-medium">12 Mei 1992</p></div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-4"><p class="text-[11px] uppercase font-bold text-slate-500">Pendidikan Terakhir Pasangan</p><p class="mt-1 font-medium">S1 Ekonomi</p></div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-4"><p class="text-[11px] uppercase font-bold text-slate-500">Pekerjaan Pasangan</p><p class="mt-1 font-medium">Wiraswasta</p></div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-4"><p class="text-[11px] uppercase font-bold text-slate-500">Jumlah Anak</p><p class="mt-1 font-medium">2</p></div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-4"><p class="text-[11px] uppercase font-bold text-slate-500">Keterangan Pasangan</p><p class="mt-1 font-medium">-</p></div>
+</div>
+</section>
+
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Identitas Anak</h3>
+</div>
+<button class="text-primary text-sm font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm">add</span>Add Child</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-4 py-2 bg-primary/10 text-primary text-xs font-bold">ANAK 1</div>
+<div class="p-4 grid grid-cols-2 gap-4">
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Nama Anak</p><p class="mt-1 font-medium">Budi Santoso</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Jenis Kelamin</p><p class="mt-1 font-medium">Laki-laki</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Tanggal Lahir</p><p class="mt-1 font-medium">10 Januari 2018</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Keterangan</p><p class="mt-1 font-medium">Anak Kandung</p></div>
+</div>
+</div>
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-4 py-2 bg-primary/10 text-primary text-xs font-bold">ANAK 2</div>
+<div class="p-4 grid grid-cols-2 gap-4">
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Nama Anak</p><p class="mt-1 font-medium">Lani Cahyani</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Jenis Kelamin</p><p class="mt-1 font-medium">Perempuan</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Tanggal Lahir</p><p class="mt-1 font-medium">22 Agustus 2021</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Keterangan</p><p class="mt-1 font-medium">Anak Kandung</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-5">
+<div class="flex items-center gap-2">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Saudara Kandung</h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-4"><p class="text-[11px] uppercase font-bold text-slate-500">Anak Ke</p><p class="mt-1 font-medium">1</p></div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-4"><p class="text-[11px] uppercase font-bold text-slate-500">Jumlah Saudara Kandung</p><p class="mt-1 font-medium">2</p></div>
+</div>
+</section>
+
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Identitas Saudara Kandung</h3>
+</div>
+<button class="text-primary text-sm font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm">add</span>Add Sibling</button>
+</div>
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-4 py-2 bg-primary/10 text-primary text-xs font-bold">SAUDARA 1</div>
+<div class="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Nama</p><p class="mt-1 font-medium">Hendra Sani</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Jenis Kelamin</p><p class="mt-1 font-medium">Laki-laki</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Tanggal Lahir</p><p class="mt-1 font-medium">15 Maret 1995</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Pendidikan Terakhir</p><p class="mt-1 font-medium">S1 Teknik Sipil</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Pekerjaan</p><p class="mt-1 font-medium">Arsitek</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Keterangan</p><p class="mt-1 font-medium">Adik Pertama</p></div>
+</div>
+</div>
+</section>
+</div>
+
+<div class="xl:col-span-4 space-y-6">
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-5 xl:sticky xl:top-6">
+<div class="flex items-center gap-2">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Orang Tua / Mertua</h3>
+</div>
+<div class="space-y-4">
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-4 py-2 bg-primary/10 text-primary text-xs font-bold">Ayah Mertua</div>
+<div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Nama Ayah Mertua</p><p class="mt-1 font-medium">Haji Syamsul Bahri</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Tanggal Lahir</p><p class="mt-1 font-medium">04 April 1965</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Pendidikan Terakhir</p><p class="mt-1 font-medium">S1 Hukum</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Keterangan</p><p class="mt-1 font-medium">-</p></div>
+</div>
+</div>
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-4 py-2 bg-primary/10 text-primary text-xs font-bold">Ibu Mertua</div>
+<div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Nama Ibu Mertua</p><p class="mt-1 font-medium">Hj. Ratna Sari</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Tanggal Lahir</p><p class="mt-1 font-medium">18 November 1968</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Pendidikan Terakhir</p><p class="mt-1 font-medium">SMA</p></div>
+<div><p class="text-[11px] uppercase font-bold text-slate-500">Keterangan</p><p class="mt-1 font-medium">Ibu Rumah Tangga</p></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Employee Profile - HR Management System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1173d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-item-active {
+            background-color: rgba(17, 115, 212, 0.1);
+            color: #1173d4;
+            border-right: 4px solid #1173d4;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary p-1.5 rounded-lg text-white">
+<span class="material-symbols-outlined block">corporate_fare</span>
+</div>
+<h1 class="font-bold text-xl tracking-tight text-slate-900 dark:text-white leading-none">Nexus HR</h1>
+</div>
+<nav class="flex-1 px-3 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-item-active" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="text-sm font-medium">Employees</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="text-sm font-medium">Master Data</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Payroll</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="text-sm font-medium">Leave &amp; Attendance</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Top Navigation -->
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Search employees..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:border-slate-800 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-xs font-semibold text-slate-900 dark:text-white">Admin User</p>
+<p class="text-[10px] text-slate-500">System Administrator</p>
+</div>
+<div class="h-10 w-10 rounded-full bg-slate-200" data-alt="Profile picture of the current logged in administrator">
+<img alt="Admin Profile" class="rounded-full w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbhxz4_rqrYBANxwcG6Is30FB7Gcmo8GF36N7HuD4sB0yHxN4HnyejnWS8aI52bxxbuf1Ovq9FLqzxqf8mAv7X5hPSmMUAsPXoErgpCp7BPUzkAdRQU_esUeHlU0xayA1QmAivHWvHP9o-j_aJJYI2-ZsIFONYkRLJN9T5bQICsiutp2qvWo91ihzUZC_JHIYHuDuhUMo4dRfu7iIv1DtlqgV37uqQ_jRNGVSDQTCcZBbsLJ1BCYzTa-ZTr70idJ19IRn9jYLnBP4l"/>
+</div>
+</div>
+</div>
+</header>
+<div class="p-8 space-y-8">
+<!-- Employee Header Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+<div class="flex flex-col lg:flex-row gap-8 items-start">
+<div class="relative group">
+<div class="h-32 w-32 rounded-xl overflow-hidden ring-4 ring-slate-100 dark:ring-slate-800">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of male employee for profile display" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHcysOljHHJCk5-JWTnEo5c3KcK_9ZsEiNbo1WNZpc0aG2ts1XgmDrSUaieoX_yM_ep5b0jv34LsgGJ-DpmeYUpak1BR6mIFGRHRfnFNf5HsAjf5bjHE3JsEaKZqL145TX_HDhUFqZcsPOPI9fcLcPtxYBQofyNFvGbz-mrxu7pn6PEb5Xv6Lwnk5XNwQ3TQ5q6X4pl3mknk78joMhwI1sUEo6t1FjVnKNZpzSb4zLi1z5LFDsATcRqyqXbH8IUfTbt0mJkiB7DU10"/>
+</div>
+<button class="absolute -bottom-2 -right-2 bg-primary text-white p-2 rounded-lg shadow-lg hover:bg-primary/90">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+</button>
+</div>
+<div class="flex-1 space-y-4">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-3">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Jonathan Ardianto</h2>
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Active</span>
+</div>
+<p class="text-slate-500 font-medium">Senior Frontend Developer</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-sm">qr_code_2</span>
+                                        Generate ID
+                                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary/90 shadow-md">
+<span class="material-symbols-outlined text-sm">edit</span>
+                                        Edit Profile
+                                    </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+<div>
+<p class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">NIK</p>
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-200">202308159021</p>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Division</p>
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Engineering &amp; Tech</p>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Department</p>
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Frontend Engineering</p>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Manager</p>
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Sarah Wijaya</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Tabbed Navigation -->
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2">
+<nav class="grid grid-cols-2 md:grid-cols-4 gap-2">
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold bg-primary text-white" href="#">Personal Information</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="#">HR Information</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="#">Family Information</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="#">Training &amp; Career</a>
+</nav>
+</div>
+<!-- Form Content -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column: Biodata & Identification -->
+<div class="lg:col-span-2 space-y-8">
+<!-- Biodata Section -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+                                    Biodata
+                                </h3>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Full Name</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" type="text" value="Jonathan Ardianto"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Gender</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
+<option selected="">Male</option>
+<option>Female</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Place of Birth</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" type="text" value="Jakarta"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Date of Birth</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" type="date" value="1992-05-15"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Religion</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
+<option selected="">Islam</option>
+<option>Christian</option>
+<option>Catholic</option>
+<option>Hindu</option>
+<option>Buddha</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Marital Status</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
+<option selected="">Married</option>
+<option>Single</option>
+<option>Divorced</option>
+</select>
+</div>
+</div>
+</section>
+<!-- Identification Section -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">id_card</span>
+                                    Identification
+                                </h3>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">KTP Number</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm font-mono" type="text" value="3172041505920003"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">NPWP</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm font-mono" type="text" value="72.103.492.1-013.000"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">BPJS Ketenagakerjaan</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm font-mono" type="text" value="180293048512"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">BPJS Kesehatan</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm font-mono" type="text" value="000182736450"/>
+</div>
+</div>
+</section>
+<!-- Address Section -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">location_on</span>
+                                    Address
+                                </h3>
+<div class="flex items-center gap-2">
+<input class="rounded border-slate-300 dark:border-slate-700 text-primary focus:ring-primary" id="same_address" type="checkbox"/>
+<label class="text-xs text-slate-500 font-medium cursor-pointer" for="same_address">Domisili same as KTP</label>
+</div>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-4">
+<h4 class="text-xs font-bold uppercase tracking-widest text-primary/80">KTP Address</h4>
+<div class="space-y-4">
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Address Line</label>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" rows="2">Jl. Melati No. 45, Kebayoran Lama</textarea>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Province</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
+<option selected="">DKI Jakarta</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">City</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
+<option selected="">Jakarta Selatan</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="text-xs font-bold uppercase tracking-widest text-primary/80">Domisili Address</h4>
+<div class="space-y-4">
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Address Line</label>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" rows="2">Apartment Permata Hijau, Tower B, Unit 12A</textarea>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Province</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
+<option selected="">DKI Jakarta</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">City</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
+<option selected="">Jakarta Selatan</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Contact & Bank Details -->
+<div class="space-y-8">
+<!-- Contact Info Section -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">contact_phone</span>
+                                    Contact Details
+                                </h3>
+</div>
+<div class="p-6 space-y-6">
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Primary Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">mail</span>
+<input class="w-full pl-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" type="email" value="jonathan.ardi@nexus.co.id"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Mobile Phone</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">smartphone</span>
+<input class="w-full pl-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" type="tel" value="+62 812 3456 7890"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Emergency Contact Name</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" type="text" value="Amara Ardianto"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Emergency Contact Phone</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" type="tel" value="+62 811 9876 5432"/>
+</div>
+</div>
+</section>
+<!-- Bank Details Section -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_balance</span>
+                                    Bank Account
+                                </h3>
+</div>
+<div class="p-6 space-y-6">
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Bank Name</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
+<option selected="">Bank Central Asia (BCA)</option>
+<option>Bank Mandiri</option>
+<option>Bank Rakyat Indonesia (BRI)</option>
+<option>Bank Negara Indonesia (BNI)</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Account Number</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm font-mono" type="text" value="8021943051"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold text-slate-500">Account Holder Name</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm" type="text" value="Jonathan Ardianto"/>
+</div>
+<div class="p-3 bg-primary/5 rounded-lg border border-primary/10">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-lg">info</span>
+<p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                                            This bank account will be used as the primary account for payroll disbursements and reimbursements.
+                                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- QR Code Helper Card -->
+<section class="bg-slate-900 dark:bg-slate-800 rounded-xl p-6 text-white shadow-lg overflow-hidden relative">
+<div class="relative z-10 flex flex-col items-center text-center gap-4">
+<div class="bg-white p-2 rounded-lg">
+<img alt="Employee ID QR Code" class="w-24 h-24" data-alt="System generated QR code representing employee ID" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPmsj1ahn4lswgHi_NqFH450DNWSD3CN_wp8l1Yd8xi1ZtFPK6JgBl9yVPxnGf2lKFaBtE-uvSO-kVr6KOsiD14Suv78gmZZx9qZHmGouHtS3YSusELdNGZIXkXkmEY_LYkYg0kyhNhRNPBu3Yrvi_Og9ckpTuyBcP_YvzCJw5GfrMY0gGq3Cj4SFyuXL70acI0R6pPOcpbF6H0os08JiSN_sf5wu-4RqNsHJ4VLd6Pjh8R6uK8ePHTW4shgY-9dm5fHGcND5XhYcu"/>
+</div>
+<div>
+<p class="text-sm font-bold">Employee Digital Passport</p>
+<p class="text-xs text-slate-400">Scan for quick profile access</p>
+</div>
+<button class="w-full py-2 bg-primary hover:bg-primary/90 text-xs font-bold rounded-lg transition-colors">Download ID Card</button>
+</div>
+<div class="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
+</section>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="flex justify-end gap-3 pt-6 border-t border-slate-200 dark:border-slate-800">
+<button class="px-6 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">Discard Changes</button>
+<button class="px-8 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-primary/90 shadow-md">Save Information</button>
+</div>
+</div>
+<!-- Page Footer -->
+<footer class="mt-auto py-6 px-8 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-xs text-slate-400">© 2024 Nexus Enterprise HRMS. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-xs text-slate-400 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs text-slate-400 hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="text-xs text-slate-400 hover:text-primary transition-colors" href="#">v2.4.12-pro</a>
+</div>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

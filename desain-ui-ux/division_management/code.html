@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nexus HR - Divisions Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1173d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-screen w-full overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="flex h-full w-64 flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex items-center gap-3 px-6 py-8">
+<div class="flex size-10 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">hub</span>
+</div>
+<div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Nexus HR</h2>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Management System</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1 px-3">
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Employees</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg bg-primary/10 dark:bg-primary/20 px-3 py-2 text-primary" href="#">
+<span class="material-symbols-outlined text-[fill-1]">layers</span>
+<span class="text-sm font-semibold">Divisions</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Payroll</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="border-t border-slate-200 dark:border-slate-800 p-4">
+<div class="flex items-center gap-3 rounded-lg p-2">
+<div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden" data-alt="User profile avatar circular" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFXu1_T2TDP222gahUuehE4PPZZG6STpcWl7f9reN8w7zM4XUz3LOZV-BYXx2IaDfw8gSXRQRQolTUPGK-otpvvSuWRsLO_wa5bRntfKzvYdWy1cSbqbMRIcqMEWDPMWf1rcAy91ViIpz9eRCbZ2iogws5w6NBnQeAXO8c7ZYlc2X9rxAiuFO4ZJrTBGVwGSZsoMIyfkJAMeEmETl5TreSzN31eQhzqLUHHTItqjQE5WuWiDpHUJ05R9mnE2HBKQ9cPVBj7ig0mwmO')"></div>
+<div class="flex-1 min-w-0">
+<p class="truncate text-sm font-bold">Alex Rivera</p>
+<p class="truncate text-xs text-slate-500">HR Director</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Header -->
+<header class="flex h-16 items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-8">
+<div class="flex items-center flex-1 max-w-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full rounded-lg border-none bg-slate-100 dark:bg-slate-800 py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary outline-none" placeholder="Search divisions..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-red-500"></span>
+</button>
+<button class="rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-8">
+<div class="mx-auto max-w-6xl">
+<div class="mb-8 flex items-end justify-between">
+<div>
+<h1 class="text-3xl font-black tracking-tight">Divisions</h1>
+<p class="mt-1 text-slate-500 dark:text-slate-400">Manage and organize your company structure and master data.</p>
+</div>
+<button class="flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95">
+<span class="material-symbols-outlined text-xl">add</span>
+                            New Division
+                        </button>
+</div>
+<!-- Data Table -->
+<div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-slate-50 dark:bg-slate-800/50">
+<tr>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Division Name</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Description</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Status</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex size-8 items-center justify-center rounded bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-sm">code</span>
+</div>
+<span class="text-sm font-semibold">Engineering</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="max-w-xs truncate text-sm text-slate-500 dark:text-slate-400">Software development, QA, and cloud infrastructure management.</p>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-bold text-green-700 dark:text-green-400">
+                                            Active
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="ml-3 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex size-8 items-center justify-center rounded bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-sm">campaign</span>
+</div>
+<span class="text-sm font-semibold">Marketing</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="max-w-xs truncate text-sm text-slate-500 dark:text-slate-400">Brand management, social media, and digital advertising campaigns.</p>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-bold text-green-700 dark:text-green-400">
+                                            Active
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="ml-3 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex size-8 items-center justify-center rounded bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-sm">support_agent</span>
+</div>
+<span class="text-sm font-semibold">Human Resources</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="max-w-xs truncate text-sm text-slate-500 dark:text-slate-400">Talent acquisition, employee relations, and benefits administration.</p>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 text-xs font-bold text-slate-600 dark:text-slate-400">
+                                            Inactive
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="ml-3 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex size-8 items-center justify-center rounded bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-sm">account_balance</span>
+</div>
+<span class="text-sm font-semibold">Finance</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="max-w-xs truncate text-sm text-slate-500 dark:text-slate-400">Accounting, auditing, and financial planning.</p>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-bold text-green-700 dark:text-green-400">
+                                            Active
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="ml-3 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Side Drawer Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-end bg-black/30 backdrop-blur-sm transition-opacity">
+<!-- Side Drawer Content -->
+<div class="h-full w-full max-w-md transform bg-white dark:bg-slate-900 shadow-2xl transition-transform">
+<div class="flex h-full flex-col">
+<div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 p-6">
+<div>
+<h2 class="text-xl font-bold">New Division</h2>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Create a new organizational unit.</p>
+</div>
+<button class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form class="flex-1 space-y-6 overflow-y-auto p-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold">Division Name</label>
+<input class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. Product Strategy" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold">Description</label>
+<textarea class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="Briefly describe the division's goals and responsibilities..." rows="4"></textarea>
+</div>
+<div class="space-y-3">
+<label class="text-sm font-semibold">Status</label>
+<div class="flex flex-col gap-2">
+<label class="relative flex cursor-pointer items-center gap-3 rounded-lg border border-slate-200 dark:border-slate-800 p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<input checked="" class="size-4 text-primary focus:ring-primary" name="status" type="radio"/>
+<div>
+<p class="text-sm font-bold">Active</p>
+<p class="text-xs text-slate-500">Visible across the organization</p>
+</div>
+</label>
+<label class="relative flex cursor-pointer items-center gap-3 rounded-lg border border-slate-200 dark:border-slate-800 p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<input class="size-4 text-primary focus:ring-primary" name="status" type="radio"/>
+<div>
+<p class="text-sm font-bold">Inactive</p>
+<p class="text-xs text-slate-500">Hidden from directory</p>
+</div>
+</label>
+</div>
+</div>
+<div class="rounded-lg bg-blue-50 dark:bg-blue-900/20 p-4">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-blue-500">info</span>
+<p class="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
+                                    Once created, you can assign employees to this division from the Employees directory.
+                                </p>
+</div>
+</div>
+</form>
+<div class="flex items-center gap-3 border-t border-slate-200 dark:border-slate-800 p-6">
+<button class="flex-1 rounded-lg bg-primary py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95">
+                            Create Division
+                        </button>
+<button class="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                            Cancel
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

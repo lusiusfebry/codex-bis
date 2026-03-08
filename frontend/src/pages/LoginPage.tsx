@@ -76,49 +76,55 @@ export default function LoginPage() {
 
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[45%_55%]">
-      <section className="relative hidden overflow-hidden bg-[linear-gradient(135deg,#0F1923_0%,#1B2A47_100%)] px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between">
-        <div className="absolute inset-0 bg-mining-grid opacity-40" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.18),transparent_28%)]" />
-        <div className="relative z-10 flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/10 backdrop-blur">
-            <HardHat className="h-8 w-8 text-accent" />
+      {/* ── Branding Panel ── */}
+      <section className="relative hidden overflow-hidden bg-[linear-gradient(135deg,#0F1923_0%,#1B2A47_50%,#243B69_100%)] px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between">
+        <div className="absolute inset-0 bg-mining-grid opacity-30" />
+        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/4 h-48 w-48 rounded-full bg-indigo-500/8 blur-3xl" />
+
+        <div className="relative z-10 flex items-center gap-3.5">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/10 shadow-lg backdrop-blur">
+            <HardHat className="h-6 w-6 text-accent" />
           </div>
           <div>
-            <div className="text-sm uppercase tracking-[0.35em] text-accent">BSI</div>
-            <h1 className="mt-1 text-3xl font-black">Bebang Sistem Informasi</h1>
+            <div className="text-xs uppercase tracking-[0.35em] text-accent">BSI</div>
+            <h1 className="mt-0.5 text-2xl font-extrabold">Bebang Sistem Informasi</h1>
           </div>
         </div>
 
         <div className="relative z-10 max-w-xl">
-          <div className="mb-8 flex items-center gap-4 text-accent">
-            <Mountain className="h-14 w-14" />
-            <Pickaxe className="h-12 w-12" />
+          <div className="mb-6 flex items-center gap-3 text-accent/80">
+            <Mountain className="h-12 w-12" />
+            <Pickaxe className="h-10 w-10" />
           </div>
-          <h2 className="text-4xl font-black leading-tight">PT Prima Sarana Gemilang</h2>
-          <p className="mt-4 text-lg text-slate-300">
+          <h2 className="text-4xl font-black leading-tight tracking-tight">PT Prima Sarana Gemilang</h2>
+          <p className="mt-4 text-base leading-relaxed text-slate-300/90">
             Sistem operasi digital terpadu untuk mendukung Human Resources dan operasional site pertambangan Taliabu.
           </p>
         </div>
 
-        <div className="relative z-10 text-sm text-slate-400">Site Taliabu · Industri Pertambangan</div>
+        <div className="relative z-10 text-xs text-slate-400/80">Site Taliabu · Industri Pertambangan</div>
       </section>
 
+      {/* ── Login Form ── */}
       <section className="flex items-center justify-center bg-background px-4 py-10 sm:px-6 lg:px-10">
-        <Card className="w-full max-w-xl animate-fade-up border-slate-200 shadow-panel">
+        <Card className="w-full max-w-xl animate-fade-up border-border/60 shadow-panel">
           <CardHeader className="space-y-4 text-center">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border-4 border-accent/20 bg-white shadow-sm">
-              <span className="text-2xl font-black text-primary">PSG</span>
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 shadow-sm ring-1 ring-border/50">
+              <span className="text-xl font-black text-primary">PSG</span>
             </div>
             <div>
-              <CardTitle className="text-3xl font-black tracking-tight text-primary">Selamat Datang</CardTitle>
-              <CardDescription className="mt-2 text-base">Masuk menggunakan NIK & kata sandi Anda</CardDescription>
+              <CardTitle className="text-2xl font-extrabold tracking-tight text-primary">Selamat Datang</CardTitle>
+              <CardDescription className="mt-1.5 text-sm">Masuk menggunakan NIK & kata sandi Anda</CardDescription>
             </div>
           </CardHeader>
           <CardContent>
             <form className="space-y-5" onSubmit={handleSubmit}>
-              <div className="space-y-2">
-                <Label htmlFor="nik">NIK</Label>
+              <div className="space-y-1.5">
+                <Label className="text-sm font-medium" htmlFor="nik">NIK</Label>
                 <Input
+                  className="h-11"
                   id="nik"
                   placeholder="Contoh: 02-03827"
                   value={formValues.nik}
@@ -127,10 +133,11 @@ export default function LoginPage() {
                 {errors.nik ? <p className="text-sm font-medium text-destructive">{errors.nik}</p> : null}
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Kata Sandi</Label>
+              <div className="space-y-1.5">
+                <Label className="text-sm font-medium" htmlFor="password">Kata Sandi</Label>
                 <div className="relative">
                   <Input
+                    className="h-11 pr-10"
                     id="password"
                     type={showPassword ? "text" : "password"}
                     value={formValues.password}
@@ -147,7 +154,7 @@ export default function LoginPage() {
                 {errors.password ? <p className="text-sm font-medium text-destructive">{errors.password}</p> : null}
               </div>
 
-              <Button className="h-12 w-full text-base font-bold" disabled={isSubmitting} type="submit">
+              <Button className="h-11 w-full text-sm font-bold" disabled={isSubmitting} type="submit">
                 {isSubmitting ? (
                   <>
                     <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
@@ -159,7 +166,7 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <div className="mt-8 text-center text-sm text-muted-foreground">Bebang Sistem Informasi · PT Prima Sarana Gemilang</div>
+            <div className="mt-8 text-center text-xs text-muted-foreground/70">Bebang Sistem Informasi · PT Prima Sarana Gemilang</div>
           </CardContent>
         </Card>
       </section>

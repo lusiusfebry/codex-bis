@@ -1,5 +1,18 @@
 import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
-import { Check, ChevronDown, Search } from "lucide-react";
+import {
+  Award,
+  Briefcase,
+  Building2,
+  Check,
+  ChevronDown,
+  Clock,
+  DollarSign,
+  GraduationCap,
+  MapPinned,
+  Phone,
+  Search,
+  Shirt,
+} from "lucide-react";
 import {
   Controller,
   useFieldArray,
@@ -15,13 +28,6 @@ import { fetchMasterData, MASTER_DATA_PATHS } from "@/api/masterData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import type {
   Department,
@@ -47,20 +53,31 @@ function FieldError({ message }: { message?: string }) {
     return null;
   }
 
-  return <p className="text-sm text-destructive">{message}</p>;
+  return <p className="text-xs text-destructive">{message}</p>;
 }
 
 function Section({
   title,
+  icon,
+  accentColor = "border-l-primary/60",
   children,
 }: {
   title: string;
+  icon?: React.ReactNode;
+  accentColor?: string;
   children: React.ReactNode;
 }) {
   return (
-    <Card className="border-0 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
+    <Card className={`border-l-[3px] shadow-sm transition-shadow hover:shadow-md ${accentColor}`}>
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-2.5 text-base">
+          {icon ? (
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+              {icon}
+            </span>
+          ) : null}
+          {title}
+        </CardTitle>
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
@@ -143,9 +160,9 @@ function SearchableMasterSelect({
   };
 
   return (
-    <div className="relative space-y-2">
+    <div className="relative space-y-1.5">
       <button
-        className="flex w-full items-center justify-between rounded-xl border bg-background px-3 py-2 text-left text-sm text-foreground"
+        className="flex w-full items-center justify-between rounded-lg border bg-background px-3 py-2 text-left text-sm text-foreground transition-colors hover:bg-muted/30"
         onClick={() => {
           if (open) {
             closeDropdown();
@@ -163,12 +180,12 @@ function SearchableMasterSelect({
       </button>
 
       {open ? (
-        <div className="absolute z-20 w-full rounded-xl border bg-background p-2 shadow-lg">
-          <div className="relative mb-2">
-            <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+        <div className="absolute z-20 w-full rounded-lg border bg-background p-1.5 shadow-lg">
+          <div className="relative mb-1.5">
+            <Search className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
             <Input
               autoFocus
-              className="pl-9"
+              className="h-8 pl-8 text-sm"
               onChange={(event) => setQuery(event.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={searchPlaceholder}
@@ -184,9 +201,8 @@ function SearchableMasterSelect({
                 return (
                   <button
                     key={item.id}
-                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm ${
-                      isHighlighted ? "bg-accent/10 text-foreground" : "text-muted-foreground"
-                    }`}
+                    className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-left text-sm transition-colors ${isHighlighted ? "bg-accent/10 text-foreground" : "text-muted-foreground hover:bg-muted/30"
+                      }`}
                     onMouseDown={(event) => event.preventDefault()}
                     onMouseEnter={() => setHighlightedIndex(index)}
                     onClick={() => {
@@ -196,12 +212,12 @@ function SearchableMasterSelect({
                     type="button"
                   >
                     <span>{item.label}</span>
-                    {isSelected ? <Check className="h-4 w-4 text-primary" /> : null}
+                    {isSelected ? <Check className="h-3.5 w-3.5 text-primary" /> : null}
                   </button>
                 );
               })
             ) : (
-              <div className="px-3 py-2 text-sm text-muted-foreground">Data tidak ditemukan.</div>
+              <div className="px-2.5 py-2 text-sm text-muted-foreground">Data tidak ditemukan.</div>
             )}
           </div>
         </div>
@@ -402,46 +418,54 @@ export function TabInformasiHR({
       })),
     [options.lokasiKerja],
   );
+  const statusKelulusanOptions = useMemo<SearchableOption[]>(
+    () => [
+      { id: "Lulus", label: "Lulus" },
+      { id: "Tidak Lulus", label: "Tidak Lulus" },
+      { id: "Sedang Studi", label: "Sedang Studi" },
+    ],
+    [],
+  );
 
   return (
-    <div className="space-y-6">
-      <Section title="Kepegawaian">
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label>Nomor Induk Karyawan</Label>
-            <Input readOnly value={watch("nomorIndukKaryawan") || ""} />
+    <div className="space-y-5">
+      <Section title="Kepegawaian" icon={<Building2 className="h-3.5 w-3.5" />} accentColor="border-l-blue-500/60">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Nomor Induk Karyawan</Label>
+            <Input readOnly className="bg-muted/30" value={watch("nomorIndukKaryawan") || ""} />
           </div>
-          <div className="space-y-2">
-            <Label>Posisi Jabatan</Label>
-            <Input readOnly value={selectedPosisi} />
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Posisi Jabatan</Label>
+            <Input readOnly className="bg-muted/30" value={selectedPosisi} />
           </div>
-          <div className="space-y-2">
-            <Label>Divisi</Label>
-            <Input readOnly value={selectedDivisi} />
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Divisi</Label>
+            <Input readOnly className="bg-muted/30" value={selectedDivisi} />
           </div>
-          <div className="space-y-2">
-            <Label>Department</Label>
-            <Input readOnly value={selectedDepartment} />
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Department</Label>
+            <Input readOnly className="bg-muted/30" value={selectedDepartment} />
           </div>
-          <div className="space-y-2">
-            <Label>Email Perusahaan</Label>
-            <Input readOnly value={watch("emailPerusahaan") || ""} />
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Email Perusahaan</Label>
+            <Input readOnly className="bg-muted/30" value={watch("emailPerusahaan") || ""} />
           </div>
-          <div className="space-y-2">
-            <Label>Manager</Label>
-            <Input readOnly value={managerLabel} />
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Manager</Label>
+            <Input readOnly className="bg-muted/30" value={managerLabel} />
           </div>
-          <div className="space-y-2">
-            <Label>Atasan Langsung</Label>
-            <Input readOnly value={atasanLangsungLabel} />
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Atasan Langsung</Label>
+            <Input readOnly className="bg-muted/30" value={atasanLangsungLabel} />
           </div>
         </div>
       </Section>
 
-      <Section title="Kontrak">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <div className="space-y-2">
-            <Label>Jenis Hubungan Kerja</Label>
+      <Section title="Kontrak" icon={<Clock className="h-3.5 w-3.5" />} accentColor="border-l-amber-500/60">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Jenis Hubungan Kerja</Label>
             <Controller
               control={control}
               name="jenisHubunganKerjaId"
@@ -457,85 +481,82 @@ export function TabInformasiHR({
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="tanggalMasukGroup">Tanggal Masuk Group</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="tanggalMasukGroup">Tanggal Masuk Group</Label>
             <Input id="tanggalMasukGroup" type="date" {...register("tanggalMasukGroup")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="tanggalMasuk">Tanggal Masuk</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="tanggalMasuk">Tanggal Masuk</Label>
             <Input id="tanggalMasuk" type="date" {...register("tanggalMasuk")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="tanggalPermanent">Tanggal Permanent</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="tanggalPermanent">Tanggal Permanent</Label>
             <Input id="tanggalPermanent" type="date" {...register("tanggalPermanent")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="tanggalKontrak">Tanggal Kontrak</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="tanggalKontrak">Tanggal Kontrak</Label>
             <Input id="tanggalKontrak" type="date" {...register("tanggalKontrak")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="tanggalAkhirKontrak">Tanggal Akhir Kontrak</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="tanggalAkhirKontrak">Tanggal Akhir Kontrak</Label>
             <Input
               id="tanggalAkhirKontrak"
               type="date"
               {...register("tanggalAkhirKontrak")}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="tanggalBerhenti">Tanggal Berhenti</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="tanggalBerhenti">Tanggal Berhenti</Label>
             <Input id="tanggalBerhenti" type="date" {...register("tanggalBerhenti")} />
           </div>
         </div>
       </Section>
 
-      <Section title="Education">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <div className="space-y-2">
-            <Label htmlFor="tingkatPendidikan">Tingkat Pendidikan</Label>
+      <Section title="Education" icon={<GraduationCap className="h-3.5 w-3.5" />} accentColor="border-l-emerald-500/60">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="tingkatPendidikan">Tingkat Pendidikan</Label>
             <Input id="tingkatPendidikan" {...register("tingkatPendidikan")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="bidangStudi">Bidang Studi</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="bidangStudi">Bidang Studi</Label>
             <Input id="bidangStudi" {...register("bidangStudi")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="namaSekolah">Nama Sekolah</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="namaSekolah">Nama Sekolah</Label>
             <Input id="namaSekolah" {...register("namaSekolah")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="kotaSekolah">Kota Sekolah</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="kotaSekolah">Kota Sekolah</Label>
             <Input id="kotaSekolah" {...register("kotaSekolah")} />
           </div>
-          <div className="space-y-2">
-            <Label>Status Kelulusan</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Status Kelulusan</Label>
             <Controller
               control={control}
               name="statusKelulusan"
               render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value || ""}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih status kelulusan" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Lulus">Lulus</SelectItem>
-                    <SelectItem value="Tidak Lulus">Tidak Lulus</SelectItem>
-                    <SelectItem value="Sedang Studi">Sedang Studi</SelectItem>
-                  </SelectContent>
-                </Select>
+                <SearchableMasterSelect
+                  onChange={field.onChange}
+                  options={statusKelulusanOptions}
+                  placeholder="Pilih status kelulusan"
+                  searchPlaceholder="Cari status kelulusan..."
+                  value={field.value}
+                />
               )}
             />
           </div>
-          <div className="space-y-2 md:col-span-2 xl:col-span-3">
-            <Label htmlFor="keteranganPendidikan">Keterangan</Label>
-            <Textarea id="keteranganPendidikan" {...register("keteranganPendidikan")} />
+          <div className="space-y-1.5 md:col-span-2 lg:col-span-3">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="keteranganPendidikan">Keterangan</Label>
+            <Textarea id="keteranganPendidikan" rows={2} {...register("keteranganPendidikan")} />
           </div>
         </div>
       </Section>
 
-      <Section title="Pangkat dan Golongan">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <div className="space-y-2">
-            <Label>Kategori Pangkat</Label>
+      <Section title="Pangkat dan Golongan" icon={<Award className="h-3.5 w-3.5" />} accentColor="border-l-violet-500/60">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Kategori Pangkat</Label>
             <Controller
               control={control}
               name="kategoriPangkatId"
@@ -550,8 +571,8 @@ export function TabInformasiHR({
               )}
             />
           </div>
-          <div className="space-y-2">
-            <Label>Golongan Pangkat</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Golongan Pangkat</Label>
             <Controller
               control={control}
               name="golonganId"
@@ -566,8 +587,8 @@ export function TabInformasiHR({
               )}
             />
           </div>
-          <div className="space-y-2">
-            <Label>Sub Golongan Pangkat</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Sub Golongan Pangkat</Label>
             <Controller
               control={control}
               name="subGolonganId"
@@ -582,47 +603,61 @@ export function TabInformasiHR({
               )}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="noDanaPensiun">No Dana Pensiun</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="noDanaPensiun">No Dana Pensiun</Label>
             <Input id="noDanaPensiun" {...register("noDanaPensiun")} />
           </div>
         </div>
       </Section>
 
-      <Section title="Kontak Darurat">
+      <Section title="Kontak Darurat" icon={<Phone className="h-3.5 w-3.5" />} accentColor="border-l-rose-500/60">
         <div className="grid gap-4 md:grid-cols-2">
           {fields.map((field, index) => (
             <Card key={field.id} className="border border-border/60 shadow-none">
-              <CardHeader>
-                <CardTitle className="text-base">Kontak {index + 1}</CardTitle>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-sm">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-rose-50 text-xs font-semibold text-rose-600">
+                    {index + 1}
+                  </span>
+                  Kontak Darurat {index + 1}
+                </CardTitle>
               </CardHeader>
-              <CardContent className="grid gap-4">
+              <CardContent className="grid gap-3">
                 <input
                   type="hidden"
                   {...register(`kontakDarurat.${index}.urutan`, { valueAsNumber: true })}
                 />
-                <div className="space-y-2">
-                  <Label htmlFor={`kontakDarurat-${index}-nama`}>Nama</Label>
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-muted-foreground" htmlFor={`kontakDarurat-${index}-nama`}>
+                    Nama
+                  </Label>
                   <Input id={`kontakDarurat-${index}-nama`} {...register(`kontakDarurat.${index}.nama`)} />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`kontakDarurat-${index}-nomorTelepon`}>No. Telepon</Label>
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-muted-foreground" htmlFor={`kontakDarurat-${index}-nomorTelepon`}>
+                    Nomor Telepon
+                  </Label>
                   <Input
                     id={`kontakDarurat-${index}-nomorTelepon`}
                     {...register(`kontakDarurat.${index}.nomorTelepon`)}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`kontakDarurat-${index}-hubungan`}>Hubungan</Label>
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-muted-foreground" htmlFor={`kontakDarurat-${index}-hubungan`}>
+                    Hubungan
+                  </Label>
                   <Input
                     id={`kontakDarurat-${index}-hubungan`}
                     {...register(`kontakDarurat.${index}.hubungan`)}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`kontakDarurat-${index}-alamat`}>Alamat</Label>
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-muted-foreground" htmlFor={`kontakDarurat-${index}-alamat`}>
+                    Alamat
+                  </Label>
                   <Textarea
                     id={`kontakDarurat-${index}-alamat`}
+                    rows={2}
                     {...register(`kontakDarurat.${index}.alamat`)}
                   />
                 </div>
@@ -632,36 +667,36 @@ export function TabInformasiHR({
         </div>
       </Section>
 
-      <Section title="POO/POH">
+      <Section title="POO/POH" icon={<Briefcase className="h-3.5 w-3.5" />} accentColor="border-l-sky-500/60">
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="pointOfOriginal">Point of Original</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="pointOfOriginal">Point of Original</Label>
             <Input id="pointOfOriginal" {...register("pointOfOriginal")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="pointOfHire">Point of Hire</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="pointOfHire">Point of Hire</Label>
             <Input id="pointOfHire" {...register("pointOfHire")} />
           </div>
         </div>
       </Section>
 
-      <Section title="Seragam dan Sepatu Kerja">
+      <Section title="Seragam dan Sepatu Kerja" icon={<Shirt className="h-3.5 w-3.5" />} accentColor="border-l-indigo-500/60">
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="ukuranSeragamKerja">Ukuran Seragam Kerja</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="ukuranSeragamKerja">Ukuran Seragam Kerja</Label>
             <Input id="ukuranSeragamKerja" {...register("ukuranSeragamKerja")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="ukuranSepatuKerja">Ukuran Sepatu Kerja</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="ukuranSepatuKerja">Ukuran Sepatu Kerja</Label>
             <Input id="ukuranSepatuKerja" {...register("ukuranSepatuKerja")} />
           </div>
         </div>
       </Section>
 
-      <Section title="Pergerakan Karyawan">
+      <Section title="Pergerakan Karyawan" icon={<MapPinned className="h-3.5 w-3.5" />} accentColor="border-l-teal-500/60">
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label>Lokasi Sebelumnya</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground">Lokasi Sebelumnya</Label>
             <Controller
               control={control}
               name="lokasiSebelumnyaId"
@@ -676,29 +711,29 @@ export function TabInformasiHR({
               )}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="tanggalMutasi">Tanggal Mutasi</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="tanggalMutasi">Tanggal Mutasi</Label>
             <Input id="tanggalMutasi" type="date" {...register("tanggalMutasi")} />
           </div>
         </div>
       </Section>
 
-      <Section title="Costing">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <div className="space-y-2">
-            <Label htmlFor="siklusPembayaranGaji">Siklus Pembayaran Gaji</Label>
+      <Section title="Costing" icon={<DollarSign className="h-3.5 w-3.5" />} accentColor="border-l-orange-500/60">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="siklusPembayaranGaji">Siklus Pembayaran Gaji</Label>
             <Input id="siklusPembayaranGaji" {...register("siklusPembayaranGaji")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="costing">Costing</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="costing">Costing</Label>
             <Input id="costing" {...register("costing")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="assign">Assign</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="assign">Assign</Label>
             <Input id="assign" {...register("assign")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="actual">Actual</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground" htmlFor="actual">Actual</Label>
             <Input id="actual" {...register("actual")} />
           </div>
         </div>

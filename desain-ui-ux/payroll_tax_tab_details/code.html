@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nexus HR - Employee Profile (Payroll &amp; Tax)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1173d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined">corporate_fare</span>
+</div>
+<div>
+<h1 class="text-base font-bold leading-none">Nexus HR</h1>
+<p class="text-xs text-slate-500 mt-1">Admin Panel</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1">group</span>
+<span class="text-sm font-medium">Employees</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">database</span>
+<span class="text-sm font-medium">Master Data</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+<span class="text-sm font-medium">Payroll</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">description</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Admin user profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQwpkRjSCFnwk64O9HDLoPkBfzEp2IasBGwgqSQEYOP65-PcTPYGifwTHYFy5goVqmRckqKCE43wHnzisKu3jYt6OAWbSv3hBVbdjswZdpR-ZgfRlgSQJenM0GYoJCCsdbyVYbVnc1Ibaianb0Nrj57cl6qtlp9dfS56LBijbTfePqbFBUCA_yHoJOJNJ6iFuPEiVqCQjiTQi1-5H9BzPEfQtIAu_QPVdcUWeQALAlLC5r96lhzbwiNY4dFj_KJeok0GFkrZ1-epA7')"></div>
+<div class="flex-1 overflow-hidden">
+<p class="text-xs font-bold truncate">Jane Smith</p>
+<p class="text-[10px] text-slate-500">Super Admin</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Header -->
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">badge</span>
+<h2 class="text-lg font-bold">Employee Profile</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary w-64" placeholder="Search employee..." type="text"/>
+</div>
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+</div>
+</header>
+<!-- Profile Hero Area -->
+<div class="bg-white dark:bg-slate-900 px-8 pt-8 border-b border-slate-200 dark:border-slate-800">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+<div class="flex gap-6 items-center">
+<div class="size-24 rounded-full border-4 border-white dark:border-slate-800 shadow-sm bg-slate-100 overflow-hidden" data-alt="John Doe professional headshot" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDdzKXd-rM3hIEeQdheINKxqP69pekK29qzfl2H02rlvq6uGzNQ6R2lg2LISZtX_zYFaXxp4eZd9odXU9ZJJdbI-hcnbN0v5umNmVFjgnoerYFFiNOTzWlugo7EMU9fmm5EBH7-tmbhTz-bUsFP5fGMwPmAXYhCFgMsxCdvWIruvxzn68nrk_xX-YAz_Ymu5ij_ngl4YfjcCtQSV3tcCD49rzp2w7ey22VMdmNj_CCuA0j8OqVuklt_Xo4iiJPy9d0_LwzflA77Zdke')"></div>
+<div>
+<h1 class="text-2xl font-bold">John Doe</h1>
+<p class="text-slate-500 font-medium">Senior Software Engineer</p>
+<div class="flex gap-4 mt-2">
+<span class="text-xs text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">Employee ID: NX-10293</span>
+<span class="text-xs text-primary bg-primary/10 px-2 py-1 rounded font-semibold uppercase tracking-wider">Active</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit Profile
+                    </button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-primary/90 flex items-center gap-2 shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                        Export PDF
+                    </button>
+</div>
+</div>
+<!-- Tabs Navigation -->
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2">
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">Personal</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">HR Information</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">Leave</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">Documents</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-white bg-primary whitespace-nowrap" href="#">Payroll &amp; Tax</a>
+<a class="flex items-center justify-center rounded-lg px-3 py-3 text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap" href="#">History</a>
+</div>
+</div>
+</div>
+<!-- Tab Content -->
+<div class="flex-1 overflow-y-auto p-8 bg-background-light dark:bg-background-dark">
+<div class="max-w-6xl mx-auto space-y-6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Salary Details -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-2 mb-6">
+<span class="w-1 h-6 bg-primary rounded-full"></span>
+<span class="material-symbols-outlined text-primary">payments</span>
+<h3 class="font-bold text-slate-900 dark:text-white">Salary Details (Gaji)</h3>
+</div>
+<div class="grid gap-3">
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Basic Salary</p>
+<p class="text-lg font-bold text-slate-900 dark:text-slate-100">IDR 24.500.000</p>
+</div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Payroll Cycle</p>
+<p class="text-sm font-medium">Monthly - IDR</p>
+</div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Payment Method</p>
+<p class="text-sm font-medium">Bank Transfer</p>
+</div>
+</div>
+</div>
+<!-- Tax Information -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-2 mb-6">
+<span class="w-1 h-6 bg-primary rounded-full"></span>
+<span class="material-symbols-outlined text-primary">receipt_long</span>
+<h3 class="font-bold text-slate-900 dark:text-white">Tax Information (Perpajakan)</h3>
+</div>
+<div class="grid gap-3">
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Tax Status</p>
+<p class="text-sm font-medium">K/1 - Married with 1 child</p>
+</div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">NPWP Number</p>
+<p class="text-sm font-medium font-mono">01.234.567.8-901.000</p>
+</div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Tax Office (KPP)</p>
+<p class="text-sm font-medium">KPP Pratama Jakarta Kebayoran Lama</p>
+</div>
+</div>
+</div>
+<!-- Bank Account -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-2 mb-6">
+<span class="w-1 h-6 bg-primary rounded-full"></span>
+<span class="material-symbols-outlined text-primary">account_balance</span>
+<h3 class="font-bold text-slate-900 dark:text-white">Bank Account (Rekening Bank)</h3>
+</div>
+<div class="grid gap-3">
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Bank Name</p>
+<p class="text-sm font-medium">Bank Central Asia (BCA)</p>
+</div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Account Number</p>
+<p class="text-sm font-medium font-mono">8290318290</p>
+</div>
+<div class="rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Account Holder Name</p>
+<p class="text-sm font-medium">JOHN DOE</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Payroll History -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<h3 class="font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+<span class="w-1 h-6 bg-primary rounded-full"></span>
+<span class="material-symbols-outlined text-primary">history</span>
+                            Recent Payroll History
+                        </h3>
+<button class="text-sm text-primary font-bold hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-[11px] uppercase tracking-wider font-bold">
+<tr>
+<th class="px-6 py-3">Month</th>
+<th class="px-6 py-3 text-right">Basic Salary</th>
+<th class="px-6 py-3 text-right">Allowance</th>
+<th class="px-6 py-3 text-right">Deduction</th>
+<th class="px-6 py-3 text-right">Net Salary</th>
+<th class="px-6 py-3 text-center">Status</th>
+<th class="px-6 py-3"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-semibold">October 2023</td>
+<td class="px-6 py-4 text-right">24.500.000</td>
+<td class="px-6 py-4 text-right text-green-600 font-medium">+1.250.000</td>
+<td class="px-6 py-4 text-right text-red-500 font-medium">-2.100.000</td>
+<td class="px-6 py-4 text-right font-bold">23.650.000</td>
+<td class="px-6 py-4 text-center">
+<span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase">Paid</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-[18px]">download</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-semibold">September 2023</td>
+<td class="px-6 py-4 text-right">24.500.000</td>
+<td class="px-6 py-4 text-right text-green-600 font-medium">+1.250.000</td>
+<td class="px-6 py-4 text-right text-red-500 font-medium">-2.100.000</td>
+<td class="px-6 py-4 text-right font-bold">23.650.000</td>
+<td class="px-6 py-4 text-center">
+<span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase">Paid</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-[18px]">download</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-semibold">August 2023</td>
+<td class="px-6 py-4 text-right">24.500.000</td>
+<td class="px-6 py-4 text-right text-green-600 font-medium">+4.500.000</td>
+<td class="px-6 py-4 text-right text-red-500 font-medium">-2.300.000</td>
+<td class="px-6 py-4 text-right font-bold">26.700.000</td>
+<td class="px-6 py-4 text-center">
+<span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase">Paid</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-[18px]">download</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-semibold">July 2023</td>
+<td class="px-6 py-4 text-right">24.500.000</td>
+<td class="px-6 py-4 text-right text-green-600 font-medium">+1.250.000</td>
+<td class="px-6 py-4 text-right text-red-500 font-medium">-2.100.000</td>
+<td class="px-6 py-4 text-right font-bold">23.650.000</td>
+<td class="px-6 py-4 text-center">
+<span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase">Paid</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-[18px]">download</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Summary/Footer Note -->
+<div class="bg-primary/5 p-4 rounded-lg border border-primary/20 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<div>
+<p class="text-sm font-medium text-primary">Master Data Linkage</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Some payroll information is synchronized from the Master Data module. Changes to NPWP or Bank Accounts should be updated in the Personal Information section first.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
